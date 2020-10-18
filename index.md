@@ -1,5 +1,5 @@
 # WiCyS at Illinois
-![Logo] ()
+![Logo] (https://wicys.github.io/WiCyS-logo.png)
 
 ### Markdown
 
