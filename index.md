@@ -16,7 +16,7 @@
   <li>Research involvement</li>
 </ul>
   <h2>Announcements</h2>
-  <h3 style="color:Tomato;">Sign up for the 2021 WiCyS National Conference.</h3>
+  <h3 style="color:red;">Sign up for the 2021 WiCyS National Conference.</h3>
   <p>If you are interested in applying, please fill out the Google Form below. Deadline to apply is November 1st.</p>
   <a href="https://forms.gle/ozyEtVS22TDVkhuz9"></a>
 </body>
