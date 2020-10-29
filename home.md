@@ -1,4 +1,6 @@
+<!DOCTYPE html>
 <html>
+ <body>
 <link href="home.css" rel="stylesheet" type="text/css" />
 <h1>
   <span
@@ -6,4 +8,5 @@
      data-period="2000"
      data-rotate='[ "Welcome", "WiCyS at UIUC"]'></span>
 </h1>
+  </body>
  </html>
