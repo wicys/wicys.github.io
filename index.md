@@ -47,11 +47,11 @@ function showSlides() {
   setTimeout(showSlides, 2000); // Change image every 2 seconds
 }
 </script>
-<div class = "typewriter">
+<div class = "typing">
 <h2>Who We Are</h2>
 </div>
 <p>Women in CyberSecurity (WiCyS) is a student chapter of a larger non-profit national organization dedicated to bringing together women in cybersecurity from academia, research and industry to share knowledge, experience, networking and mentoring. This RSO helps women interested in cyber security through tech talks, workshops, networking opportunities, research, conferences, and leadership opportunities. Our members are given the opportunity to attend the annual WiCyS National Conference and network with companies and fellow students passionate about the field of cyber security. WiCys aims to provide a supportive community to women in all stages of their pursuit of a cybersecurity career.</p>
-<div class = "typewriter">
+<div class = "typing">
 <h2>Our Mission</h2>
   </div>
 <p>To broaden participation in cybersecurity by recruiting, retaining and advancing women in the field of cybersecurity, and improve on the very low 11% statistic of women in cybersecurity jobs. Events we'll be putting on:</p>
@@ -61,7 +61,7 @@ function showSlides() {
   <li>Networking opportunities</li>
   <li>Research involvement</li>
 </ul>
-<div class = "typewriter">
+<div class = "typing">
   <h2>Announcements</h2>
   </div>
   <h3 style="color:red;">Sign up for the 2021 WiCyS National Conference.</h3>
