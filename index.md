@@ -8,6 +8,9 @@
   <h1>WiCyS at Illinois</h1>
   </div>
 <div class="slideshow-container">
+  <ul>
+  <li><a href="home.md">Home</a></li>
+</ul>
 
 <div class="mySlides fade">
   <div class="numbertext">1 / 3</div>
