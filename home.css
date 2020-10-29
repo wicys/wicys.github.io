@@ -1,32 +1,17 @@
-.typewriter h1 {
+html,body {
+  font-family: 'Raleway', sans-serif;
+  padding: 3em 2em;
+  font-size: 18px;
+  background: #663399;
   color: #008000;
-  font-family: monospace;
-  overflow: hidden; /* Ensures the content is not revealed until the animation */
-  border-right: .15em solid green; /* The typwriter cursor */
-  white-space: nowrap; /* Keeps the content on a single line */
-  margin: 0 auto; /* Gives that scrolling effect as the typing happens */
-  letter-spacing: .15em; /* Adjust as needed */
-  animation: 
-    typing 3.5s steps(30, end),
-    blink-caret .5s step-end infinite;
 }
 
-/* The typing effect */
-@keyframes typing {
-  from { width: 0 }
-  to { width: 100% }
+h1,h2 {
+  font-weight: 200;
+  margin: 0.4em 0;
 }
-
-/* The typewriter cursor effect */
-@keyframes blink-caret {
-  from, to { border-color: transparent }
-  50% { border-color: green }
+h1 { font-size: 3.5em; }
+h2 {
+  color: #888;
+  font-size: 2em;
 }
-body {
-  background-color:#663399;
-  text-align: center;
-  color:#008000;
-  padding-top:10em;
-}
-
-* { color:#008000; text-decoration: none;}
