@@ -13,9 +13,12 @@
   <div class="numbertext">1 / 3</div>
   <img src="WiCyS-logo.png" style="width:100%">
 </div>
-
 <div class="mySlides fade">
   <div class="numbertext">2 / 3</div>
+  <img src="wicys-denver-2021.png" style="width:100%">
+</div>
+<div class="mySlides fade">
+  <div class="numbertext">3 / 3</div>
   <img src="maxresdefault.jpg" style="width:100%">
 </div>
 </div>
