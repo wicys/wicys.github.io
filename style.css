@@ -1,10 +1,4 @@
 /* GLOBAL STYLES */
-body {
-  background: #333;
-  padding-top: 5em;
-  display: flex;
-  justify-content: center;
-}
 
 /* DEMO-SPECIFIC STYLES */
 .typewriter h1 {
