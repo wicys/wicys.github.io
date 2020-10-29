@@ -5,6 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/3/w3.css">
 <body>
+<p id="demo"></p>
+
+<script>
+var i = 0;
+var txt = 'WiCyS at Illinois';
+var speed = 50;
+
+function typeWriter() {
+  if (i < txt.length) {
+    document.getElementById("demo").innerHTML += txt.charAt(i);
+    i++;
+    setTimeout(typeWriter, speed);
+  }
+}
+</script>
  <section>
   <img class="mySlides" src="WiCyS-logo.png" style="width:100%">
   <img class="mySlides" src="maxresdefault.jpg" style="width:100%">
