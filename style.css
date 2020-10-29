@@ -25,7 +25,7 @@
   from, to { border-color: transparent }
   50% { border-color: purple }
 }
-.typewriter h2 {
+.typing h2 {
   color: #000000;
   font-family: monospace;
   overflow: hidden; /* Ensures the content is not revealed until the animation */
