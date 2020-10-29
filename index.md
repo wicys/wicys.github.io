@@ -9,7 +9,7 @@
   </div>
 <div class="slideshow-container">
   <ul>
-  <li><a href="home.md">Home</a></li>
+  <li><a href="home.html">Home</a></li>
 </ul>
 
 <div class="mySlides fade">
