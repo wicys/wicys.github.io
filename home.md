@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="home.css">
 <body>
 <h1>
-  <a href="home.css" class="typewrite" data-period="2000" data-type='[ "Welcome,", "WiCyS at UIUC" ]'>
+  <a href="home.css" class="typewriter" data-period="2000" data-type='[ "Welcome,", "WiCyS at UIUC" ]'>
     <span class="wrap"></span>
   </a>
 </h1>
