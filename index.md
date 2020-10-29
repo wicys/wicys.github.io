@@ -18,7 +18,7 @@
   <div class="numbertext">2 / 3</div>
   <img src="maxresdefault.jpg" style="width:100%">
 </div>
-
+</div>
 <br>
 
 <div style="text-align:center">
@@ -26,7 +26,6 @@
   <span class="dot"></span> 
   <span class="dot"></span> 
 </div>
-
 <script>
 var slideIndex = 0;
 showSlides();
