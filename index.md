@@ -1,9 +1,5 @@
+
 <!DOCTYPE HTML>
-<!--
-	Forty by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
 <html>
 	<head>
 		<title>Forty by HTML5 UP</title>
@@ -14,10 +10,9 @@
 	</head>
 	<body class="is-preload">
 
-		<!-- Wrapper -->
 			<div id="wrapper">
 
-				<!-- Header -->
+				
 					<header id="header" class="alt">
 						<a href="index.html" class="logo"><strong>Forty</strong> <span>by HTML5 UP</span></a>
 						<nav>
@@ -25,7 +20,7 @@
 						</nav>
 					</header>
 
-				<!-- Menu -->
+				
 					<nav id="menu">
 						<ul class="links">
 							<li><a href="index.html">Home</a></li>
@@ -39,7 +34,7 @@
 						</ul>
 					</nav>
 
-				<!-- Banner -->
+		
 					<section id="banner" class="major">
 						<div class="inner">
 							<header class="major">
@@ -55,10 +50,10 @@
 						</div>
 					</section>
 
-				<!-- Main -->
+			
 					<div id="main">
 
-						<!-- One -->
+
 							<section id="one" class="tiles">
 								<article>
 									<span class="image">
@@ -116,7 +111,7 @@
 								</article>
 							</section>
 
-						<!-- Two -->
+					
 							<section id="two">
 								<div class="inner">
 									<header class="major">
@@ -131,7 +126,7 @@
 
 					</div>
 
-				<!-- Contact -->
+			
 					<section id="contact">
 						<div class="inner">
 							<section>
@@ -184,7 +179,6 @@
 						</div>
 					</section>
 
-				<!-- Footer -->
 					<footer id="footer">
 						<div class="inner">
 							<ul class="icons">
@@ -202,7 +196,6 @@
 
 			</div>
 
-		<!-- Scripts -->
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/jquery.scrolly.min.js"></script>
 			<script src="assets/js/jquery.scrollex.min.js"></script>
