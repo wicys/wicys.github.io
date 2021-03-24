@@ -1,0 +1,1149 @@
+<!doctype html>
+<meta charset = "utf-8">
+<title>Cybersecurity Breakfast Adventure</title>
+<head>
+  <style>
+   body {
+      background-color: black;
+      text-align: center;
+      color: white;
+      font-family: courier;
+    }
+
+    a
+    {
+      color: rgb(123, 213, 255);
+    }
+  </style>
+  <link rel="stylesheet" href="css/terminal.css">
+</head>
+<body>
+  <h2>Cybersecurity Breakfast Adventure</h2>
+<p>Instructions: Use the arrow keys to navigate locations and complete your tasks. If you find yourself at a pop-up screen within the game, press Escape to close it and return to the overworld. For text-based prompts, hit Enter to submit your input.</p>
+<br>
+<script src="ga.js"></script>
+<script src="plugins.js"></script>
+<script>
+
+document.addEventListener('keydown', logKey);
+var display_hint = false;
+var hint_index = 0;
+var separated_hints = [
+  [
+    // unlock computer hints below
+    "Try unlocking the computer.",
+    "Go to the whiteboard to find clues for your password!",
+    "Take a look at the Caesar Cipher guide!",
+    "To decrypt Caesar Ciphers, you need to find the right amount of rotations made in the alphabet. How many lives does a cat have?",
+    "How well do 9 rotations work on the whiteboard text?",
+    "Try mapping A to J."
+  ],
+  [
+    // make toast hints below
+    "Go to the whiteboard to find the right number conversion for the lock.",
+    "Take a look at the Number Systems and ASCII guide!",
+    "The binary code given on the whiteboard translates to ‘hexadec’ in ASCII.",
+    "The lock combination is in hexadecimal form. The correct combination is in decimal form."
+  ],
+  [
+    // unlock fridge hints below
+    "Use the terminal to try to access your smart fridge.",
+    "Take a look at the CLI guide!",
+    "Try the command 'ls' to see what is available to view in the system.",
+    "Try the command 'cd <folder-name>' to navigate to the folder.",
+    "Type ./<executable-file-name> to run the executable.",
+    "Once you run the exe file, type “lock” to lock, and “unlock” to unlock your fridge."
+  ],
+  [
+    // brew coffee hints below
+    "Use the terminal to try to access your smart coffee brewer.",
+    "Take a look at the CLI guide!",
+    "Type 'exit' to return to the folder the executable file is located.",
+    "Use the command 'cd ../' to navigate to the previous folder.",
+    "Run 'lineDolphin.exe' to capture network traffic.",
+    "Type 'capture' to see what GET request looks like!",
+    "Run 'coffeeRequestSender.exe' to send a request to the coffee machine.",
+    "To check the status, use the URL 'mycyba/brewer/status'.",
+    "The host address is 'mycyba', port number is '5000', request type is 'GET', and URL is 'mycyba/brewer/brew'."
+  ],
+]
+// var hints = [
+//   // unlock computer hints below
+//   "Try unlocking the computer.",
+//   "Go to the whiteboard to find clues for your password!",
+//   "Take a look at the Caesar Cipher guide!",
+//   "To decrypt Caesar Ciphers, you need to find the right amount of rotations made in the alphabet. How many lives does a cat have?",
+//   "How well do 9 rotations work on the whiteboard text?",
+//   "Try mapping A to J.",
+//   // make toast hints below
+//   "Go to the whiteboard to find the right number conversion for the lock.",
+//   "Take a look at the Number Systems and ASCII guide!",
+//   "The binary code given on the whiteboard translates to ‘hexadec’ in ASCII.",
+//   "The lock combination is in hexadecimal form. The correct combination is in decimal form.",
+//   // unlock fridge hints below
+//   "Go to the computer to find where you can access your smart fridge.",
+//   "Take a look at the A Light Intro on SQL guide and CLI guide!",
+//   "User accounts are stored in a SQL table named users, with fields named username and password. How would you access these fields?",
+//   "What would be a command that is always true?",
+//   "Try the command ‘TODO’",
+//   "Once you’re logged in, type “lock” to lock, and “unlock” to unlock your fridge.",
+//   // brew coffee hints below
+//   "Go to the computer to find where you can access your smart coffee brewer.",
+//   "Take a look at the CLI guide!",
+//   "TODO",
+//   "TODO"
+// ];
+
+//while(hints.length--) hint_has_been_viewed[hints.length] = false;
+var closeWindow = false;
+var password_string = " ";
+var password_incorrect_message_visible = false;
+var combo_string = " ";
+var combo_incorrect_message_visible = false;
+var terminal_string = "";
+// var allowed_password_keys = ["KeyA", "KeyB", "KeyC", "KeyD", "KeyE", "KeyF", "KeyG", "KeyH", "KeyI", "KeyJ", "KeyK", "KeyL", "KeyM", "KeyN", "KeyO", "KeyP",
+//  "KeyQ", "KeyR", "KeyS", "KeyT", "KeyU", "KeyV", "KeyW", "KeyX", "KeyY", "KeyZ"];  // e.code codes
+// var allowed_combo_keys = ["Digit0", "Digit1", "Digit2", "Digit3", "Digit4", "Digit5", "Digit6", "Digit7", "Digit8", "Digit9"];  // e.code codes
+var allowed_password_keys = [65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90]  // e.which codes
+var allowed_combo_keys = [48, 49, 50, 51, 52, 53, 54, 55, 56, 57]  // e.which codes
+var computerUnlocked = false;
+var lockUnlocked = false;
+var terminal_archive = [];
+var cat, cat2, cat3, message;
+var coffeeBrewed = false;
+
+var hint_str = "";
+var toggle_index = 0;
+function logKey(e) {
+//  console.log(e.code);
+  // if (e.code === "Slash") {
+  //   display_hint = !display_hint;
+  //   if (hint_index === 2 && hint_has_been_viewed[hint_index]) {
+  //     hint_index++;
+  //   }
+  // }
+  if (e.code === "Escape") {
+    if (gameSceneCoffee.visible || gameSceneWhiteboard.visible || gameSceneLockedScreen.visible
+    /*|| gameSceneTerminal.visible*/ || gameSceneLock.visible || gameSceneToaster.visible
+    || gameSceneFridge.visible || gameSceneUnlockedFridge.visible
+    || gameSceneToasterComplete.visible || gameSceneCoffeeComplete.visible)
+    closeWindow = true;
+
+    if (password_incorrect_message_visible) {
+      password_incorrect_message_visible = false;
+      g.remove(message6)
+    }
+
+    if (combo_incorrect_message_visible) {
+      combo_incorrect_message_visible = false;
+      g.remove(message7)
+    }
+  }
+
+  if (e.code === "Slash") {
+    if (!computerUnlocked && toggle_index < separated_hints[0].length) {
+      hint_str = "&#128187 " + separated_hints[0][toggle_index] + "<br>" + hint_str;
+      document.getElementById("hintsList").innerHTML = hint_str;
+    } else if (computerUnlocked && !lockUnlocked && toggle_index < separated_hints[1].length){
+      hint_str = "&#127838 " + separated_hints[1][toggle_index] + "<br>" + hint_str;
+      document.getElementById("hintsList").innerHTML = hint_str;
+    } else if (computerUnlocked && lockUnlocked && fridge_is_locked && toggle_index < separated_hints[2].length) {
+      hint_str = "&#127859 " + separated_hints[2][toggle_index] + "<br>" + hint_str;
+      document.getElementById("hintsList").innerHTML = hint_str;
+    } else if (computerUnlocked && lockUnlocked && !fridge_is_locked && !coffeeBrewed && toggle_index < separated_hints[3].length) {
+      hint_str = "&#9749 " + separated_hints[3][toggle_index] + "<br>" + hint_str;
+      document.getElementById("hintsList").innerHTML = hint_str;
+    }
+    toggle_index++;
+    // if (document.getElementById("hintsText").innerHTML === hints[hint_index]) {
+    //   document.getElementById("hintsText").innerHTML = "Press ? to toggle hint!";
+    // } else {
+    //   document.getElementById("hintsText").innerHTML = hints[hint_index];
+    // }
+  }
+
+  if (gameSceneLockedScreen.visible) {
+    if ((allowed_password_keys.includes(e.which) || allowed_combo_keys.includes(e.which)) && password_string.length < 18) {
+      computer.play();
+      if (password_incorrect_message_visible) {
+        password_incorrect_message_visible = false;
+        g.remove(message6)
+      }
+
+      //password_string += e.code[3];
+      password_string += String.fromCharCode(e.which);
+    }
+
+    if (e.code === "Enter") {
+      console.log("Checking correctness of password...");
+      check_password_correctness();
+    }
+    // add being able to delete a character as a quality of life update
+    // if needed; lower priority than getting game to work
+    if (e.code === "Backspace") {
+      if (password_incorrect_message_visible) {
+        password_incorrect_message_visible = false;
+        g.remove(message6)
+      }
+
+      if (password_string.length <= 1) {
+        password_string = " ";
+      } else {
+        password_string = password_string.substring(0, password_string.length-1);
+      }
+    }
+  }
+
+  /*if (gameSceneTerminal.visible) {
+    if (allowed_password_keys.includes(e.code) && terminal_string.length < 40) {
+      terminal_string += e.code[3];
+      // update display here
+      for (var i = 0; i < terminal_archive.length; i++) {
+        g.remove(message5);
+      }
+      g.remove(message5);
+
+      // now, update with new text!
+      for (var i = 0; i < terminal_archive.length; i++) {
+        message5 = g.text(terminal_archive[i], "20px sans-serif", "white", 50, 50 + (i*20));
+      }
+      message5 = g.text("$ " + terminal_string, "20px sans-serif", "white", 50, 50 + (20*terminal_archive.length));
+    }
+
+    if (e.code === "Enter") {
+      console.log("TO DO: process commands!");
+      terminal_archive.push("$ " + terminal_string);
+      terminal_string = "";
+      gameSceneTerminal.visible = true; // manual trigger?
+
+      // update display here
+      for (var i = 0; i < terminal_archive.length; i++) {
+        g.remove(message5);
+      }
+      g.remove(message5);
+
+      // now, update with new text!
+      for (var i = 0; i < terminal_archive.length; i++) {
+        message5 = g.text(terminal_archive[i], "20px sans-serif", "white", 50, 50 + (i*20));
+      }
+      message5 = g.text("$ " + terminal_string, "20px sans-serif", "white", 50, 50 + (20*terminal_archive.length));
+    }
+    // add being able to delete a character as a quality of life update
+    // if needed; lower priority than getting game to work
+    // if (e.code === "Backspace") {
+    //   password_string = password_string.slice(0, -1);
+    // }
+  }*/
+
+  if (gameSceneLock.visible) {
+    if (allowed_combo_keys.includes(e.which) && combo_string.length < 9) {
+      if (combo_incorrect_message_visible) {
+        combo_incorrect_message_visible = false;
+        g.remove(message7);
+      }
+
+      if ((combo_string.length) % 3 == 0) {
+        combo_string += " "
+      }
+
+      combo_string += String.fromCharCode(e.which);
+      lock.play();
+    }
+
+    if (e.code === "Enter") {
+
+      console.log("Checking correctness of password...");
+      check_password_correctness();
+    }
+
+    if (e.code === "Backspace") {
+      if (combo_incorrect_message_visible) {
+        combo_incorrect_message_visible = false;
+        g.remove(message7)
+      }
+
+      if (combo_string.length <= 1) {
+        combo_string = " ";
+      } else {
+        // user only needs to delete the numbers they inputted, not the spaces in between
+        if (combo_string[combo_string.length - 1] == " ") {
+          combo_string = combo_string.substring(0, combo_string.length-1);
+        }
+        combo_string = combo_string.substring(0, combo_string.length-1);
+      }
+    }
+  }
+}
+
+
+function check_password_correctness() {
+  if (!computerUnlocked && gameSceneLockedScreen.visible) {
+    if (password_string === " DELILAH") {
+      closeWindow = true;
+      console.log("Password correct!");
+      computerUnlocked = true;
+      toggle_index = 0;
+      hint_str = "";
+      document.getElementById("unlockComputer").innerHTML = "[x] Unlock the computer";
+    } else {
+      if (!password_incorrect_message_visible) {
+        var password_incorrect_string = "Password incorrect. Please try again.";
+        password_incorrect_message_visible = true;
+        message6 = g.text(password_incorrect_string, "25px sans-serif", "red", 130, 150);
+      }
+    }
+  }
+
+  if (!lockUnlocked && gameSceneLock.visible) {
+    // TODO: EDIT THE CODE IN THIS CONDITIONAL TO FIT WITH COMBO PUZZLE
+    if (combo_string === " 86 37 49") {
+      closeWindow = true;
+      console.log("Combo correct!");
+      lockUnlocked = true;
+      toggle_index = 0;
+      hint_str = "";
+      document.getElementById("makeToast").innerHTML = "[x] Make toast";
+      lock_open.play();
+      // remove text and show completed task
+      g.remove(message10);
+      g.remove(message8);
+    } else {
+      if (!combo_incorrect_message_visible) {
+        var combo_incorect_string = "Combo incorrect. Please try again.";
+        combo_incorrect_message_visible = true;
+        message7 = g.text(combo_incorect_string, "25px sans-serif", "red", 150, 460);
+      }
+      lock_fail.play();
+    }
+  }
+}
+
+//Create a new GA instance, and start it.
+var g = ga(700, 550, setup,
+  [
+    "images/big-out-living.png",
+    "images/new_new_kitchen.png",
+    "images/step1.png",
+    "images/step1_left.png",
+    "images/step2.png",
+    "images/step2_left.png",
+    "images/standing.png",
+    "images/coffee_blank_display.png",
+    "images/whiteboard_w_lock_clue.png",
+    "images/bedroom.png",
+    "images/locked_computer.png",
+//    "images/terminal.png",
+    "images/zoomed_in_toaster_with_background.png",
+    "images/combination_lock_with_numbers_on_cabinet_w_box1.png",
+    "images/fridge_display_w_text.png",
+    "images/fridge_display.png",
+    "images/toaster_task_complete.png",
+    "images/coffee_task_complete_w_text.png",
+    "sounds/suburban-neighborhood.wav",
+    "sounds/liquid-pour.wav",
+    "sounds/memories.mp3", // music from https://www.bensound.com/royalty-free-music/track/memories
+    "sounds/toaster-pop-up.wav",
+    "sounds/lock.wav",
+    "sounds/lock-open-fail.wav",
+    "sounds/lock-open.wav",
+    "sounds/computer.wav",
+  ]
+);
+g.start();
+var music, coffee, toaster, lock, lock_fail, lock_open, computer;
+
+//A `setup` function that will run only once.
+//Use it for initialization tasks
+function setup() {
+  forest = g.sprite("images/big-out-living.png");
+  kitchen = g.sprite("images/new_new_kitchen.png");
+  coffee = g.sprite("images/coffee_blank_display.png")
+  whiteboard = g.sprite("images/whiteboard_w_lock_clue.png");
+  bedroom = g.sprite("images/bedroom.png");
+  locked_screen = g.sprite("images/locked_computer.png");
+//  terminal = g.sprite("images/terminal.png");
+  zoomed_toaster = g.sprite("images/zoomed_in_toaster_with_background.png");
+  lock_on_cabinet_w_num = g.sprite("images/combination_lock_with_numbers_on_cabinet_w_box1.png");
+  zoomed_fridge = g.sprite("images/fridge_display_w_text.png");
+  unlocked_fridge = g.sprite("images/fridge_display.png");
+  zoomed_toaster_complete = g.sprite("images/toaster_task_complete.png");
+  zoomed_coffee_complete = g.sprite("images/coffee_task_complete_w_text.png");
+
+
+
+  var catFrames = [
+    "images/standing.png",
+    "images/step1.png",
+    "images/step2.png",
+    "images/standing.png",
+    "images/step1_left.png",
+    "images/step2_left.png"
+  ];
+
+  var walkCycle = [1, 2];
+
+  cat = g.sprite(catFrames);
+  cat2 = g.sprite(catFrames);
+  cat3 = g.sprite(catFrames);
+
+  // animation states
+  cat.states = {
+    walkRight: [1, 2],
+    walkLeft: [4,5]
+  };
+  cat2.states = {
+    walkRight: [1, 2],
+    walkLeft: [4,5]
+  };
+  cat3.states = {
+    walkRight: [1, 2],
+    walkLeft: [4,5]
+  };
+
+  //Center the cat
+  g.stage.putCenter(cat);
+  g.stage.putCenter(cat2);
+  g.stage.putCenter(cat3);
+
+  // THIS STARTS CAT'S ANIMATION
+  cat.fps = 5;
+  cat2.fps = 5;
+  cat3.fps = 5;
+
+  cat.playSequence(walkCycle);
+  cat2.playSequence(walkCycle);
+  cat3.playSequence(walkCycle);
+
+  cat.loop = false;
+  cat2.loop = false;
+  cat3.loop = false;
+
+  g.fourKeyController(cat, 2, 38, 39, 40, 37);
+  g.fourKeyController(cat2, 2, 38, 39, 40, 37);
+  g.fourKeyController(cat3, 2, 38, 39, 40, 37);
+
+  gameScene = g.group(forest, cat);
+  gameSceneKitchen = g.group(kitchen, cat2);
+  gameSceneBedroom = g.group(bedroom, cat3);
+  gameSceneCoffee = g.group(coffee);
+  gameSceneWhiteboard = g.group(whiteboard);
+  gameSceneLockedScreen = g.group(locked_screen);
+//  gameSceneTerminal = g.group(terminal);
+  gameSceneLock = g.group(lock_on_cabinet_w_num);
+  gameSceneToaster = g.group(zoomed_toaster);
+  gameSceneFridge = g.group(zoomed_fridge);
+  gameSceneUnlockedFridge = g.group(unlocked_fridge);
+  gameSceneToasterComplete = g.group(zoomed_toaster_complete);
+  gameSceneCoffeeComplete = g.group(zoomed_coffee_complete);
+
+  gameScene.visible = true;
+  gameSceneKitchen.visible = false;
+  gameSceneCoffee.visible = false;
+  gameSceneBedroom.visible = false;
+  gameSceneWhiteboard.visible = false;
+  gameSceneLockedScreen.visible = false;
+//  gameSceneTerminal.visible = false;
+  gameSceneLock.visible = false;
+  gameSceneToaster.visible = false;
+  gameSceneFridge.visible = false;
+  gameSceneUnlockedFridge.visible = false;
+  //gameSceneToasterComplete.visible = true;
+  gameSceneToasterComplete.visible = false;
+  gameSceneCoffeeComplete.visible = false;
+
+  // var customKey = g.keyboard(122);
+  // customKey.press = function() {
+  //   console.log("Pressed");
+  // };
+  leftArrow = g.keyboard(37);
+  upArrow = g.keyboard(38);
+  rightArrow = g.keyboard(39);
+  downArrow = g.keyboard(40);
+
+  // background music
+  music = g.sound("sounds/memories.mp3");
+  toaster = g.sound("sounds/toaster-pop-up.wav");
+  coffee = g.sound("sounds/liquid-pour.wav");
+  lock = g.sound("sounds/lock.wav");
+  lock_fail = g.sound("sounds/lock-open-fail.wav");
+  lock_open = g.sound("sounds/lock-open.wav");
+  computer = g.sound("sounds/computer.wav");
+
+  //bgm.play();
+  music.loop = true;
+  music.play();
+  music.volume = 0.1;
+
+  //Assign key `press` and release methods that
+  //show and play the elf's different states
+  leftArrow.press = function() {
+    cat.playSequence(cat.states.walkLeft);
+    cat2.playSequence(cat2.states.walkLeft);
+    cat3.playSequence(cat3.states.walkLeft);
+
+  };
+  leftArrow.release = function() {
+  };
+  upArrow.press = function() {
+  };
+  upArrow.release = function() {
+  };
+  rightArrow.press = function() {
+    cat.playSequence(cat.states.walkRight);
+    cat2.playSequence(cat2.states.walkRight);
+    cat3.playSequence(cat3.states.walkRight);
+  };
+  rightArrow.release = function() {
+  };
+  downArrow.press = function() {
+  };
+  downArrow.release = function() {
+  };
+
+  //Change the state to `play`
+  g.state = play;
+
+}
+
+var passwordDisplayExists = false;
+var terminalDisplayExists = false;
+var comboDisplayExists = false;
+var numRemove = 0;
+
+//The `play` function will run in a loop
+function play() {
+
+  if (!gameSceneCoffee.visible && !gameSceneWhiteboard.visible && !gameSceneLockedScreen.visible
+   /* && !gameSceneTerminal.visible*/ && !gameSceneLock.visible && !gameSceneToaster.visible
+    && !gameSceneFridge.visible && !gameSceneToasterComplete.visible && !gameSceneCoffeeComplete.visible) {
+    g.move(cat);
+    g.move(cat2);
+    g.move(cat3);
+  }
+
+  //If the cat is moving, play walking animation
+  if (Math.abs(cat.vx) > 0 || Math.abs(cat.vy) > 0) {
+    cat.loop = true;
+    cat2.loop = true;
+    cat3.loop = true;
+  } else {
+    cat.loop = false;
+    cat2.loop = false;
+    cat3.loop = false;
+  }
+
+  /*
+  Contain the cat inside the canvas.
+  'contain` constrains the sprite's movement to a rectangular space
+  defined by the `localBounds` property of any object.
+  (`localBounds` returns an object with `x`, `y`, `width` and `height`
+  properties).
+  that space, `contain` returns a useful a string that will tell you which
+  side the sprite hit: "left", "right". "top" or "bottom".
+  */
+
+  living_room_contains = g.contain(cat,
+    {
+      x: 0,
+      y: 0,
+      width: 700,
+      height: 500
+    }
+  );
+
+  kitchen_contains = g.contain(cat2,
+    {
+      x: 0,
+      y: 0,
+      width: 700,
+      height: 500
+    }
+  );
+
+  bedroom_contains = g.contain(cat3,
+    {
+      x: 0,
+      y: 0,
+      width: 700,
+      height: 500
+    }
+  );
+  var catHitsEdges = living_room_contains || kitchen_contains || bedroom_contains;
+
+  if (gameSceneKitchen.visible && cat2.x > 470 && cat2.y < 230 && cat2.x < 570) {
+    if (!coffeeBrewed) {
+      gameSceneCoffee.visible = true;
+    }
+    
+  }
+
+  if (gameSceneKitchen.visible && cat2.x > 250 && cat2.x < 300 && cat2.y < 230) {
+    if (!lockUnlocked) {
+      gameSceneToaster.visible = true;
+    } else {
+     // gameSceneToasterComplete.visible = true;
+    }
+  }
+
+  if (gameSceneKitchen.visible && cat2.x > 20 && cat2.x < 90 && cat2.y < 250) {
+    if (!lockUnlocked) {
+      gameSceneLock.visible = true; // if combo is unlocked, doesn't zoom into cabinet to show lock
+      if (comboDisplayExists) {
+        g.remove(message10);
+        g.remove(message8);
+      }
+
+      // always display combo given
+      var combo_given = "56 25 31";
+      message10 = g.text(combo_given, "30px sans-serif", "black", 15, 15);
+
+      // user combo input
+      message8 = g.text(combo_string, "30px sans-serif", "black", 275, 420);
+      comboDisplayExists = true;
+    }
+  }
+
+  if (gameSceneKitchen.visible && cat2.x > 90 && cat2.x < 180 && cat2.y < 250) {
+    if (fridge_is_locked) {
+      gameSceneFridge.visible = true;
+    } else {
+      //gameSceneUnlockedFridge.visible = true;
+    }
+  }
+
+  if (gameSceneBedroom.visible && cat3.x > 260 && cat3.x < 460 && cat3.y < 160) {
+    gameSceneWhiteboard.visible = true;
+    if (hint_index === 1) {
+      hint_index++;
+    }
+  }
+
+  if (gameScene.visible && cat.y > 200 && cat.y < 410 && cat.x > 530) {
+    if (!computerUnlocked) {
+      gameSceneLockedScreen.visible = true;
+      if (passwordDisplayExists) {
+        g.remove(message4);
+      }
+      message4 = g.text(password_string, "30px sans-serif", "black", 140, 235);
+      passwordDisplayExists = true;
+    } 
+    
+    /*else if (!gameSceneTerminal.visible){
+      gameSceneTerminal.visible = true; // TODO change this to real computer screen
+      console.log("Pausing game....");
+      g.pause();
+
+      // console.log("??");
+    }*/
+
+    // if (message4) {
+    //   g.remove(message4);
+    // }
+    // message4 = g.text(password_string, "30px sans-serif", "black", 300, 300);
+  }
+/*
+  if (gameSceneTerminal.visible) {
+    if (terminalDisplayExists) {
+    //   for (var i = 0; i < terminal_archive.length; i++) {
+    //   message5 = g.text(terminal_archive[i], "20px sans-serif", "white", 50, 50 + (i*20));
+    // }
+      // for (var i = 0; i < terminal_archive.length; i++) {
+      //   g.remove(message5);
+      // }
+      // g.remove(message5);
+    } else {
+      for (var i = 0; i < terminal_archive.length; i++) {
+        message5 = g.text(terminal_archive[i], "20px sans-serif", "white", 50, 50 + (i*20));
+      }
+      message5 = g.text("$ " + terminal_string, "20px sans-serif", "white", 50, 50 + (20*terminal_archive.length));
+      terminalDisplayExists = true;
+      console.log("displaying text?");
+    }
+    // for (var i = 0; i < terminal_archive.length; i++) {
+    //   message5 = g.text(terminal_archive[i], "20px sans-serif", "white", 50, 50 + (i*20));
+    // }
+    // var currTerminalString = "";
+    // for (var i = 0; i < terminal_archive.length; i++) {
+    //   currTerminalString += terminal_archive[i] + '\n';
+    // }
+
+
+  }*/
+
+  //Display the edge of canvas that the cat hit
+  if (catHitsEdges) {
+      var needs_centering = false;
+
+      if (gameScene.visible && (living_room_contains === "top" || kitchen_contains === "top" || bedroom_contains === "top")) {
+        gameScene.visible = false;
+        gameSceneKitchen.visible = true;
+        needs_centering = true;
+      } else if (gameScene.visible && (living_room_contains === "right" || kitchen_contains === "right" || bedroom_contains === "right")) {
+        gameScene.visible = false;
+        gameSceneBedroom.visible = true;
+        needs_centering = true;
+      } else if (gameSceneKitchen.visible && (living_room_contains === "bottom" || kitchen_contains === "bottom" || bedroom_contains === "bottom")) {
+        gameScene.visible = true;
+        gameSceneKitchen.visible = false;
+        needs_centering = true;
+      } else if (gameSceneBedroom.visible && (living_room_contains === "left" || kitchen_contains === "left" || bedroom_contains === "left")) {
+        gameScene.visible = true;
+        gameSceneBedroom.visible = false;
+        needs_centering = true;
+      }
+
+      if (needs_centering) {
+        g.stage.putCenter(cat);
+        g.stage.putCenter(cat2);
+        g.stage.putCenter(cat3);
+      }
+  }
+
+  if (closeWindow) {
+    console.log("Closing window!");
+    if (gameSceneLockedScreen.visible && hint_index === 0) {
+      hint_index++;
+    }
+    if (gameSceneLockedScreen.visible) {
+      password_string = " ";
+      g.remove(message4);
+      gameSceneLockedScreen.visible = false;
+    }
+
+  /*  if (gameSceneTerminal.visible) {
+      terminal_string = "";
+      for (var i = 0; i < terminal_archive.length; i++) {
+        g.remove(message5);
+      }
+      g.remove(message5);
+      gameSceneTerminal.visible = false;
+      terminalDisplayExists = false;
+    }*/
+
+    if (gameSceneLock.visible) {
+      g.remove(message10);
+      g.remove(message8);
+      gameSceneLock.visible = false;
+      combo_string = " ";
+    }
+
+    gameSceneToaster.visible = false;
+    gameSceneLock.visible = false;
+    gameSceneFridge.visible = false;
+    gameSceneCoffee.visible = false;
+    gameSceneWhiteboard.visible = false;
+    gameSceneUnlockedFridge.visible = false;
+    gameSceneCoffeeComplete.visible = false;
+    gameSceneToasterComplete.visible = false;
+  //  gameSceneLockedScreen.visible = false;
+    //gameSceneTerminal.visible = false;
+
+    closeWindow = false;
+    cat.y += 100;
+    cat2.y += 100;
+    cat3.y += 100;
+  }
+}
+
+</script>
+<!--Add hints or description to bottom-->
+  <p id="hintsText">Hints: press ? to get a new hint!</p>
+  <br>
+  <p id="hintsList"></p>
+  <br>
+  <div id="tastList">
+    <p>Remaining tasks:</p>
+    <p id="unlockComputer">- Unlock the computer &#128187</p>
+    <p id="makeToast">- Make toast &#127838 </p>
+    <p id="openFridge">- Open the fridge &#127859</p>
+    <p id="makeCoffee">- Make coffee &#9749</p>
+  </div>
+  <br>
+  <div id="resources">
+    <p>Resources</p>
+    <p><a href="guides/caesar_ciphers.pdf" target="_blank" rel="noopener noreferrer">On Caesar Ciphers</a></p>
+    <p><a href="guides/number_systems_and_ascii.pdf" target="_blank" rel="noopener noreferrer">Number Systems and ASCII</a></p>
+    <p><a href="guides/cli.pdf" target="_blank" rel="noopener noreferrer">Navigating a Command-Line Interface</a></p>
+  </div>
+
+  <br><br>
+
+
+ <!--<div id="terminal-body">-->
+    <div id="header">
+      <p id="terminalPrompt0"></p>
+      <div id="cursor"></div>
+      <div id="terminalEnding"></div>
+    </div>
+ <!--</div>-->
+<script>
+    var directory = {
+        "defaultDirectory": "~",
+        "directories": {
+            "~": {
+                "directories": [
+                    "fridge_app"
+                ],
+                "executables": [
+                    "lineDolphin.exe",
+                    "coffeeRequestSender.exe"
+                ]
+            },
+            "fridge_app": {
+                "directories": [],
+                "executables": [
+                    "fridgeLoginPortal.exe"
+                ]
+            }
+        }
+    };
+
+    var curr_directory = "~";
+    var curr_display_dir = "~";
+    var directory_archive = ["~"];
+    var terminal_archive = [];
+    var user_input = "";
+    var currently_in_executable = false;
+    var curr_executable_name = "";
+    var fridge_is_locked = true;
+    var user_is_authenticated = true; // change to false later when login required
+    var currCoffeeState = "";
+    var currHostName = "";
+    var currPortName = "";
+    var currRequestType = "";
+    var currRequestURL = "";
+
+    var coffee_text = ["Pinging CYBA brewer using saved configuration...",
+                    "Request sent:", 
+                    "GET mycyba/brewer/status CYBA/1.5",
+                    "Host: mycyba:5000", 
+                    "Connection: keep-alive",
+                    "...",
+                    "CYBA/1.5 response received:",
+                    "Host: mycyba",
+                    "Port: 5000"
+                    ];
+    
+    document.getElementById("terminalPrompt0").innerHTML =  curr_directory + "$ " + user_input;
+
+    document.addEventListener('keydown', logKey);
+
+    function logKey(e) {
+        if (e.code === "Enter") {
+            updatePromptNewLine();
+        } else if (e.key === "Shift" || 
+                  e.code === "ArrowRight" || 
+                  e.code === "ArrowLeft" ||
+                  e.code === "ArrowUp" ||
+                  e.code === "ArrowDown") {
+            // do nothing
+        } else if (e.code === "Backspace") {
+            if (user_input.length) {
+                user_input = user_input.slice(0, -1);
+                displayCurrLine(user_input);
+            }
+        }
+        else {
+            user_input += e.key;
+            displayCurrLine(user_input);
+        } 
+    }
+
+    function updatePromptNewLine() {
+
+        // push user input to terminal archive
+        if (currently_in_executable) {
+            terminal_archive.push(curr_executable_name + "> " + user_input);
+        } else {
+            terminal_archive.push(curr_display_dir + "$ " + user_input);
+        }
+        // reset user input
+        user_input = "";
+        // create new paragraph
+        const newP = document.createElement("p");
+        newP.setAttribute("id", "terminalPrompt" + terminal_archive.length);
+        newP.classList.add("terminalLine");
+        // delete existing cursor
+        document.getElementById("cursor").remove();
+        // create new cursor
+        const newCursor = document.createElement("div");
+        newCursor.setAttribute("id", "cursor");
+        // get the necessary HTML tags for inserting into the right place
+        const currLine = document.getElementById("terminalEnding");
+        const prevLine = document.getElementById("header");
+
+        // remove current terminal prompt from header
+        document.getElementById("terminalPrompt" + (terminal_archive.length - 1)).remove();
+        // re-add terminal prompt, but outside of header
+        const oldP = document.createElement("p");
+        oldP.setAttribute("id", "terminalPrompt" + (terminal_archive.length - 1));
+        oldP.classList.add("terminalLine");
+        document.body.insertBefore(oldP, prevLine);
+        document.getElementById("terminalPrompt" + (terminal_archive.length - 1)).innerHTML = terminal_archive[terminal_archive.length - 1];
+        // process previous user input
+        processOutput();
+        // add current terminal prompt inside header div
+        prevLine.insertBefore(newP, currLine);
+        prevLine.insertBefore(newCursor, currLine);
+
+        //document.getElementById("terminalPrompt" + terminal_archive.length).innerHTML = curr_display_dir + "$ ";
+        displayCurrLine("");
+    }
+
+    function processOutput() {
+        prev_output_index = terminal_archive.length - 1;
+        command_to_process = terminal_archive[prev_output_index].split(" ");
+        output_text = "";
+        var displayCoffeeArr = false;
+        var displayBrewRequestArr = false;
+
+        // check for a possibly-valid command and produce the relevant output
+        if (!computerUnlocked) {
+          output_text = "Error: not logged in yet.";
+        }
+        else if (currently_in_executable) {
+            if (command_to_process[1].toLowerCase() === "exit") {
+                currently_in_executable = false;
+                output_text = "Exiting current executable.";
+            } 
+            // if command is anything other than exit,
+            // let's redirect to the specific executable
+            // in the future we want a JSON file to specify executable contents for cleaner code.
+            // but this is the present.
+            else if (curr_executable_name === "lineDolphin.exe") {
+                if (command_to_process[1].toLowerCase() === "capture") {
+                    output_text = "STATUS: OK, READY TO BREW";
+                    displayCoffeeArr = true;
+                } else {
+                    output_text = "Error: invalid command.";
+                }
+            } else if (curr_executable_name === "coffeeRequestSender.exe") {
+                console.log(currCoffeeState);
+                if (command_to_process[1].toLowerCase() === "start" && currCoffeeState === "") {
+                    output_text = "What host would you like to send a request to?";
+                    currCoffeeState = "port";
+                    console.log(currCoffeeState);
+                }
+                else if (currCoffeeState === "port") {
+                    currHostName = command_to_process[1].toLowerCase();
+                    output_text = "Which port number are you sending to?";
+                    currCoffeeState = "type";
+                } else if (currCoffeeState === "type") {
+                    currPortName = command_to_process[1].toLowerCase();
+                    output_text = "What type of request are you sending? (GET or POST)";
+                    currCoffeeState = "url";
+                } else if (currCoffeeState === "url") {
+                    currRequestType = command_to_process[1].toLowerCase();
+                    output_text = "Which URL are you sending this request to?";
+                    currCoffeeState = "process";
+                } else if (currCoffeeState === "process") {
+                    currRequestURL = command_to_process[1].toLowerCase();
+                    // now we have all info, process and set error messages accordingly
+                    if (currHostName != "mycyba") {
+                        output_text = "Error: could not reach specified host.";
+                    } else if (currPortName != "5000") {
+                        output_text = "Error: host is reachable, but port number is incorrect.";
+                    } else if (currRequestType != "get") {
+                        output_text = "Error: not the expected request type.";
+                    } else if (currRequestURL === "mycyba/brewer/brew") {
+                        output_text = "STATUS: BREW REQUEST RECEIVED. WILL PROCEED TO FULFILL REQUEST.";
+                        coffeeBrewed = true;
+                        toggle_index = 0;
+                        hint_str = "";
+                        document.getElementById("makeCoffee").innerHTML = "[x] Make coffee";
+                      } else if (currRequestURL === "mycyba/brewer/status") {
+                        output_text = "STATUS: OK, READY TO BREW";
+                    } else {
+                        output_text = "Error: valid request, but invalid URL.";
+                    }
+                    // reset state
+                    currCoffeeState = "";
+                } else {
+                    output_text = "Error: invalid command.";
+                    currCoffeeState = "";
+                }
+            } else if (curr_executable_name === "fridgeLoginPortal.exe") {
+                if (command_to_process[1].toLowerCase() === "stock") {
+                    output_text = "Current fridge contents: 1x baking soda. 6x bell pepper. 3x Golden Harbor soup dumpling. 1x half and half. 34x chicken egg. 10x quail egg.";
+                } else if (command_to_process[1].toLowerCase() === "lock") {
+                    if (user_is_authenticated) {
+                        if (fridge_is_locked) {
+                            output_text = "Fridge is already locked!";
+                        } else {
+                            output_text = "Fridge locked.";
+                            fridge_is_locked = true;
+                        }
+                    } else {
+                        output_text = "Error: user has not been logged in.";
+                    }
+                } else if (command_to_process[1].toLowerCase() === "unlock") {
+                    if (user_is_authenticated) {
+                        if (fridge_is_locked) {
+                            output_text = "Fridge unlocked!";
+                            fridge_is_locked = false;
+                            toggle_index = 0;
+                            hint_str = "";
+                            document.getElementById("openFridge").innerHTML = "[x] Open the fridge";
+                            //TODO: set a game flag for puzzle being solved.
+                        } else {
+                            output_text = "Fridge is already unlocked.";
+                        }
+                    } else {
+                        output_text = "Error: user has not been logged in.";
+                    }
+                } else if (command_to_process[1][0] === "l") {
+                    // check if command is valid
+                    parsed_command = command_to_process[1].split(";");
+                    if (parsed_command[0] === "login"
+                        && parsed_command[1].slice(0, 9) === "username="
+                        && parsed_command[2].slice(0, 9) === "password="
+                        && parsed_command[1][9] === '"'
+                        && parsed_command[1].slice(-1) === '"'
+                        && parsed_command[2][9] === '"'
+                        && parsed_command[2].slice(-1) === '"'
+                    ) {
+                        output_text = "Correctly formed login request, though you are already authenticated.";
+                    } else {
+                        output_text = "Error: invalid login formatting.";
+                    }
+                }
+                else {
+                    output_text = "Error: command not recognized.";
+                }
+            }
+        }
+
+        else if (command_to_process[1].toLowerCase() === "ls") {
+            var dir_array = directory["directories"];
+            if (curr_directory in dir_array) {
+                var subdir_arr = dir_array[curr_directory]["directories"];
+                var executable_arr = dir_array[curr_directory]["executables"];
+
+                // search for and add directories
+                for (var j = 0; j < subdir_arr.length; j++) {
+                    output_text += subdir_arr[j] + "  ";
+                }
+
+                // search for and add executables
+                for (var k = 0; k < executable_arr.length; k++) {
+                    output_text += executable_arr[k] + "  ";
+                }
+            }
+        } else if (command_to_process[1].toLowerCase() === "cd") {
+            if (command_to_process.length > 2) {
+                if (command_to_process[2] === "../") {
+                    if (directory_archive.length > 1) {
+                        directory_archive.pop();
+                        curr_directory = directory_archive[directory_archive.length - 1];
+                        curr_display_dir = getCurrDirectory();
+                    } else {
+                        output_text = "Error: nowhere to go.";
+                    }
+                } else {
+                    // means a directory was specified. need to check if the directory is valid
+                    var dir_array = directory["directories"];
+                    var subdir_arr = dir_array[curr_directory]["directories"];
+                    var found = false;
+
+                    // search for valid directories
+                    for (var j = 0; j < subdir_arr.length; j++) {
+                        if (subdir_arr[j] === command_to_process[2]) {
+                            curr_directory = subdir_arr[j];
+                            directory_archive.push(curr_directory);
+                            curr_display_dir = getCurrDirectory();
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (!found) {
+                        output_text = "Error: specified directory not found.";
+                    }
+                }
+            } 
+            else {
+                output_text = "Error: directory not specified.";
+            }
+        } else if (command_to_process[1][0] === "." && command_to_process[1][1] === "/") {
+            // need to check if executable is actually in curr directory
+            if (executableExists(command_to_process[1].slice(2))) {
+                curr_executable_name = command_to_process[1].slice(2);
+                currently_in_executable = true;
+                output_text = getExecutableWelcomeMessage();
+            } else {
+                output_text = "Error: specified executable does not exist.";
+            }
+        } else if (command_to_process[1].toLowerCase() === "exit") {
+            output_text = "Error: nothing to exit from.";
+        } else {
+            output_text = "Error: invalid/unrecognized command.";
+        }
+
+        // now that output text is procured, push output to terminal
+
+        // some extra output text may be needed for some commands..
+        if (displayCoffeeArr) {
+            for (var i = 0; i < coffee_text.length; i++) {
+                const prevLine = document.getElementById("header");
+                const prevOutput = document.createElement("p");
+                prevOutput.setAttribute("id", "terminalOutput" + prev_output_index.toString() + i.toString());
+                prevOutput.classList.add("terminalLine");
+                document.body.insertBefore(prevOutput, prevLine);
+                document.getElementById("terminalOutput" + prev_output_index.toString() + i.toString()).innerHTML = coffee_text[i];
+            }
+
+            displayCoffeeArr = false;
+        }
+
+        const prevLine = document.getElementById("header");
+        const prevOutput = document.createElement("p");
+        prevOutput.setAttribute("id", "terminalOutput" + prev_output_index);
+        prevOutput.classList.add("terminalLine");
+        document.body.insertBefore(prevOutput, prevLine);
+        document.getElementById("terminalOutput" + prev_output_index).innerHTML = output_text; 
+    }
+
+    function executableExists(executable_name) {
+        var executable_arr = directory["directories"][curr_directory]["executables"];
+        for (var i = 0; i < executable_arr.length; i++) {
+            if (executable_arr[i] === executable_name) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    // loop through and append everything in directory archive
+    function getCurrDirectory() {
+        var output_dir = "";
+        for (var i = 0; i < directory_archive.length; i++) {
+            if (i > 0) {
+                output_dir += "/";
+            }
+            output_dir += directory_archive[i];
+        }
+
+        return output_dir;
+    }
+
+    function displayCurrLine(text_input) {
+        if (currently_in_executable) {
+            document.getElementById("terminalPrompt" + terminal_archive.length).innerHTML = curr_executable_name + "> " + text_input;
+        } else {
+            document.getElementById("terminalPrompt" + terminal_archive.length).innerHTML = curr_display_dir + "$ " + text_input;
+        }
+    }
+
+    function getExecutableWelcomeMessage() {
+        if (curr_executable_name === "lineDolphin.exe") {
+            return "Welcome to lineDolphin! Default configuration: display CyberCoffee traffic.";
+        } else if (curr_executable_name === "coffeeRequestSender.exe") {
+            return "Welcome to the coffee request portal! Here, one can send requests to the CYBA coffee brewer.";
+        } else if (curr_executable_name === "fridgeLoginPortal.exe") {
+            //return "Welcome to your smart fridge portal! Your username is GreenStreet. However, to access fridge features, you must authenticate yourself.";
+            return "Welcome to your smart fridge control portal!";
+        }
+    }
+</script>
+</body>

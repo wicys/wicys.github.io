@@ -1,0 +1,48 @@
+p {
+    margin: 0;
+}
+
+/*source for this CSS: https://codepen.io/delgar/pen/rvRvZM*/
+/*#terminal-body {
+    background: #222;
+    color: lime;
+    font-family: monospace;
+    min-width: 500px;
+    min-height: 400px;
+}*/
+
+.terminalLine {
+  display: flex;
+  align-items: baseline;
+  background: #222;
+  color: lime;
+  font-family: monospace;
+}
+  
+#header {
+    display: flex;
+    align-items: baseline;
+    background: #222;
+    color: lime;
+    font-family: monospace;
+    min-width: 500px;
+    min-height: 400px;
+/*    margin: 15px; */
+}
+  
+  
+   /* blinking cursor */
+  #cursor {
+    background: lime;
+    line-height: 17px;
+    margin-left: 3px;
+    -webkit-animation: blink 0.8s infinite;
+    width: 7px;
+    height: 10px;
+  }
+  
+  @-webkit-keyframes blink {
+    0% {background: #222}
+    50% {background: lime}
+    100% {background: #222}
+  }
