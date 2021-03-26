@@ -19,6 +19,7 @@
 </head>
 <body>
   <h2>Cybersecurity Breakfast Adventure</h2>
+  <h3>*For the best user experience, please use Mozilla Firefox. The game has experienced some issues in Google Chrome and Safari. If you ever have problems of the character getting stuck in place or the screen going black, please refresh the page. Note that your current progress in the game will be lost when the page is refreshed.*</h3>
 <p>Instructions: Use the arrow keys to navigate locations and complete your tasks. If you find yourself at a pop-up screen within the game, press Escape to close it and return to the overworld. For text-based prompts, hit Enter to submit your input.</p>
 <br>
 <script src="ga.js"></script>
@@ -143,16 +144,16 @@ function logKey(e) {
   if (e.code === "Slash") {
     if (!computerUnlocked && toggle_index < separated_hints[0].length) {
       hint_str = "&#128187 " + separated_hints[0][toggle_index] + "<br>" + hint_str;
-      document.getElementById("hintsList").innerHTML = hint_str;
+      document.getElementById("hintsList").innerHTML = "HINTS (from newest to oldest) <br>" + hint_str;
     } else if (computerUnlocked && !lockUnlocked && toggle_index < separated_hints[1].length){
       hint_str = "&#127838 " + separated_hints[1][toggle_index] + "<br>" + hint_str;
-      document.getElementById("hintsList").innerHTML = hint_str;
+      document.getElementById("hintsList").innerHTML = "HINTS (from newest to oldest) <br>" + hint_str;
     } else if (computerUnlocked && lockUnlocked && fridge_is_locked && toggle_index < separated_hints[2].length) {
       hint_str = "&#127859 " + separated_hints[2][toggle_index] + "<br>" + hint_str;
-      document.getElementById("hintsList").innerHTML = hint_str;
+      document.getElementById("hintsList").innerHTML = "HINTS (from newest to oldest) <br>" + hint_str;
     } else if (computerUnlocked && lockUnlocked && !fridge_is_locked && !coffeeBrewed && toggle_index < separated_hints[3].length) {
       hint_str = "&#9749 " + separated_hints[3][toggle_index] + "<br>" + hint_str;
-      document.getElementById("hintsList").innerHTML = hint_str;
+      document.getElementById("hintsList").innerHTML = "HINTS (from newest to oldest) <br>" + hint_str;
     }
     toggle_index++;
     // if (document.getElementById("hintsText").innerHTML === hints[hint_index]) {
@@ -328,7 +329,7 @@ var g = ga(700, 550, setup,
     "images/step2.png",
     "images/step2_left.png",
     "images/standing.png",
-    "images/coffee_blank_display.png",
+    "images/coffee.png",
     "images/whiteboard_w_lock_clue.png",
     "images/bedroom.png",
     "images/locked_computer.png",
@@ -357,7 +358,7 @@ var music, coffee, toaster, lock, lock_fail, lock_open, computer;
 function setup() {
   forest = g.sprite("images/big-out-living.png");
   kitchen = g.sprite("images/new_new_kitchen.png");
-  coffee = g.sprite("images/coffee_blank_display.png")
+  coffee = g.sprite("images/coffee.png")
   whiteboard = g.sprite("images/whiteboard_w_lock_clue.png");
   bedroom = g.sprite("images/bedroom.png");
   locked_screen = g.sprite("images/locked_computer.png");
@@ -512,6 +513,10 @@ var numRemove = 0;
 
 //The `play` function will run in a loop
 function play() {
+  if (computerUnlocked && lockUnlocked && coffeeBrewed && !fridge_is_locked) {
+    console.log("GAME COMPLETE!")
+    window.location.href = "eoh_game_complete.html";
+  }
 
   if (!gameSceneCoffee.visible && !gameSceneWhiteboard.visible && !gameSceneLockedScreen.visible
    /* && !gameSceneTerminal.visible*/ && !gameSceneLock.visible && !gameSceneToaster.visible
@@ -697,6 +702,14 @@ function play() {
         g.stage.putCenter(cat2);
         g.stage.putCenter(cat3);
       }
+  }
+
+  if (coffeeBrewed) {
+    gameSceneCoffee.visible = false;
+  }
+
+  if (!fridge_is_locked) {
+    gameSceneFridge.visible = false;
   }
 
   if (closeWindow) {

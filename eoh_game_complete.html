@@ -1,0 +1,116 @@
+<!doctype html>
+<meta charset = "utf-8">
+<title>Cybersecurity Breakfast Adventure</title>
+<head>
+  <style>
+   body {
+      background-color: black;
+      text-align: center;
+      color: white;
+      font-family: courier;
+    }
+
+    a
+    {
+      color: rgb(123, 213, 255);
+    }
+  </style>
+  <link rel="stylesheet" href="css/terminal.css">
+</head>
+<body>
+  <h2>Cybersecurity Breakfast Adventure</h2>
+  <h3>*For the best user experience, please use Mozilla Firefox. The game has experienced some issues in Google Chrome and Safari. If you ever have problems of the character getting stuck in place or the screen going black, please refresh the page. Note that your current progress in the game will be lost when the page is refreshed.*</h3>
+<p>Instructions: Use the arrow keys to navigate locations and complete your tasks. If you find yourself at a pop-up screen within the game, press Escape to close it and return to the overworld. For text-based prompts, hit Enter to submit your input.</p>
+<br>
+<script src="ga.js"></script>
+<script src="plugins.js"></script>
+<script>
+
+document.addEventListener('keydown', logKey);
+
+function logKey(e) {
+}
+
+//Create a new GA instance, and start it.
+var g = ga(700, 550, setup,
+  [
+    "images/completed_breakfast.png",
+    "sounds/suburban-neighborhood.wav",
+    "sounds/memories.mp3", // music from https://www.bensound.com/royalty-free-music/track/memories
+  ]
+);
+g.start();
+var music;
+
+//A `setup` function that will run only once.
+//Use it for initialization tasks
+function setup() {
+  breakfast_complete = g.sprite("images/completed_breakfast.png");
+
+  gameSceneGameComplete = g.group(breakfast_complete);
+
+  gameSceneGameComplete.visible = false;
+
+  leftArrow = g.keyboard(37);
+  upArrow = g.keyboard(38);
+  rightArrow = g.keyboard(39);
+  downArrow = g.keyboard(40);
+
+  // background music
+  music = g.sound("sounds/memories.mp3");
+
+  //bgm.play();
+  music.loop = true;
+  music.play();
+  music.volume = 0.1;
+
+  //Assign key `press` and release methods that
+  //show and play the elf's different states
+  leftArrow.press = function() {
+  };
+  leftArrow.release = function() {
+  };
+  upArrow.press = function() {
+  };
+  upArrow.release = function() {
+  };
+  rightArrow.press = function() {
+  };
+  rightArrow.release = function() {
+  };
+  downArrow.press = function() {
+  };
+  downArrow.release = function() {
+  };
+
+  //Change the state to `play`
+  g.state = play;
+
+}
+
+//The `play` function will run in a loop
+function play() {
+    gameSceneGameComplete.visible = true;
+}
+
+</script>
+<!--Add hints or description to bottom-->
+  <p id="hintsText">Hints: press ? to get a new hint!</p>
+  <br>
+  <p id="hintsList"></p>
+  <br>
+  <div id="tastList">
+    <p>Remaining tasks:</p>
+    <p id="unlockComputer">[x] Unlock the computer &#128187</p>
+    <p id="makeToast">[x] Make toast &#127838 </p>
+    <p id="openFridge">[x] Open the fridge &#127859</p>
+    <p id="makeCoffee">[x] Make coffee &#9749</p>
+  </div>
+  <br>
+  <div id="resources">
+    <p>Resources</p>
+    <p><a href="guides/caesar_ciphers.pdf" target="_blank" rel="noopener noreferrer">On Caesar Ciphers</a></p>
+    <p><a href="guides/number_systems_and_ascii.pdf" target="_blank" rel="noopener noreferrer">Number Systems and ASCII</a></p>
+    <p><a href="guides/cli.pdf" target="_blank" rel="noopener noreferrer">Navigating a Command-Line Interface</a></p>
+  </div>
+</body>
