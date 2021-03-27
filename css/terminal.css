@@ -11,6 +11,30 @@ p {
     min-height: 400px;
 }*/
 
+#testParagraphCanvas {
+  position: absolute !important;
+  left: 35%;
+  top: 444px;
+  font-size: 30px;
+  color: black;
+}
+
+#comboHint {
+  position: absolute !important;
+  left: 35%;
+  top: 444px;
+  font-size: 30px;
+  color: black;
+}
+
+#comboUserInput {
+  position: absolute !important;
+  left: 35%;
+  top: 600px;
+  font-size: 25px;
+  color: black;
+}
+
 .terminalLine {
   display: flex;
   align-items: baseline;

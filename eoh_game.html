@@ -64,7 +64,7 @@ var separated_hints = [
     "Run 'lineDolphin.exe' to capture network traffic.",
     "Type 'capture' to see what GET request looks like!",
     "Run 'coffeeRequestSender.exe' to send a request to the coffee machine.",
-    "To check the status, use the URL 'mycyba/brewer/status'.",
+    "To check the status, use the URL 'mycyba/brewer/status'. You can also brew coffee using a VERY similar URL.",
     "The host address is 'mycyba', port number is '5000', request type is 'GET', and URL is 'mycyba/brewer/brew'."
   ],
 ]
@@ -115,6 +115,7 @@ var coffeeBrewed = false;
 
 var hint_str = "";
 var toggle_index = 0;
+var test_string = ""; 
 function logKey(e) {
 //  console.log(e.code);
   // if (e.code === "Slash") {
@@ -123,6 +124,8 @@ function logKey(e) {
   //     hint_index++;
   //   }
   // }
+  
+
   if (e.code === "Escape") {
     if (gameSceneCoffee.visible || gameSceneWhiteboard.visible || gameSceneLockedScreen.visible
     /*|| gameSceneTerminal.visible*/ || gameSceneLock.visible || gameSceneToaster.visible
@@ -173,10 +176,15 @@ function logKey(e) {
 
       //password_string += e.code[3];
       password_string += String.fromCharCode(e.which);
+      password_element = document.getElementById("testParagraphCanvas");
+      password_element.innerText = password_string;
+      new_x_y = getPixelOffsetsPasswordInput();
+      password_element.style.left = new_x_y[0].toString() + "px"; 
+      password_element.style.top = new_x_y[1].toString() + "px"; 
     }
 
     if (e.code === "Enter") {
-      console.log("Checking correctness of password...");
+      // console.log("Checking correctness of password...");
       check_password_correctness();
     }
     // add being able to delete a character as a quality of life update
@@ -191,6 +199,11 @@ function logKey(e) {
         password_string = " ";
       } else {
         password_string = password_string.substring(0, password_string.length-1);
+        password_element = document.getElementById("testParagraphCanvas");
+        password_element.innerText = password_string;
+        new_x_y = getPixelOffsetsPasswordInput();
+        password_element.style.left = new_x_y[0].toString() + "px"; 
+        password_element.style.top = new_x_y[1].toString() + "px"; 
       }
     }
   }
@@ -249,11 +262,16 @@ function logKey(e) {
 
       combo_string += String.fromCharCode(e.which);
       lock.play();
+      combo_input_element = document.getElementById("comboUserInput");
+      combo_input_element.innerText = combo_string;
+      new_x_y = getPixelOffsetsComboInput();
+      combo_input_element.style.left = new_x_y[0].toString() + "px"; 
+      combo_input_element.style.top = new_x_y[1].toString() + "px"; 
     }
 
     if (e.code === "Enter") {
 
-      console.log("Checking correctness of password...");
+      // console.log("Checking correctness of password...");
       check_password_correctness();
     }
 
@@ -271,6 +289,12 @@ function logKey(e) {
           combo_string = combo_string.substring(0, combo_string.length-1);
         }
         combo_string = combo_string.substring(0, combo_string.length-1);
+
+        combo_input_element = document.getElementById("comboUserInput");
+        combo_input_element.innerText = combo_string;
+        new_x_y = getPixelOffsetsComboInput();
+        combo_input_element.style.left = new_x_y[0].toString() + "px"; 
+        combo_input_element.style.top = new_x_y[1].toString() + "px";
       }
     }
   }
@@ -281,7 +305,12 @@ function check_password_correctness() {
   if (!computerUnlocked && gameSceneLockedScreen.visible) {
     if (password_string === " DELILAH") {
       closeWindow = true;
-      console.log("Password correct!");
+      // console.log("Password correct!");
+      password_element = document.getElementById("testParagraphCanvas");
+      password_element.innerText = password_string;
+      new_x_y = getPixelOffsetsPasswordInput();
+      password_element.style.left = new_x_y[0].toString() + "px"; 
+      password_element.style.top = new_x_y[1].toString() + "px"; 
       computerUnlocked = true;
       toggle_index = 0;
       hint_str = "";
@@ -299,15 +328,15 @@ function check_password_correctness() {
     // TODO: EDIT THE CODE IN THIS CONDITIONAL TO FIT WITH COMBO PUZZLE
     if (combo_string === " 86 37 49") {
       closeWindow = true;
-      console.log("Combo correct!");
+      // console.log("Combo correct!");
       lockUnlocked = true;
       toggle_index = 0;
       hint_str = "";
       document.getElementById("makeToast").innerHTML = "[x] Make toast";
       lock_open.play();
       // remove text and show completed task
-      g.remove(message10);
-      g.remove(message8);
+ //     g.remove(message10);
+ //     g.remove(message8);
     } else {
       if (!combo_incorrect_message_visible) {
         var combo_incorect_string = "Combo incorrect. Please try again.";
@@ -507,14 +536,16 @@ function setup() {
 }
 
 var passwordDisplayExists = false;
+var toasterDisplayExists = false;
 var terminalDisplayExists = false;
+var lockDisplayExists = false;
 var comboDisplayExists = false;
 var numRemove = 0;
 
 //The `play` function will run in a loop
 function play() {
   if (computerUnlocked && lockUnlocked && coffeeBrewed && !fridge_is_locked) {
-    console.log("GAME COMPLETE!")
+    // console.log("GAME COMPLETE!")
     window.location.href = "eoh_game_complete.html";
   }
 
@@ -583,27 +614,36 @@ function play() {
   }
 
   if (gameSceneKitchen.visible && cat2.x > 250 && cat2.x < 300 && cat2.y < 230) {
-    if (!lockUnlocked) {
+    if (!lockUnlocked && !toasterDisplayExists) {
+      gameSceneKitchen.visible = false;
       gameSceneToaster.visible = true;
+      // console.log("jkdshsdkjfhd");
+      toasterDisplayExists = true;
     } else {
      // gameSceneToasterComplete.visible = true;
     }
   }
 
   if (gameSceneKitchen.visible && cat2.x > 20 && cat2.x < 90 && cat2.y < 250) {
-    if (!lockUnlocked) {
+    if (!lockUnlocked && !lockDisplayExists) {
+      lockDisplayExists = true;
       gameSceneLock.visible = true; // if combo is unlocked, doesn't zoom into cabinet to show lock
       if (comboDisplayExists) {
-        g.remove(message10);
-        g.remove(message8);
+ //       g.remove(message10);
+ //       g.remove(message8);
       }
 
       // always display combo given
-      var combo_given = "56 25 31";
-      message10 = g.text(combo_given, "30px sans-serif", "black", 15, 15);
+ //     var combo_given = "56 25 31";
+ //     message10 = g.text(combo_given, "30px sans-serif", "black", 15, 15);
+      combo_hint = document.getElementById("comboHint");
+      combo_hint.innerText = "56 25 31";
+      new_x_y = getPixelOffsetsComboHint();
+      combo_hint.style.left = new_x_y[0].toString() + "px"; 
+      combo_hint.style.top = new_x_y[1].toString() + "px";
 
       // user combo input
-      message8 = g.text(combo_string, "30px sans-serif", "black", 275, 420);
+ //     message8 = g.text(combo_string, "30px sans-serif", "black", 275, 420);
       comboDisplayExists = true;
     }
   }
@@ -627,9 +667,9 @@ function play() {
     if (!computerUnlocked) {
       gameSceneLockedScreen.visible = true;
       if (passwordDisplayExists) {
-        g.remove(message4);
+  //      g.remove(message4);
       }
-      message4 = g.text(password_string, "30px sans-serif", "black", 140, 235);
+ //     message4 = g.text(password_string, "30px sans-serif", "black", 140, 235);
       passwordDisplayExists = true;
     } 
     
@@ -713,13 +753,18 @@ function play() {
   }
 
   if (closeWindow) {
-    console.log("Closing window!");
+    // console.log("Closing window!");
     if (gameSceneLockedScreen.visible && hint_index === 0) {
       hint_index++;
     }
     if (gameSceneLockedScreen.visible) {
       password_string = " ";
-      g.remove(message4);
+      password_element = document.getElementById("testParagraphCanvas");
+      password_element.innerText = password_string;
+      new_x_y = getPixelOffsetsPasswordInput();
+      password_element.style.left = new_x_y[0].toString() + "px"; 
+      password_element.style.top = new_x_y[1].toString() + "px"; 
+    //  g.remove(message4);
       gameSceneLockedScreen.visible = false;
     }
 
@@ -734,20 +779,35 @@ function play() {
     }*/
 
     if (gameSceneLock.visible) {
-      g.remove(message10);
-      g.remove(message8);
+      gameSceneKitchen.visible = true;
+      lockDisplayExists = false;
+      // console.log("Closing lock screen");
+      //g.remove(message10);
+   //   g.remove(message8);
       gameSceneLock.visible = false;
       combo_string = " ";
+      document.getElementById("comboHint").innerText = "";
+      combo_input_element = document.getElementById("comboUserInput");
+      combo_input_element.innerText = combo_string;
+      new_x_y = getPixelOffsetsComboInput();
+      combo_input_element.style.left = new_x_y[0].toString() + "px"; 
+      combo_input_element.style.top = new_x_y[1].toString() + "px";
     }
 
-    gameSceneToaster.visible = false;
-    gameSceneLock.visible = false;
+//    gameSceneToaster.visible = false;
+ //   gameSceneLock.visible = false;
     gameSceneFridge.visible = false;
     gameSceneCoffee.visible = false;
     gameSceneWhiteboard.visible = false;
     gameSceneUnlockedFridge.visible = false;
     gameSceneCoffeeComplete.visible = false;
-    gameSceneToasterComplete.visible = false;
+    if (gameSceneToaster.visible === true) {
+      gameSceneToaster.visible = false;
+      gameSceneKitchen.visible = true;
+      toasterDisplayExists = false;
+      // console.log("Updating this");
+    }
+
   //  gameSceneLockedScreen.visible = false;
     //gameSceneTerminal.visible = false;
 
@@ -778,6 +838,10 @@ function play() {
     <p><a href="guides/number_systems_and_ascii.pdf" target="_blank" rel="noopener noreferrer">Number Systems and ASCII</a></p>
     <p><a href="guides/cli.pdf" target="_blank" rel="noopener noreferrer">Navigating a Command-Line Interface</a></p>
   </div>
+
+  <p id="testParagraphCanvas"></p>
+  <p id="comboHint"></p>
+  <p id="comboUserInput"></p>
 
   <br><br>
 
@@ -840,6 +904,43 @@ function play() {
     document.getElementById("terminalPrompt0").innerHTML =  curr_directory + "$ " + user_input;
 
     document.addEventListener('keydown', logKey);
+
+    function getCanvasLocation() {
+      possibleCanvas = document.getElementsByTagName("canvas");
+      // console.log(possibleCanvas);
+      if (!possibleCanvas.length) {
+        return {};
+      }
+
+      return possibleCanvas[0].getBoundingClientRect();
+    }
+
+    function getPixelOffsetsPasswordInput () {
+      canvasData = getCanvasLocation();
+      // console.log(canvasData);
+
+      x = 150 + canvasData.left;
+      y = 240 + canvasData.top;
+      return [x, y];
+    }
+
+    function getPixelOffsetsComboHint () {
+      canvasData = getCanvasLocation();
+      // console.log(canvasData);
+
+      x = 10 + canvasData.left;
+      y = 10 + canvasData.top;
+      return [x, y];
+    }
+
+    function getPixelOffsetsComboInput () {
+      canvasData = getCanvasLocation();
+      // console.log(canvasData);
+
+      x = 283 + canvasData.left;
+      y = 419 + canvasData.top;
+      return [x, y];
+    }
 
     function logKey(e) {
         if (e.code === "Enter") {
@@ -931,11 +1032,11 @@ function play() {
                     output_text = "Error: invalid command.";
                 }
             } else if (curr_executable_name === "coffeeRequestSender.exe") {
-                console.log(currCoffeeState);
+                // console.log(currCoffeeState);
                 if (command_to_process[1].toLowerCase() === "start" && currCoffeeState === "") {
                     output_text = "What host would you like to send a request to?";
                     currCoffeeState = "port";
-                    console.log(currCoffeeState);
+                    // console.log(currCoffeeState);
                 }
                 else if (currCoffeeState === "port") {
                     currHostName = command_to_process[1].toLowerCase();
