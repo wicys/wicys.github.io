@@ -136,6 +136,19 @@
 					<section id="contact">
 						<div class="inner">
 							<section>
+								<form action="mailto:talaaoun@gmail.com"
+method="POST"
+enctype="multipart/form-data"
+name="EmailForm">
+    Name:<br>
+    <input type="text" size="19" name="Contact-Name"><br><br>
+    Email:<br>
+    <input type="email" name="Contact-Email"><br><br> 
+    Message:<br> 
+    <textarea name="Contact-Message" rows="6″ cols="20″>
+    </textarea><br><br> 
+    <button type="submit" value="Submit">Send</button>
+</form>
 								<form method="post" action="#">
 									<div class="fields">
 										<div class="field half">
@@ -152,7 +165,7 @@
 										</div>
 									</div>
 									<ul class="actions">
-										<li><a href="mailto:talaaoun@gmail.com"><input type="submit" value="Send Message" class="primary" /></a></li>
+										<li><input type="submit" value="Send Message" class="primary" /></li>
 										<li><input type="reset" value="Clear" /></li>
 									</ul>
 								</form>
