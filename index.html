@@ -138,9 +138,7 @@
 						<div class="inner">
 							<section>
 								<form action="mail.php"
-method="POST"
-enctype="multipart/form-data"
-name="EmailForm">
+method="POST">
     Name:<br>
     <input type="text" size="19" name="Contact-Name"><br><br>
     Email:<br>
@@ -149,16 +147,7 @@ name="EmailForm">
     <textarea name="Contact-Message" rows="6″ cols="20″>
     </textarea><br><br> 
     <input type="submit" value="Send"><input type="reset" value="Clear">
-									<?php $name = $_POST['Contact-Name'];
-$email = $_POST['Contact-Email'];
-$message = $_POST['Contact-Message'];
-$formcontent="From: $Contact-Name \n Message: $Contact-Message";
-$recipient = "talaaoun@gmail.com";
-$subject = "Contact Form";
-$mailheader = "From: $Contact-Email \r\n";
-mail($recipient, $subject, $formcontent, $mailheader) or die("Error!");
-echo "Thank You!";
-?>
+									
 </form>
 								
 							</section>
