@@ -1,0 +1,58 @@
+iframe {
+    width: 660px;
+    height: 460px;
+    border: 20px solid rgb(78, 78, 78);
+    margin-left: 25%;
+    margin-top: 150px;
+    
+}
+
+/** DIALOGUE BOX */
+
+#osintdialogueBox {
+    position: fixed;
+    bottom: 8px;
+    width: 75%;
+    padding-left: 2em;
+    padding-right: 2em;
+    padding-top: 1em;
+    margin-left: 7.5%;
+    height: 25%;
+    border: solid 2px rgb(85, 85, 85);
+    border-radius: 5px;
+    align-self: center;
+    background-color: rgb(255, 255, 255);
+    color: black;
+    z-index: 100;
+}
+  
+#almapic {
+    position: fixed;
+    left: 10%;
+    bottom: 3px;
+    width: inherit;
+    height: inherit;
+    background-image: url("images_2022/alma_icon.PNG");
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+  
+#osintdialogue {
+    position: absolute;
+    margin: auto;
+    left: auto;
+    right: auto;
+    width: fit-content;
+    top: 2em;
+    padding-left: 15%;
+}
+  
+#pageCover {
+    position: fixed;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.3);
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+}

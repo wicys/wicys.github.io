@@ -1,0 +1,229 @@
+body {
+    background-color: rgb(231, 231, 231);
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+p {
+    color: rgb(65, 65, 65);
+    font-size: 18px;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 5%;
+    font-size: 3em;
+}
+
+h3 {
+    color:rgb(65, 65, 65);
+    font-size: 20px;
+}
+
+/** Profile */
+
+.profile {
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 5%;
+    padding-right: 4em;
+    padding-left: 4em;
+    padding-top: 2em;
+    padding-bottom: 1em;
+    background-color: white;
+    border: 2px solid rgb(201, 201, 201);
+    border-radius: 1em;
+    background-color:rgb(192, 205, 206);
+}
+
+.profile #profilepic {
+    border-radius: 50%;
+    width: 20%;
+    height: 20%;
+    border: 2px solid rgb(255, 255, 255);
+    cursor: pointer;
+}
+
+.profile .username {
+    font-weight: bold;
+    font-size: 24px;
+    text-decoration: none;
+    width: fit-content;
+    color: rgb(65, 65, 65);
+}
+
+.profile .username:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.profile b {
+    font-size: 20px;
+    color:rgb(73, 73, 73);
+}
+
+/** Cards */
+.card {
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 1em;
+    padding-right: 4em;
+    padding-left: 4em;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    background-color: rgb(252, 252, 252);
+    border: 2px solid rgb(201, 201, 201);
+    border-radius: 1em;
+}
+
+.card h2 {
+    text-align: center;
+}
+
+.card #contactbuttons {
+    align-items: center;
+    align-self: center;
+    align-content: center;
+    text-align: center;
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+
+.card button {
+    padding: 1em;
+    border-radius: 1em;
+    border: 1px solid gray;
+    width: fit-content;
+    cursor: default;
+    background-color: rgb(63, 108, 190);
+    color: white;
+    font-weight: 500;
+    letter-spacing: .05em;
+    font-size: 1em;
+    transition: .3s;
+}
+
+.card button:hover {
+    cursor: pointer;
+    background-color: rgb(49, 87, 156);
+}
+
+.card button:active {
+    background-color: rgb(43, 79, 146);
+}
+
+/** View more button */
+
+#viewmore {
+    align-items: center;
+    align-self: center;
+    align-content: center;
+    text-align: center;
+    font-size: 20px;
+    width: 10%;
+    padding: 5px;
+    border: 1px solid lightgray;
+    background-color: rgb(63, 108, 190);
+    color: white;
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 2em;
+    margin-bottom: 2em;
+    margin-left: 45%;
+    cursor: default;
+    transition: .3s;
+}
+
+#viewmore:hover {
+    cursor: pointer;
+    background-color: rgb(49, 87, 156);
+}
+
+#viewmore:active {
+    background-color: rgb(43, 79, 146);
+}
+
+#navlinks a {
+    color: black;
+    padding: .5em;
+    font-size: medium;
+    background-color: rgb(171, 205, 235);
+    border-radius: 5%;
+    margin-top: 5px;
+}
+
+#navlinks a:hover {
+    cursor: pointer;
+    background-color: rgb(127, 161, 192);
+}
+
+/** DIALOGUE BOX */
+
+#osintdialogueBox {
+    position: fixed;
+    bottom: 8px;
+    width: 75%;
+    padding-left: 2em;
+    padding-right: 2em;
+    padding-top: 1em;
+    margin-left: 7.5%;
+    height: 25%;
+    border: solid 2px black;
+    border-radius: 5px;
+    align-self: center;
+    background-color: rgb(255, 255, 255);
+    color: black;
+    z-index: 100;
+  }
+  
+  #almapic {
+    position: fixed;
+    left: 10%;
+    bottom: 3px;
+    width: inherit;
+    height: inherit;
+    background-image: url("images_2022/alma_icon.PNG");
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+  
+  #osintDialogue {
+    position: relative;
+    display: inline-block;
+    border: 5px black;
+    margin-left: 25%;
+  }
+  
+  #pageCover {
+    position: fixed;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.3);
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+  }
+ 
+/** Modal */
+#modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    padding-top: 100px; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgb(0,0,0, 0.8); 
+    transition: .3s;
+}
+  
+#modal #modalimg {
+    margin: auto;
+    display: block;
+    width: 100%;
+    max-width: 50%;
+    height: 100%;
+    max-height: 70%;
+    transition: .3s;
+}

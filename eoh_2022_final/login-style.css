@@ -1,0 +1,60 @@
+#login {
+    background-color: rgb(112, 145, 184);
+    /* border: solid 2px black; */
+    /* width: 700px;
+    height: 500px; */
+    /* margin-left: 300px; */
+    text-align: center;
+    width: 100%;
+    height: 100%;
+}
+
+#forgot-password {
+    background-color: rgb(155, 199, 168);
+    /* border: solid 2px black; */
+    /* width: 700px;
+    height: 500px; */
+    /* margin-left: 300px; */
+    text-align: center;
+    width: 100%;
+    height: 100%;
+}
+
+
+
+#word-login {
+    font-size: 35px;
+    /* margin-left: 450px; */
+}
+
+#padding {
+    /* padding: 3px; */
+    /* width: 25%; */
+    font-size: 20px;
+    /* margin-left: 375px; */
+}
+
+#padding1 {
+    padding: 3px;
+    /* width: 25%; */
+    font-size: 20px;
+    /* margin-left: 375px; */
+}
+
+#LOGIN {
+    /* margin-left: 375px; */
+    background-color: rgba(200, 164, 224, 0.966);
+    font-size: 20px;
+}
+
+#reset {
+    font-size: 35px;
+    /* margin-left: 265px; */
+}
+
+#search {
+    border: solid 2px black;
+    height: 25px;
+    width:99.5%
+    /* width: 99% */
+}

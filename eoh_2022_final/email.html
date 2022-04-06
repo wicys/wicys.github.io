@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<!--
+TODO: Fix the styling for the side navigation menu - Isha
+TODO: Fix the styling for the top navigation menu - Nicole
+TODO: Fix the styling for the emails - Ananya
+TODO: Create a draft viewer that will show up when the drafts are clicked
+- Begin with simply displaying text
+- Later add fill-in-the-blank functionality (probably a drop-down)
+TODO: Functionality for openDraft function including:
+- Select correct text
+- Display in draft viewer
+-->
+<html>
+    <head>
+        <link rel="stylesheet" href = "email-style.css">
+        <script src="email-script.js"></script>
+        <script>
+          var solved = false;
+          function eventlistener() {
+          document.getElementById("send").addEventListener("click", function(e) {
+              e.preventDefault();
+              var data = new FormData(document.querySelector('form'));
+              if (data.get('link') == 'www.packingcompany.com/forgotmypassword?password=pizza' && (
+                (data.get('raffle-greeting') == 'Dear George' && 
+                  data.get('raffle-time') == 'day' && 
+                  data.get('raffle-signoff') == 'James') ||
+                (data.get('discount-greeting') == 'George' &&
+                  data.get('discount-time') == 'day') &&
+                  data.get('discount-signoff') == 'John'))
+                  {
+                    solved = true;
+                    console.log("solved");
+
+                  }
+              let game = window.parent;
+              game.postMessage("phishing email solve", "*");
+              closeForm();
+          });
+      }
+        </script>
+    </head>
+    <body onload="eventlistener()">
+        <!--SIDE NAVIGATION MENU-->
+        <div class="sidenav">
+            <p id= "gmail">Email</p>
+            <p id= "compose">Compose</p>
+            <a href="#">Inbox</a>
+            <a href="#">Starred</a>
+            <a href="#">Snoozed</a>
+            <a href="#">Important</a>
+            <a href="#">Sent Mail</a>
+            <a href="#">More</a>
+        </div>
+        <!-- comment -->
+        <div class="ctent">
+          <div class="form-popup" id="myForm">
+            <form id="draft-form" onsubmit="return false;" class="form-container">
+
+               <div>
+               <h3 style="float: left;">New Message</h3>
+               <button type="button" class="btn cancel" id="cancel" onclick="closeForm()">X</button>
+               <div style="clear: both;"></div>
+               </div>
+               
+               <!-- <input type="text" placeholder="gd13@packingcompany.com" id="email" name="email" required> -->
+               <p>To: gd13@packingcompany.com</p>
+               <p id="subj"></p>
+               <label for="psw"><b>Link</b></label>
+               <input type="text" placeholder="www.packingcompany.com/" id="link" name="link" required><br>
+               
+              <div id="draft1">
+
+                 <!-- <form action="/action_page.php"> -->
+                   <label for="raffle"></label>
+                   <select id="raffle-greeting" name="raffle-greeting">
+                     <option value="none">(None)</option>
+                     <option value="heey">heeeeeey</option>
+                     <option value="George,">Goerge,</option>
+                     <option value="Dear George">Dear George,</option>
+                   </select>
+                   <br>
+                   <p>It's my pleasure to inform you about our new raffle program as a part of our initiative to increase employee involvement! Opt-in here at no cost by
+                   <select id="raffle-time" name="raffle-time">
+                     <option value="none">(None)</option>
+                     <option value="day">the end of the day</option>
+                     <option value="year">the end this year</option>
+                   </select>
+                   to have a chance to win a pair of new Apple AirPods!</p>
+                   <p>Best,</p>
+                   <select id="raffle-signoff" name="raffle-signoff">
+                     <option value="none">(None)</option>
+                     <option value="nightmare">Your Worst Nightmare</option>
+                     <option value="James">HR Liason, James Smith</option>
+                     <option value="John">Your friend, John</option>
+                   </select>
+                   <br>
+
+                 </div>
+
+                 <div id="draft2">
+
+                     <label for="internal discount"></label>
+                     <select id="discount-greeting" name="discount-greeting">
+                      <option value="none">(None)</option>
+                      <option value="heey">heeeeeey</option>
+                      <option value="George">George,</option>
+                      <option value="Dear George">Dear George,</option>
+                     </select>
+                     <br>
+                     <p>I heard about this internal discount and thought you would be interested: link. It expires at 
+                      <select id="discount-time" name="discount-time">
+                        <option value="none">(None)</option>
+                        <option value="day">the end of the day</option>
+                        <option value="year">the end this year</option>
+                      </select>
+                     so make sure to get it quickly!</p>
+                     <p>Best,</p>
+                     <select id="discount-signoff" name="discount-signoff">
+                      <option value="none">(None)</option>
+                      <option value="nightmare">Your Worst Nightmare</option>
+                      <option value="James">HR Liason, James Smith</option>
+                      <option value="John">Your friend, John</option>
+                    </select>
+                     <br>
+                   </div>
+
+
+                   <div id="draft3">
+
+                       <label for="HR"></label>
+                       <select id="greeting" name="greeting">
+                        <option value="none">(None)</option>
+                        <option value="heey">heeeeeey</option>
+                        <option value="George,">Goerge,</option>
+                        <option value="Dear George">Dear George,</option>
+                       </select>
+                       <br>
+                       <p>Please schedule a meeting with an HR representative at link by 
+                        <select id="time" name="time">
+                          <option value="none">(None)</option>
+                          <option value="day">the end of this week</option>
+                          <option value="year">the end this month</option>
+                        </select>
+                       for a yearly training on updated expectations and workplace conduct. We will have someone free during business hours 9am to 5pm for your training.</p>
+                       <p>Sincerly,</p>
+                       <select id="signoff" name="signoff">
+                        <option value="none">(None)</option>
+                        <option value="nightmare">Your Worst Nightmare</option>
+                        <option value="James">HR Liason, James Smith</option>
+                        <option value="bacon">Your friend, John</option>
+                      </select>
+                       <br>
+                     </div>
+                     
+                  
+              <br>
+               <button type="submit" id="send" class="btn">Send</button>
+
+             </form>
+           </div>
+            <!-- TOP NAVIGATION MENU -->
+            <div class="topnav">
+                <div class="search-container">
+                    <form action="/">
+                    <input type="text" placeholder="Drafts..." name="search">
+                    </form>
+                </div>
+            </div>
+            <!-- EMAIL -->
+            <div class="email">
+                <table>
+                    <tr>
+                        <th> </th>
+                      </tr>
+                      <tr>
+                        <td><button class="email" onclick="openDraft(1);">Draft: Raffle Program</button></td>
+                      </tr>
+                      <tr>
+                        <td><button class="email" onclick="openDraft(2);">Draft: Internal Discount</button></td>
+                      </tr>
+                      <tr>
+                        <td><button class="email" onclick="openDraft(3);">Draft: HR Training</button></td>
+                      </tr>
+
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <link rel="stylesheet" href="linkedin.css">
+    <script src="eoh_2022.js" async></script>
+    <script src="instabook-script.js" async></script>
+    </head>
+
+<body>
+    <div id="navlinks">
+        <a onclick="visitInstabook()">To Instabook</a>
+        <a onclick="visitEmail()">To Email</a>
+    </div>
+    <div class="topnav">
+        <h1>LinkOut</h1>
+    </div>
+
+    <div class="profile">
+        <img id="profilepic" src="images_2022/genericprofile.jpg" alt="The generic profile picture." onclick="popup(3)">
+        <p class="username" href="#top">johnsmith_checkers</p>
+        <b>John Smith</b>
+        <p class="bio">Current employee at Checkers Pizza. Seeking opportunities, no matter the cost.</p>
+    </div>
+
+    <div class="card" id=contactInfo>
+        <h2>Contact Information</h2>
+        <div id="contactbuttons">
+            <button onclick="toggleDialogue(7)">Email</button>
+            <button onclick="toggleDialogue(0)">Phone</button>
+            <button onclick="toggleDialogue(0)">Address</button>
+        </div>
+    </div>
+
+    <div class="card" id="profInfo">
+        <h2>Experience</h2>
+        <h3>Checkers Pizza</h3>
+        <p> <b> Employee </b> 1 year, 8 months</p>
+        <p>Bake and deliver delicious pizzas. Perform specialized jobs for the boss.</p>
+    </div>
+
+    <button id="viewmore" onclick="toggleDialogue(0)">View More</button>
+
+<div id="modal" style="display: none" onclick="hidemodal()">
+    <img id="modalimg">
+</div>
+
+</body>
+
+<div id="pageCover" style="display: none"></div>
+
+<div id="osintdialogueBox" onclick="toggleDialogue()" style="display: none">
+  <p id="almapic"></p>
+  <p id="osintDialogue"></p>
+</div>
+
+</html>

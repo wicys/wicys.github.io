@@ -1,0 +1,367 @@
+<!doctype html>
+<meta charset = "utf-8">
+<title>Cybersecurity Breakfast Adventure</title>
+<head>
+    <link rel="stylesheet" href="css/terminal.css">
+</head>
+<body>
+  <!--<div id="terminal-body">-->
+        <div id="header">
+            <p id="terminalPrompt0"></p>
+            <div id="cursor"></div>
+            <div id="terminalEnding"></div>
+        </div>
+    <!--</div>-->
+    <script>
+        var directory = {
+            "defaultDirectory": "~",
+            "directories": {
+                "~": {
+                    "directories": [
+                        "fridge_app"
+                    ],
+                    "executables": [
+                        "lineDolphin.exe",
+                        "coffeeRequestSender.exe"
+                    ]
+                },
+                "fridge_app": {
+                    "directories": [],
+                    "executables": [
+                        "fridgeLoginPortal.exe"
+                    ]
+                }
+            }
+        };
+
+        var curr_directory = "~";
+        var curr_display_dir = "~";
+        var directory_archive = ["~"];
+        var terminal_archive = [];
+        var user_input = "";
+        var currently_in_executable = false;
+        var curr_executable_name = "";
+        var fridge_is_locked = true;
+        var user_is_authenticated = true; // change to false later when login required
+        var currCoffeeState = "";
+        var currHostName = "";
+        var currPortName = "";
+        var currRequestType = "";
+        var currRequestURL = "";
+
+        var coffee_text = ["Pinging CYBA brewer using saved configuration...",
+                        "Request sent:", 
+                        "GET mycyba/brewer/status CYBA/1.5",
+                        "Host: mycyba:5000", 
+                        "Connection: keep-alive",
+                        "...",
+                        "CYBA/1.5 response received:",
+                        "Host: mycyba",
+                        "Port: 5000"
+                        ];
+        
+        document.getElementById("terminalPrompt0").innerHTML =  curr_directory + "$ " + user_input;
+
+        document.addEventListener('keydown', logKey);
+
+        function logKey(e) {
+            console.log(e); 
+            if (e.code === "Enter") {
+                updatePromptNewLine();
+            } else if (e.key === "Shift") {
+                // do nothing
+            } else if (e.code === "Backspace") {
+                if (user_input.length) {
+                    user_input = user_input.slice(0, -1);
+                    displayCurrLine(user_input);
+                }
+            }
+            else {
+                user_input += e.key;
+                displayCurrLine(user_input);
+            } 
+        }
+
+        function updatePromptNewLine() {
+            // push user input to terminal archive
+            if (currently_in_executable) {
+                terminal_archive.push(curr_executable_name + "> " + user_input);
+            } else {
+                terminal_archive.push(curr_display_dir + "$ " + user_input);
+            }
+            // reset user input
+            user_input = "";
+            // create new paragraph
+            const newP = document.createElement("p");
+            newP.setAttribute("id", "terminalPrompt" + terminal_archive.length);
+            // delete existing cursor
+            document.getElementById("cursor").remove();
+            // create new cursor
+            const newCursor = document.createElement("div");
+            newCursor.setAttribute("id", "cursor");
+            // get the necessary HTML tags for inserting into the right place
+            const currLine = document.getElementById("terminalEnding");
+            const prevLine = document.getElementById("header");
+
+            // remove current terminal prompt from header
+            document.getElementById("terminalPrompt" + (terminal_archive.length - 1)).remove();
+            // re-add terminal prompt, but outside of header
+            const oldP = document.createElement("p");
+            oldP.setAttribute("id", "terminalPrompt" + (terminal_archive.length - 1));
+            document.body.insertBefore(oldP, prevLine);
+            document.getElementById("terminalPrompt" + (terminal_archive.length - 1)).innerHTML = terminal_archive[terminal_archive.length - 1];
+            // process previous user input
+            processOutput();
+            // add current terminal prompt inside header div
+            prevLine.insertBefore(newP, currLine);
+            prevLine.insertBefore(newCursor, currLine);
+
+            //document.getElementById("terminalPrompt" + terminal_archive.length).innerHTML = curr_display_dir + "$ ";
+            displayCurrLine("");
+        }
+
+        function processOutput() {
+            prev_output_index = terminal_archive.length - 1;
+            command_to_process = terminal_archive[prev_output_index].split(" ");
+            output_text = "";
+            var displayCoffeeArr = false;
+            var displayBrewRequestArr = false;
+
+            // check for a possibly-valid command and produce the relevant output
+            if (currently_in_executable) {
+                if (command_to_process[1].toLowerCase() === "exit") {
+                    currently_in_executable = false;
+                    output_text = "Exiting current executable.";
+                } 
+                // if command is anything other than exit,
+                // let's redirect to the specific executable
+                // in the future we want a JSON file to specify executable contents for cleaner code.
+                // but this is the present.
+                else if (curr_executable_name === "lineDolphin.exe") {
+                    if (command_to_process[1].toLowerCase() === "capture") {
+                        output_text = "STATUS: OK, READY TO BREW";
+                        displayCoffeeArr = true;
+                    } else {
+                        output_text = "Error: invalid command.";
+                    }
+                } else if (curr_executable_name === "coffeeRequestSender.exe") {
+                    console.log(currCoffeeState);
+                    if (command_to_process[1].toLowerCase() === "start" && currCoffeeState === "") {
+                        output_text = "What host would you like to send a request to?";
+                        currCoffeeState = "port";
+                        console.log(currCoffeeState);
+                    }
+                    else if (currCoffeeState === "port") {
+                        currHostName = command_to_process[1].toLowerCase();
+                        output_text = "Which port number are you sending to?";
+                        currCoffeeState = "type";
+                    } else if (currCoffeeState === "type") {
+                        currPortName = command_to_process[1].toLowerCase();
+                        output_text = "What type of request are you sending? (GET or POST)";
+                        currCoffeeState = "url";
+                    } else if (currCoffeeState === "url") {
+                        currRequestType = command_to_process[1].toLowerCase();
+                        output_text = "Which URL are you sending this request to?";
+                        currCoffeeState = "process";
+                    } else if (currCoffeeState === "process") {
+                        currRequestURL = command_to_process[1].toLowerCase();
+                        // now we have all info, process and set error messages accordingly
+                        if (currHostName != "mycyba") {
+                            output_text = "Error: could not reach specified host.";
+                        } else if (currPortName != "5000") {
+                            output_text = "Error: host is reachable, but port number is incorrect.";
+                        } else if (currRequestType != "get") {
+                            output_text = "Error: not the expected request type.";
+                        } else if (currRequestURL === "mycyba/brewer/brew") {
+                            output_text = "STATUS: BREW REQUEST RECEIVED. WILL PROCEED TO FULFILL REQUEST.";
+                        } else if (currRequestURL === "mycyba/brewer/status") {
+                            output_text = "STATUS: OK, READY TO BREW";
+                        } else {
+                            output_text = "Error: valid request, but invalid URL.";
+                        }
+                        // reset state
+                        currCoffeeState = "";
+                    } else {
+                        output_text = "Error: invalid command.";
+                        currCoffeeState = "";
+                    }
+                } else if (curr_executable_name === "fridgeLoginPortal.exe") {
+                    if (command_to_process[1].toLowerCase() === "stock") {
+                        output_text = "Current fridge contents: 1x baking soda. 6x bell pepper. 3x Golden Harbor soup dumpling. 1x half and half. 34x chicken egg. 10x quail egg.";
+                    } else if (command_to_process[1].toLowerCase() === "lock") {
+                        if (user_is_authenticated) {
+                            if (fridge_is_locked) {
+                                output_text = "Fridge is already locked!";
+                            } else {
+                                output_text = "Fridge locked.";
+                                fridge_is_locked = true;
+                            }
+                        } else {
+                            output_text = "Error: user has not been logged in.";
+                        }
+                    } else if (command_to_process[1].toLowerCase() === "unlock") {
+                        if (user_is_authenticated) {
+                            if (fridge_is_locked) {
+                                output_text = "Fridge unlocked!";
+                                fridge_is_locked = false;
+                                //TODO: set a game flag for puzzle being solved.
+                            } else {
+                                output_text = "Fridge is already unlocked.";
+                            }
+                        } else {
+                            output_text = "Error: user has not been logged in.";
+                        }
+                    } else if (command_to_process[1][0] === "l") {
+                        // check if command is valid
+                        parsed_command = command_to_process[1].split(";");
+                        if (parsed_command[0] === "login"
+                            && parsed_command[1].slice(0, 9) === "username="
+                            && parsed_command[2].slice(0, 9) === "password="
+                            && parsed_command[1][9] === '"'
+                            && parsed_command[1].slice(-1) === '"'
+                            && parsed_command[2][9] === '"'
+                            && parsed_command[2].slice(-1) === '"'
+                        ) {
+                            output_text = "Correctly formed login request, though you are already authenticated.";
+                        } else {
+                            output_text = "Error: invalid login formatting.";
+                        }
+                    }
+                    else {
+                        output_text = "Error: command not recognized.";
+                    }
+                }
+            }
+
+            else if (command_to_process[1].toLowerCase() === "ls") {
+                var dir_array = directory["directories"];
+                if (curr_directory in dir_array) {
+                    var subdir_arr = dir_array[curr_directory]["directories"];
+                    var executable_arr = dir_array[curr_directory]["executables"];
+
+                    // search for and add directories
+                    for (var j = 0; j < subdir_arr.length; j++) {
+                        output_text += subdir_arr[j] + "  ";
+                    }
+
+                    // search for and add executables
+                    for (var k = 0; k < executable_arr.length; k++) {
+                        output_text += executable_arr[k] + "  ";
+                    }
+                }
+            } else if (command_to_process[1].toLowerCase() === "cd") {
+                if (command_to_process.length > 2) {
+                    if (command_to_process[2] === "../") {
+                        if (directory_archive.length > 1) {
+                            directory_archive.pop();
+                            curr_directory = directory_archive[directory_archive.length - 1];
+                            curr_display_dir = getCurrDirectory();
+                        } else {
+                            output_text = "Error: nowhere to go.";
+                        }
+                    } else {
+                        // means a directory was specified. need to check if the directory is valid
+                        var dir_array = directory["directories"];
+                        var subdir_arr = dir_array[curr_directory]["directories"];
+                        var found = false;
+
+                        // search for valid directories
+                        for (var j = 0; j < subdir_arr.length; j++) {
+                            if (subdir_arr[j] === command_to_process[2]) {
+                                curr_directory = subdir_arr[j];
+                                directory_archive.push(curr_directory);
+                                curr_display_dir = getCurrDirectory();
+                                found = true;
+                                break;
+                            }
+                        }
+
+                        if (!found) {
+                            output_text = "Error: specified directory not found.";
+                        }
+                    }
+                } 
+                else {
+                    output_text = "Error: directory not specified.";
+                }
+            } else if (command_to_process[1][0] === "." && command_to_process[1][1] === "/") {
+                // need to check if executable is actually in curr directory
+                if (executableExists(command_to_process[1].slice(2))) {
+                    curr_executable_name = command_to_process[1].slice(2);
+                    currently_in_executable = true;
+                    output_text = getExecutableWelcomeMessage();
+                } else {
+                    output_text = "Error: specified executable does not exist.";
+                }
+            } else if (command_to_process[1].toLowerCase() === "exit") {
+                output_text = "Error: nothing to exit from.";
+            } else {
+                output_text = "Error: invalid/unrecognized command.";
+            }
+
+            // now that output text is procured, push output to terminal
+
+            // some extra output text may be needed for some commands..
+            if (displayCoffeeArr) {
+                for (var i = 0; i < coffee_text.length; i++) {
+                    const prevLine = document.getElementById("header");
+                    const prevOutput = document.createElement("p");
+                    prevOutput.setAttribute("id", "terminalOutput" + prev_output_index.toString() + i.toString());
+                    document.body.insertBefore(prevOutput, prevLine);
+                    document.getElementById("terminalOutput" + prev_output_index.toString() + i.toString()).innerHTML = coffee_text[i];
+                }
+
+                displayCoffeeArr = false;
+            }
+
+            const prevLine = document.getElementById("header");
+            const prevOutput = document.createElement("p");
+            prevOutput.setAttribute("id", "terminalOutput" + prev_output_index);
+            document.body.insertBefore(prevOutput, prevLine);
+            document.getElementById("terminalOutput" + prev_output_index).innerHTML = output_text; 
+        }
+
+        function executableExists(executable_name) {
+            var executable_arr = directory["directories"][curr_directory]["executables"];
+            for (var i = 0; i < executable_arr.length; i++) {
+                if (executable_arr[i] === executable_name) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        // loop through and append everything in directory archive
+        function getCurrDirectory() {
+            var output_dir = "";
+            for (var i = 0; i < directory_archive.length; i++) {
+                if (i > 0) {
+                    output_dir += "/";
+                }
+                output_dir += directory_archive[i];
+            }
+
+            return output_dir;
+        }
+
+        function displayCurrLine(text_input) {
+            if (currently_in_executable) {
+                document.getElementById("terminalPrompt" + terminal_archive.length).innerHTML = curr_executable_name + "> " + text_input;
+            } else {
+                document.getElementById("terminalPrompt" + terminal_archive.length).innerHTML = curr_display_dir + "$ " + text_input;
+            }
+        }
+
+        function getExecutableWelcomeMessage() {
+            if (curr_executable_name === "lineDolphin.exe") {
+                return "Welcome to lineDolphin! Default configuration: display CyberCoffee traffic.";
+            } else if (curr_executable_name === "coffeeRequestSender.exe") {
+                return "Welcome to the coffee request portal! Here, one can send requests to the CYBA coffee brewer.";
+            } else if (curr_executable_name === "fridgeLoginPortal.exe") {
+                //return "Welcome to your smart fridge portal! Your username is GreenStreet. However, to access fridge features, you must authenticate yourself.";
+                return "Welcome to your smart fridge control portal!";
+            }
+        }
+    </script>
+</body>

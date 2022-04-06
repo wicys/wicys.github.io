@@ -1,0 +1,32 @@
+{
+    "hints" : {
+        "unlockComputer": [
+            "Try unlocking the computer.",
+            "Go to the whiteboard to find clues for your password!",
+            "Take a look at the Caesar Cipher guide!",
+            "To decrypt Caesar Ciphers, you need to find the right amount of rotations made in the alphabet. How many lives does a cat have?",
+            "How well do 9 rotations work on the whiteboard text?",
+            "Try mapping A to J."
+        ],
+        "makeToast": [
+            "Go to the whiteboard to find the right number conversion for the lock.",
+            "Take a look at the Number Systems and ASCII guide!",
+            "The binary code given on the whiteboard translates to ‘hexadec’ in ASCII.",
+            "The lock combination is in hexadecimal form. The correct combination is in decimal form."
+        ],
+        "unlockFridge": [
+            "Go to the computer to find where you can access your smart fridge.",
+            "Take a look at the A Light Intro on SQL guide and CLI guide!",
+            "User accounts are stored in a SQL table named users, with fields named username and password. How would you access these fields?",
+            "What would be a command that is always true?",
+            "Try the command ‘TODO’",
+            "Once you’re logged in, type “lock” to lock, and “unlock” to unlock your fridge."
+        ],
+        "brewCoffee": [
+            "Go to the computer to find where you can access your smart coffee brewer.",
+            "Take a look at the CLI guide!",
+            "TODO",
+            "TODO"
+        ]
+    }
+}

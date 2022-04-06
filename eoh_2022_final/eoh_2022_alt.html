@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset = "utf-8" name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Cybersecurity Lunch Adventure</title>
+<!-- Need the link tag to solve an error with favicon.ico: https://stackoverflow.com/questions/31075893/im-getting-favicon-ico-error -->
+<link rel="shortcut icon" href="#"/>
+
+<!-- Audio for sound effects: https://www.w3schools.com/tags/tag_audio.asp -->
+<!-- Note: the type needs to be "audio/mpeg" instead of "audio/wav" for it to work -->
+<!-- Loop sound effects to play the background music and the congratulatory music at the end -->
+<audio loop = "true" id = "bgm">
+  <source src="sounds/memories.mp3" type="audio/mpeg">
+</audio>
+<audio loop = "true" id = "congrats">
+  <source src = "sounds/celebrate_clapping.mp3" type = "audio/mpeg">
+</audio>
+<!-- Audio for the puzzle tasks - includes computer keystroke, lock clicks, lock opening,
+  lock closing, toaster pop up and the coffee being poured out -->
+<audio id = "computer_audio">
+  <source src="sounds/computer.wav" type="audio/mpeg">
+</audio>
+<audio id = "lock_audio">
+  <source src="sounds/lock.wav" type="audio/mpeg">
+</audio>
+<audio id = "lock_open_audio">
+  <source src="sounds/lock-open.wav" type="audio/mpeg">
+</audio>
+<audio id = "lock_fail_audio">
+  <source src="sounds/lock-open-fail.wav" type="audio/mpeg">
+</audio>
+<audio id = "coffee_pour_audio">
+  <source src="sounds/liquid-pour.wav" type="audio/mpeg">
+</audio>
+<audio id = "toaster_pop_up_audio">
+  <source src="sounds/toaster-pop-up.wav" type="audio/mpeg">
+</audio>
+
+<style>
+  /* style for entire webpage */
+  body {
+    background-color: black;
+    text-align: center;
+    color: white;
+    font-family: courier;
+  }
+
+  /* style for guide hyperlinks */
+  a
+  {
+    color: rgb(123, 213, 255);
+  }
+
+  /* style for blinking start screen */
+  /* source: https://www.freecodecamp.org/news/make-it-blink-html-tutorial-how-to-use-the-blink-tag-with-code-examples/ */
+  #blinkingStartScreen {
+    animation: blink 1s steps(1, end) infinite;
+
+    /* for positioning the start screen image with text */
+    width: 700px;
+    height: 500px;
+    position: absolute;
+    visibility: visible;
+  }
+
+  @keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+  /* source for how to style an element by id: https://blog.hubspot.com/website/css-id */
+  /* style for scrolling text box (i.e. terminal) */
+  #myTerminal {
+    background-color: rgb(0, 8, 8);
+    color: white;
+    width: 605px;
+    height: 377px;
+    overflow-y: scroll;
+    position: absolute;
+    visibility: hidden;
+    text-align: left;
+    word-break: break-all;  /* allows wraparound without spaces - https://css-tricks.com/almanac/properties/o/overflow-wrap/*/
+  }
+
+  /* style the terminal files with respect to linux color code: https://www.2daygeek.com/understanding-the-color-code-of-linux-files/ */
+  /* text: white , directory: blue, executable: green */
+  .executable_file {
+    color: limegreen;
+  }
+  .subdirectory {
+    color: mediumblue;
+  }
+
+  /* source for how to style tab-related elements: https://www.w3schools.com/howto/howto_js_vertical_tabs.asp*/
+  /* style the tab */
+  .tab {
+    float: left;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+
+    width: 200px; /* width of tab */
+    height: 500px; /* make the same as game canvas' height */
+    position: absolute;
+    visibility: hidden;
+  }
+
+  /* style the buttons inside the tab */
+  .tab button {
+    display: block;
+    background-color: inherit;
+    color: black;
+    padding: 22px 16px;
+    width: 100%;
+    border: none;
+    outline: none;
+    text-align: left;
+    cursor: pointer;
+    font-size: 17px;
+  }
+
+  /* change background color of buttons on hover */
+  .tab button:hover {
+    background-color: #ddd;
+  }
+
+  /* create an active/current "tab button" class */
+  .tab button.active {
+    background-color: #ccc;
+  }
+
+  /* style the tab content */
+  .tabcontent {
+    float: left;
+    padding: 0px 12px;
+    border: 1px solid #ccc;
+    border-left: none;
+
+    width: 500px; /* width of tab content */
+    height: 500px;  /* make the same as game canvas' height */
+    position: absolute;
+
+    visibility: hidden;
+    background-color: white;
+    color:black;
+    text-align: left;
+  }
+
+  /* source for styling button: https://www.w3schools.com/css/css3_buttons.asp */
+  .button {
+    position: absolute;
+    top: 90%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    background-color: rgb(181, 255, 207);
+    color: black;
+    font-size: 16px;
+    padding: 16px 30px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+  }
+
+  /* style the button on hover */
+  .button:hover {
+    background-color: rgb(168, 240, 194);
+  }
+
+  /* style for the list of hints */
+  .hint_list {
+    color: black;
+    width: 500px;
+    height: 300px;
+    overflow-y: scroll;
+    visibility: hidden;
+    text-align: left;
+  }
+
+  /* source for display parameter: https://stackoverflow.com/questions/2928688/how-to-hide-elements-without-having-them-take-space-on-the-page */
+  /* style for elements that show up while game is ongoing */
+  .ongoing {
+    visibility: visible;
+    display: block;
+  }
+
+  /* style for elements that show up when the game is complete */
+  .complete {
+    visibility: hidden;
+    display: none;
+  }
+
+  iframe {
+    align-items: center;
+    align-self: center;
+    align-content: center;
+    margin: auto;
+    width: 660px;
+    height: 460px;
+    border: 20px solid rgb(58, 58, 58);
+  }
+
+  canvas {
+    margin: auto;
+  }
+</style>
+<script src = "instabook-script.js" async></script>
+<script src = "sql-login.js" async></script>
+</head>
+
+<!-- BEGINNING OF ELEMENTS DISPLAYED ON HTML PAGE -->
+<h1>Cybersecurity Lunch Adventure</h1>
+<!-- this element follows the style of the "ongoing" class--shows up while the game is ongoing -->
+<p class="ongoing">Instructions: Use the arrow keys to navigate locations and complete your tasks. If you find yourself at a pop-up screen within the game, press Escape to close it and return to the overworld. For text-based prompts, hit Enter to submit your input.</p>
+<!-- these elements follow the style of the "complete" class--shows up once the game is complete -->
+<h2 class="complete">CONGRATULATIONS!</h2>
+<p class="complete">You've completed all the cybersecurity puzzles that need to be solved in order to make breakfast.</p>
+<br class="complete">
+
+<!-- creating the game terminal -->
+<div id="myTerminal">
+  <div id = "input0">~</div>
+</div>
+
+<!-- creating the hint view -->
+<!-- source: https://www.w3schools.com/howto/howto_js_vertical_tabs.asp -->
+<div class="tab">
+  <button class="tablinks" onclick="viewHints(event, 'Computer')" id="defaultOpen">Unlocking the computer</button>
+  <button class="tablinks" onclick="viewHints(event, 'Toast')">Making toast</button>
+  <button class="tablinks" onclick="viewHints(event, 'Fridge')">Opening the fridge</button>
+  <button class="tablinks" onclick="viewHints(event, 'Coffee')">Brewing coffee</button>
+</div>
+
+<!-- creating the structure of hints under each puzzle hint tab -->
+<!-- when the tab for the puzzle is selected, will display the content (i.e. hints and "Get a Hint" button) -->
+<div id="Computer" class="tabcontent">
+  <h3>Hints for computer puzzle</h3>
+  <h4 id="Computer_hint_instruction">Click on the button below to get a hint for this puzzle. To go back to the game, press ESCAPE.</h4>
+  <div class="hint_list" id="Computer_hint_listing"></div>
+  <button class="button" id="Computer_btn" onclick="addHintToView(event, 'Computer')">Get a hint</button>
+</div>
+
+<div id="Toast" class="tabcontent">
+  <h3>Hints for toast puzzle</h3>
+  <h4 id="Toast_hint_instruction">Click on the button below to get a hint for this puzzle. To go back to the game, press ESCAPE.</h4>
+  <div class="hint_list" id="Toast_hint_listing"></div>
+  <button class="button" id="Toast_btn" onclick="addHintToView(event, 'Toast')">Get a hint</button>
+</div>
+
+<div id="Fridge" class="tabcontent">
+  <h3>Hints for fridge puzzle</h3>
+  <h4 id="Fridge_hint_instruction">Click on the button below to get a hint for this puzzle. To go back to the game, press ESCAPE.</h4>
+  <div class="hint_list" id="Fridge_hint_listing"></div>
+  <button class="button" id="Fridge_btn" onclick="addHintToView(event, 'Fridge')">Get a hint</button>
+</div>
+
+<div id="Coffee" class="tabcontent">
+  <h3>Hints for coffee puzzle</h3>
+  <h4 id="Coffee_hint_instruction">Click on the button below to get a hint for this puzzle. To go back to the game, press ESCAPE.</h4>
+  <div class="hint_list" id="Coffee_hint_listing"></div>
+  <button class="button" id="Coffee_btn" onclick="addHintToView(event, 'Coffee')">Get a hint</button>
+</div>
+
+<!-- creating blinking effect for start screen -->
+<!-- source: https://stackoverflow.com/questions/27427073/how-to-fit-in-an-image-inside-span-tag -->
+<span id="blinkingStartScreen">
+  <img src="images/eceb-2.png"/>
+</span>
+
+<!-- creating the canvas -->
+<div id="entireCanvas" width="700" height="500">
+  <!-- creating the canvas -->
+  <canvas id="myCanvas" width="700" height="500" style="background-color: #f1f1f1;"></canvas>
+  <iframe id="login-iframe" width="700" height="500" src="./login.html" frameborder="0" style="display: none;"></iframe>
+  <iframe id="email-iframe" width="700" height="500" src="./email.html" frameborder="0" style="display: none; "></iframe>
+  <iframe id="osintiframe" src="./email_login.html" width="700" height="500" frameborder="0" style="display: none;"></iframe>
+  <iframe id="sqliframe" src="./sql_login.html" width="700" height="500" frameborder="0" style="display: none;"></iframe>
+  <button type="button" id="closeiframe" onclick = "closeComputer()" style="display: none; background-color: #f44336;font-size: 24px;border-radius: 8px;width: 50px;"> X </button>
+</div>
+<br>
+<script src="eoh_2022.js"></script>
+
+<body onload="start()">
+<!-- THE FOLLOWING ARE DISPLAYED UNDERNEATH THE GAME CANVAS -->
+<!-- Display tasks and resource links (when the game is ongoing) -->
+  <div class="ongoing" id="taskList">
+    <p class="ongoing">Remaining Destinations:</p>
+    <p class="ongoing" id="unlockComputer">- Checkers &#127829</p>
+    <p class="ongoing" id="makeToast">- Moonbucks &#9749 </p>
+    <p class="ongoing" id="openFridge">- Teamote &#129483</p>
+    <p class="ongoing" id="makeCoffee">- CFK &#127831</p>
+  </div>
+
+  <!-- Display ending text and additional resource links (when the game is completed) -->
+  <p class="complete">We took inspiration from Capture The Flag (CTF) competitions in designing the puzzles you just solved and tried to make them a bit beginner-friendly. CTF competitions are a great way to learn more about cybersecurity, though they definitely aren't the only way.</p>
+  <br class="complete">
+  <p class="complete">Or, if you're not into CTFs, some things you can do are generally learn more about operating systems (especially Linux), improve your programming skills, read CTF challenge write-ups, or watch talks from DEF CON (an annual security conference) to get inspired about interesting security topics.</p>
+  <br class="complete">
+  <p class="complete">Some additional links:</p>
+  <p class="complete">- <a href="https://overthewire.org/wargames/">https://overthewire.org/wargames/</a> is a great way to gain confidence navigating the Linux command-line and learning some common code exploits.</p>
+  <p class="complete">- <a href="https://picoctf.org/">https://picoctf.org/</a> is a fantastic starting point if you want to dive a bit deeper than our game goes.</p>
+  <p class="complete">- <a href="https://ctftime.org/">https://ctftime.org/</a> lists upcoming CTFs if you’re looking for more past picoCTF.</p>
+  <br>
+
+  <!-- Display resource guides (always displayed) -->
+  <div id="resources">
+    <p>Resources</p>
+    <p><a href="https://www.w3schools.com/sql/sql_where.asp" target="_blank" rel="noopener noreferrer">SQL Tutorial</a></p>
+    <p><a href="https://www.sqlshack.com/sql-queries-in-sql-server-a-beginners-guide/" target="_blank" rel="noopener noreferrer">SQL Guide</a></p>
+    <p><a href="guides/phishing_email_guide.pdf" target="_blank" rel="noopener noreferrer">Phishing Emails</a></p>
+    <p><a href="guides/csrf_guide.pdf" target="_blank" rel="noopener noreferrer">CSRF Attacks</a></p>
+    <p><a href="guides/cli.pdf" target="_blank" rel="noopener noreferrer">Navigating a Command-Line Interface</a></p>
+  </div>
+
+</body>
+</html>

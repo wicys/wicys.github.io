@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<!--
+TODO: Fix the styling for the side navigation menu - Isha
+TODO: Fix the styling for the top navigation menu - Nicole
+TODO: Fix the styling for the emails - Ananya
+TODO: Create a draft viewer that will show up when the drafts are clicked
+- Begin with simply displaying text
+- Later add fill-in-the-blank functionality (probably a drop-down)
+TODO: Functionality for openDraft function including:
+- Select correct text
+- Display in draft viewer
+-->
+<html>
+    <head>
+        <link rel="stylesheet" href = "login-style.css">
+        <script src="login-script.js"></script>
+        <style>
+            table {
+font-family: arial, sans-serif;
+border-collapse: collapse;
+}
+
+td, th {
+border: 1px solid #dddddd;
+text-align: left;
+padding: 8px;
+}
+
+tr:nth-child(even) {
+background-color: #dddddd;
+}
+
+#phishing-solved {
+    background-color: white;
+    /* border: solid 2px black; */
+    /* width: 700px;
+    height: 500px; */
+    /* margin-left: 300px; */
+    text-align: center;
+    width: 100%;
+    height: 100%;
+}
+        </style>
+    </head>
+    <body onload="eventlistener();">
+
+        <!-- Login -->
+        <div id="login">
+
+            <input id= "search" type="text" placeholder="https://www.packingcompany.com/login" name="search">
+            <p>Login</p>
+            <form action="">
+             <label for="uid"><b>Email or User ID *:</b></label><br>
+             <input type="text" id="words" name="email" required><br><br>
+             <label id="words" for="psw"><b>Password *</b></label><br>
+             <input type="text" name="psw" required>
+             <br><br>
+             <!-- <input type="subject" placeholder=" " id="padding"><br> -->
+             <button id="forg" onclick="forgot()">Forgot password?</button>
+            </form>
+
+            <br><br>
+            <button type='submit' id="LOGIN"> Login</button>
+            <br><br><br>
+        </div>
+
+        <!-- Forgot Password -->
+        <div id="forgot-password" style="display: none">
+            <input id= "search" type="text" placeholder="https://www.packingcompany.com/forgotmypassword" name="search">
+            <div id="reset">
+                <p>Reset or recover your login settings.</p>
+            </div>
+            <br><br>
+            <p> Forgot your password? Enter your user ID and registered email address in the fields below, and we'll help you to reset it.</p>
+            <label id="words"<b>* Indicates Required Field</b></label>
+            <div>
+                <label id="words" for="To"><b>User ID *</b></label>
+                <name="email" required>
+                <br><br>
+                <div style="clear: both;"></div>
+                <input type="text" placeholder="" id="padding1" name="email" required>
+                <br><br>
+                <label id="words" for="To"><b>Registered Email Address *</b></label>
+                <name="email" required>
+                <br><br>
+                <div style="clear: both;"></div>
+                <input type="text" placeholder="" id="padding1" name="email" required>
+                <button id = "LOGIN" onclick="login()">Reset Password</button>
+
+                <br><br>
+                <br><br>
+                <p> Forgot your user ID? Enter your registered email address in the field below, and we will send it to you.</p>
+                <label id="words" for="To"><b>Registered Email Address *</b></label>
+                <name="email" required>
+                <br><br>
+                <div style="clear: both;"></div>
+                <input type="text" placeholder="" id="padding1" name="email" required>
+                <button id = "LOGIN" onclick="login()">Recover my ID</button>
+                <br><br>
+            </div>
+        </div>
+
+        <div id="phishing-solved" style="display: none;">
+            <table>
+                <tr>
+                  <th>Company</th>
+                  <th>Contact</th>
+                  <th>Country</th>
+                </tr>
+                <tr>
+                  <td>Alfreds Futterkiste</td>
+                  <td>Maria Anders</td>
+                  <td>Germany</td>
+                </tr>
+                <tr>
+                  <td>Centro comercial Moctezuma</td>
+                  <td>Francisco Chang</td>
+                  <td>Mexico</td>
+                </tr>
+                <tr>
+                  <td>Ernst Handel</td>
+                  <td>Roland Mendel</td>
+                  <td>Austria</td>
+                </tr>
+                <tr>
+                  <td>Island Trading</td>
+                  <td>Helen Bennett</td>
+                  <td>UK</td>
+                </tr>
+                <tr>
+                  <td>Laughing Bacchus Winecellars</td>
+                  <td>Yoshi Tannamuri</td>
+                  <td>Canada</td>
+                </tr>
+                <tr>
+                  <td>Magazzini Alimentari Riuniti</td>
+                  <td>Giovanni Rovelli</td>
+                  <td>Italy</td>
+                </tr>
+              </table>
+        </div>
+    </body>
+</html>

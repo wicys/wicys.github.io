@@ -1,0 +1,70 @@
+<html>
+
+<head>
+    <script src="eoh_2022.js" async></script>
+    <script src="instabook-script.js" async></script>
+    <link rel="stylesheet" href="email_login.css">
+</head>
+
+    <body>
+        <div id="navlinks">
+            <a onclick="visitInstabook()">To Instabook</a>
+            <a onclick="visitLinkout()">To Linkout</a>
+        </div>
+
+        <h1>Email Portal</h1>
+
+        <div id="loginbox" class="prompt">
+            <h3>Login</h3>
+            <div id="usernamePrompt">
+                <p>Email:</p>
+                <input id="usernameInput" placeholder="Enter Email Address">
+            </div>
+            <div>
+                <p>Password:<p>
+                <input id="passwordInput" placeholder="Enter Password" type="password">
+            </div>
+            <button id="loginButton" onclick="emailLogin()">Log In</button>
+            <a onclick="forgotPassword()">Forgot Password?</a>
+        </div>
+        
+
+        <div id="resetPrompt" style="display: none;" class="prompt">
+            <h3>Reset Password</h3>
+            <div id="resetPrompt">
+                <p>Email:</p>
+                <input id="resetInput" placeholder="Enter Email Address">
+            </div>
+            <button id="resetNext()" onclick="nextButton()">Next</button>
+        </div>
+
+        <div id="securityQuestions" style="display: none;" class="prompt">
+            <h3>Security Questions</h3>
+            <p>What was the name of your first dog?</p>
+            <input id="petInput">
+            <p>What was the name of your high school?</p>
+            <input id="schoolInput">
+            <p>What was the color of your first car?</p>
+            <input id="carInput">
+            <button id="resetPasswordButton" onclick="resetPassword()">Reset Password!</button>
+        </div>
+
+        <div id="resetPassword" style="display: none;" class="prompt">
+            <h3>Enter New Password</h3>
+            <input id="newPassword" type="password">
+            <button id="confirmButton" onclick="confirmNewPassword()">Confirm!</button>
+        </div>
+        
+
+    </body>
+
+    <div id="pageCover" style="display: none"></div>
+
+    <div id="osintdialogueBox" onclick="toggleDialogue(0)" style="display: none">
+        <p id="almapic"></p>
+        <p id="osintdialogue">
+           
+        </p>
+      </div>
+
+</html>

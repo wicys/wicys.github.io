@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<!--
+TODO: Fix the styling for the side navigation menu
+TODO: Fix the styling for the top navigation menu
+TODO: Fix the styling for the posts
+TODO: What other functions do you need to have? Comments? Profiles?
+-->
+<html>
+
+<head>
+  <link rel="stylesheet" href="instabook.css">
+  <script src = "eoh_2022.js" async></script>
+  <script src="instabook-script.js" async></script>
+</head>
+
+<body>
+  <div id="navlinks">
+    <a onclick="visitLinkout()">To LinkOut</a>
+    <a onclick="visitEmail()">To Email</a>
+  </div>
+  <!-- TOP NAVIGATION MENU -->
+  <div class="topnav">
+    <a class="active" onclick="toggleDialogue(0)">InstaBook</a>
+    <input type="text" placeholder="Search.." name="search">
+  </div>
+
+  <div class="profile">
+    <p class="username"> johnsmith_checkers </p>
+    <p class="bio"> <b> John Smith </b> Checkers Pizza </p>
+  </div>
+
+  <div class="ctent">
+    <div class="post" id="0">
+      <!-- Please try not to use any copyrighted pictures; lots of royalty-free pictures can be found here https://pixabay.com/ -->
+      <img src="images_2022/dog.jpg" alt="An image of a cute dog." onclick="popup(0)">
+      <div class="postheader">
+        <div class="post-header">
+          <a> <b> johnsmith_checkers </b> </a>
+          <p> RIP to my best friend and first pet, Buddy. You will be missed. </p>
+        </div>
+        <button class="load-comments" id="load-comments0" onclick="toggleComments(0)">Show comments</button>
+        <div class="comments" id="comments0" style="display: none">
+          <p> <b> socceramanda </b> What a good boy. </p>
+          <p> <b> totally_john_cena </b> Very fluffy looking! </p>
+          <p> <b> checkers_pizza </b> Sorry for your loss. I'm sure the boss will understand if you want to
+          take a few days off "work." </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="post" id="1">
+      <!-- Please try not to use any copyrighted pictures; lots of royalty-free pictures can be found here https://pixabay.com/ -->
+      <img src="images_2022/school.jpg" alt="An image of a school." onclick="popup(1)">
+      <div class="postheader">
+        <div class="post-header">
+          <a> <b> johnsmith_checkers </b> </a>
+          <p> Goodbye to Urbana High School. You will not be missed. </p>
+        </div>
+        <button class="load-comments" id="load-comments1" onclick="toggleComments(1)">Show comments</button>
+        <div class="comments" id="comments1" style="display: none">
+          <p> <b> xXNightVoidXx </b> LMAOO we wont miss this place </p>
+          <p> <b> totally_john_cena </b> glad we got out of that alive </p>
+          <p> <b> checkers_pizza </b> Good job on graduating! Can we rely on you more often now? </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="post" id="2">
+    <!-- Please try not to use any copyrighted pictures; lots of royalty-free pictures can be found here https://pixabay.com/ -->
+    <img src="images_2022/car.jpg" alt="An image of a red car." onclick="popup(2)">
+    <div class="postheader">
+      <div class="post-header">
+        <a> <b> johnsmith_checkers </b> </a>
+        <p> My first ever sweet ride. So lucky to get my favorite color car, red. </p>
+      </div>
+      <button class="load-comments" id="load-comments2" onclick="toggleComments(2)">Show comments</button>
+      <div class="comments" id="comments2" style="display: none">
+        <p> <b> thatdude_123 </b> nice. </p>
+        <p> <b> socceramanda </b> soooo jealous! </p>
+        <p> <b> checkers_pizza </b> This car will make you more useful to the boss. </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal" style="display: none" onclick="hidemodal()">
+  <img id="modalimg">
+</div>
+
+</body>
+
+<div id="pageCover" style="display: none"></div>
+
+<div id="dialogueBox" onclick="toggleDialogue(0)" style="display: none">
+  <p id="almapic"></p>
+  <p id="dialogue">
+     
+  </p>
+</div>
+
+</html>

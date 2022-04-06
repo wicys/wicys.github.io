@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body style="background-color:white;">
+    
+    <link rel="stylesheet" href="sql_login.css">
+  
+<div id = "login">
+    <h2>Login Form</h2>
+
+    <div class="imgcontainer">
+        <img src="/images_2022/avatar.png" alt="Avatar" class="avatar">
+    </div>
+    <div class="container">
+        <div>
+            <p>Username:</p>
+            <input id="usernameInput" placeholder="SELECT <enter column name here> FROM users WHERE privilege = '<enter here>'" type="text" value = "SELECT <enter column name here> FROM users WHERE privilege = '<enter here>'">
+        </div>
+        <div>
+            <p>Password:<p>
+            <input id="passwordInput" placeholder="SELECT <enter column name here> FROM users WHERE <enter here>" type="password" value = "SELECT <enter column name here> FROM users WHERE <enter here>">
+        </div>
+        <button id="loginButton" onclick="sqllogin()">Log In</button>
+        <!-- <button id="databaseButton" onclick="location.href='database.html';" value="Go to Database" style="visibility: hidden;" frameborder="0">Access Database</button> -->
+        <button id="databaseButton" onclick="showDatabase()" value="Go to Database" style="visibility: hidden;">Access Database</button>
+        <div id="sqldialogueBox" onclick="sqltoggleDialogue()">
+            <p id="sqlalmapic"></p>
+            <p id="sqldialogue"> Let's try to log in to this database! </p>
+        </div>
+    </div>
+</div>
+
+    <div id = "database" style="display: none;">
+        <h2>Database</h2>
+
+        <table>
+            <tr>
+                <th>Username</th>
+                <th>Bank Location</th>
+                <th>Account Balance</th>
+                <th>Date Opened</th>
+            </tr>
+            <tr>
+                <td>Springtime Suspect</td>
+                <td>Tajikistan</td>
+                <td>250,000</td>
+                <td>24 July, 2019</td>
+            </tr>
+            <tr>
+                <td>Springtime Suspect</td>
+                <td>Mozambique</td>
+                <td>165,000</td>
+                <td>15 October, 2019</td>
+            </tr>
+            <tr>
+                <td>Springtime Suspect</td>
+                <td>Afghanistan</td>
+                <td>500,000</td>
+                <td>30 December, 2019</td>
+            </tr>
+            <tr>
+                <td>Springtime Suspect</td>
+                <td>Laos</td>
+                <td>420,000</td>
+                <td>2 March, 2020</td>
+            </tr>
+            <tr>
+                <td>Springtime Suspect</td>
+                <td>Guinea Bissau</td>
+                <td>340,000</td>
+                <td>17 May, 2020</td>
+            </tr>
+            <tr>
+                <td>Springtime Suspect</td>
+                <td>Haiti</td>
+                <td>610,000</td>
+                <td>24 August, 2020</td>
+            </tr>
+        </table>
+        <button id="loginButton" onclick="location.href='sql_login.html';">Log Out</button>
+    </div>
+    <div id = "dbdivv" style = "visibility: hidden; display: none;">
+        <div id="databasedialogueBox" >
+            <p id="databasealmapic"></p>
+            <p id="databasedialogue"> Uh-oh... The owner's bank accounts look very suspicious! Congratulations on finding an account of fraud! </p>
+        </div>
+    </div>
+    <script src="sql-login.js" async></script>
+    <script src = "eoh_2022.js" async></script>
+</body>
+
+</html>
