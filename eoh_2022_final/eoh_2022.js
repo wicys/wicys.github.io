@@ -744,7 +744,7 @@ function openComputer() {
       draw(computer, 218, 280, 30, 30);
     }
     
-    if (scene_pic == moonbucks_interior_scene || scene_pic == moonbucks_exterior_scene) {
+    if (scene_pic == moonbucks_interior_scene || scene_pic == moonbucks_street_scene) {
       draw(char_pic, char_x_pos, char_y_pos, 64, 64);
     }
 
