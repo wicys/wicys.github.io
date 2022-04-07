@@ -1,9 +1,30 @@
+var osintdialogue = [
+  "We don't need to look here right now.",
+  "Let's check the Doughmino's Pizza for fraud! I heard there might be some identity issues there.",
+  "Let's see if we can find any information about the employees.",
+  "This name could be useful. Let’s see what we can find out about this person.",
+  "Perhaps we can find this person’s account because we know this business is " +
+    "involved with some shady stuff. Let’s use our special search engine back at the base.",
+  "All right, let's see what we can find out about __!",
+  "It looks like we might be able to find some valuable information here.",
+  "It looks like John Smith's email is johnatcheckers@email.com. Let's use this information to try" +
+  " to get into his email to find evidence of shading doings.", 
+  "I wonder if we can get into this email to find evidence of shady doings.",
+  "Darn, I wonder how we can get the answers to these questions?",
+  "That doesn't seem to be the right password.",
+  "That isn't the correct email.",
+  "One of these answers isn't correct.",
+  "Great! We've reset the password. Now let's log in to this email and see if we can find some shady stuff!",
+  "This won't be of much use if we don't have the email.",
+  "I don't think we need to look at this email."
+];
+
 // chooses and displays the correct draft
 function f(number) {
   console.log("open draft " + number);
 }
 
-var osintdialogueBox = document.getElementById("osintDialogue");
+var osintdialogueBox = document.getElementById("osintdialogue");
 var osintdialogueDiv = document.getElementById("osintdialogueBox");
 var osintdialogueShown = false;
 var pageCover = document.getElementById("pageCover");
@@ -91,7 +112,7 @@ function emailLogin() {
     finished_osint = true;
     // document.getElementById("unlockComputer").innerHTML = " &#10004 Checkers &#127829";
     console.log("got into the email!");
-    window.location.replace("./email.html");
+    window.location.replace("./osintemail.html");
   }
 }
 
@@ -166,26 +187,6 @@ function closeForm() {
   document.getElementById("myForm").style.display = "none";
 }
 
-var osintdialogue = [
-  "We don't need to look here right now.",
-  "Let's check the Doughmino's Pizza for fraud! I heard there might be some identity issues there.",
-  "Let's see if we can find any information about the employees.",
-  "This name could be useful. Let’s see what we can find out about this person.",
-  "Perhaps we can find this person’s account because we know this business is " +
-    "involved with some shady stuff. Let’s use our special search engine back at the base.",
-  "All right, let's see what we can find out about __!",
-  "It looks like we might be able to find some valuable information here.",
-  "It looks like John Smith's email is johnatcheckers@email.com. Let's use this information to try" +
-  " to get into his email to find evidence of shading doings.", 
-  "I wonder if we can get into this email to find evidence of shady doings.",
-  "Darn, I wonder how we can get the answers to these questions?",
-  "That doesn't seem to be the right password.",
-  "That isn't the correct email.",
-  "One of these answers isn't correct.",
-  "Great! We've reset the password. Now let's log in to this email and see if we can find some shady stuff!",
-  "This won't be of much use if we don't have the email.",
-  "I don't think we need to look at this email."
-];
 
 // document.addEventListener('keydown', logKey);
 //   function logKey(key) {

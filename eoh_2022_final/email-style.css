@@ -207,3 +207,42 @@ button {
       border: solid 1px gray;
       padding: 10px;
   }
+
+  /* ALMA DIALOGUE */
+  #dialogueBox {
+    position: fixed;
+    bottom: 0px;
+    width: 55%;
+    padding-left: 2em;
+    padding-right: 2em;
+    padding-top: 1em;
+    margin-left: 7.5%;
+    height: 10%;
+    border: solid 2px black;
+    border-radius: 5px;
+    align-self: center;
+    background-color: rgb(255, 255, 255);
+    color: black;
+    z-index: 2;
+  }
+  
+  #dialogue {
+    position: relative;
+    display: inline-block;
+    border: 5px black;
+    margin-left: 10%;
+    margin-top: -10px;
+    font-family: 'Times New Roman';
+    font-size: 12pt;
+  }
+  
+  #almapic {
+    position: fixed;
+    left: 11%;
+    bottom: 3px;
+    width: inherit;
+    height: inherit;
+    background-image: url("images_2022/alma_icon.PNG");
+    background-size: contain;
+    background-repeat: no-repeat;
+  }

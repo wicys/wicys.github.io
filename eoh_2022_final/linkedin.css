@@ -21,7 +21,7 @@ h3 {
 
 /** Profile */
 
-.profile {
+.linkinprofile {
     margin-left: 10%;
     margin-right: 10%;
     margin-top: 5%;
@@ -35,7 +35,7 @@ h3 {
     background-color:rgb(192, 205, 206);
 }
 
-.profile #profilepic {
+.linkinprofile #profilepic {
     border-radius: 50%;
     width: 20%;
     height: 20%;
@@ -43,7 +43,7 @@ h3 {
     cursor: pointer;
 }
 
-.profile .username {
+.linkinprofile .linkinusername {
     font-weight: bold;
     font-size: 24px;
     text-decoration: none;
@@ -51,12 +51,12 @@ h3 {
     color: rgb(65, 65, 65);
 }
 
-.profile .username:hover {
+.linkinprofile .username:hover {
     text-decoration: underline;
     cursor: pointer;
 }
 
-.profile b {
+.linkinprofile b {
     font-size: 20px;
     color:rgb(73, 73, 73);
 }
@@ -186,7 +186,7 @@ h3 {
     background-repeat: no-repeat;
   }
   
-  #osintDialogue {
+  #osintdialogue {
     position: relative;
     display: inline-block;
     border: 5px black;

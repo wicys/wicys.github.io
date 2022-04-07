@@ -175,7 +175,7 @@ body {
 
 /** DIALOGUE BOX */
 
-#dialogueBox {
+#osintdialogueBox {
   position: fixed;
   bottom: 8px;
   width: 75%;
@@ -203,7 +203,7 @@ body {
   background-repeat: no-repeat;
 }
 
-#dialogue {
+#osintdialogue {
   position: relative;
   display: inline-block;
   border: 5px black;

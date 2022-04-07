@@ -12,34 +12,10 @@ TODO: Functionality for openDraft function including:
 -->
 <html>
     <head>
-        <link rel="stylesheet" href = "login-style.css">
+        <link rel="stylesheet" href = "./login-style.css">
         <script src="login-script.js"></script>
         <style>
-            table {
-font-family: arial, sans-serif;
-border-collapse: collapse;
-}
-
-td, th {
-border: 1px solid #dddddd;
-text-align: left;
-padding: 8px;
-}
-
-tr:nth-child(even) {
-background-color: #dddddd;
-}
-
-#phishing-solved {
-    background-color: white;
-    /* border: solid 2px black; */
-    /* width: 700px;
-    height: 500px; */
-    /* margin-left: 300px; */
-    text-align: center;
-    width: 100%;
-    height: 100%;
-}
+            
         </style>
     </head>
     <body onload="eventlistener();">
@@ -56,11 +32,12 @@ background-color: #dddddd;
              <input type="text" name="psw" required>
              <br><br>
              <!-- <input type="subject" placeholder=" " id="padding"><br> -->
-             <button id="forg" onclick="forgot()">Forgot password?</button>
+             
+             <button type='submit' id="LOGIN"> Login</button>
             </form>
 
             <br><br>
-            <button type='submit' id="LOGIN"> Login</button>
+            <button id="forg" onclick="forgot()">Forgot password?</button>
             <br><br><br>
         </div>
 
@@ -101,43 +78,115 @@ background-color: #dddddd;
         </div>
 
         <div id="phishing-solved" style="display: none;">
+          <h2>Recent Transactions for Account Number 491266990</h2>
             <table>
                 <tr>
-                  <th>Company</th>
-                  <th>Contact</th>
-                  <th>Country</th>
+                  <th>Date/Time</th>
+                  <th>Transfer Amt</th>
+                  <th>Transaction Type</th>
+                  <th>Sender</th>
+                  <th>Recipient</th>
+                  
                 </tr>
                 <tr>
-                  <td>Alfreds Futterkiste</td>
-                  <td>Maria Anders</td>
-                  <td>Germany</td>
+                  <td>2022-04-05 08:38:40</td>
+                  <td>35,390.53</td>
+                  <td>Direct Transfer</td>
+                  <td>491266990 (self)</td>
+                  <td>30838470 (Cayman Is.)</td>
                 </tr>
                 <tr>
-                  <td>Centro comercial Moctezuma</td>
-                  <td>Francisco Chang</td>
-                  <td>Mexico</td>
+                  <td>2022-04-05 08:31:55</td>
+                  <td>20,000.00</td>
+                  <td>Cash</td>
+                  <td>24600971 (Myanmar)</td>
+                  <td>491266990 (self)</td>
+                </tr>
+                
+                <tr>
+                  <td>2022-04-03 03:39:19</td>
+                  <td>50.00</td>
+                  <td>Direct Transfer</td>
+                  <td>491266990 (self)</td>
+                  <td>57684866 (Cayman Is.)</td>
+                </tr>
+                
+                <tr>
+                  <td>2022-04-02 08:34:43</td>
+                  <td>150.00</td>
+                  <td>Direct Transfer</td>
+                  <td>491266990 (self)</td>
+                  <td>71462600 (Panama)</td>
+                </tr>
+
+                <tr>
+                  <td>2022-04-02 09:18:58</td>
+                  <td>230.00</td>
+                  <td>Direct Transfer</td>
+                  <td>491266990 (self)</td>
+                  <td>71462600 (Panama)</td>
+                </tr>
+
+                <tr>
+                  <td>2022-04-05 08:31:55</td>
+                  <td>43,309.00</td>
+                  <td>Cash</td>
+                  <td>24600971 (Afghanistan)</td>
+                  <td>491266990 (self)</td>
+                </tr>
+
+                <tr>
+                  <td>2022-04-02 07:10:09</td>
+                  <td>120.00</td>
+                  <td>Direct Transfer</td>
+                  <td>491266990 (self)</td>
+                  <td>786934186 (Cayman Is.)</td>
+                </tr>
+
+                
+                <tr>
+                  <td>2022-04-02 04:19:04</td>
+                  <td>100.00</td>
+                  <td>Direct Transfer</td>
+                  <td>491266990 (self)</td>
+                  <td>88967298 (Cayman Is.)</td>
+                </tr>
+
+                <tr>
+                  <td>2022-04-01 22:49:44</td>
+                  <td>150.00</td>
+                  <td>Direct Transfer</td>
+                  <td>491266990 (self)</td>
+                  <td>71462600 (Panama)</td>
                 </tr>
                 <tr>
-                  <td>Ernst Handel</td>
-                  <td>Roland Mendel</td>
-                  <td>Austria</td>
+                  <td>2022-04-01 22:28:08</td>
+                  <td>100.00</td>
+                  <td>Direct Transfer</td>
+                  <td>491266990 (self)</td>
+                  <td>786934186 (Cayman Is.)</td>
+                </tr>
+
+                <tr>
+                  <td>2022-04-01 20:36:28</td>
+                  <td>230.00</td>
+                  <td>Direct Transfer</td>
+                  <td>491266990 (self)</td>
+                  <td>71462600 (Panama)</td>
                 </tr>
                 <tr>
-                  <td>Island Trading</td>
-                  <td>Helen Bennett</td>
-                  <td>UK</td>
-                </tr>
-                <tr>
-                  <td>Laughing Bacchus Winecellars</td>
-                  <td>Yoshi Tannamuri</td>
-                  <td>Canada</td>
-                </tr>
-                <tr>
-                  <td>Magazzini Alimentari Riuniti</td>
-                  <td>Giovanni Rovelli</td>
-                  <td>Italy</td>
+                  <td>2022-04-01 17:22:41</td>
+                  <td>100.00</td>
+                  <td>Direct Transfer</td>
+                  <td>491266990 (self)</td>
+                  <td>88967298 (Cayman Is.)</td>
                 </tr>
               </table>
         </div>
+
+        <div id="dialogueBox" onclick="toggleDialogue()">
+          <p id="almapic"></p>
+          <p id="dialogue"> Let's take a look around this login page! </p>
+      </div>
     </body>
 </html>

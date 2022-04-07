@@ -17,7 +17,7 @@ const hint_description = document.getElementsByClassName("tabcontent");
 const hint_list = document.getElementsByClassName("hint_list");
 let is_hint_view_displayed = false;
 
-  
+
   const sql_frame = document.getElementById("sqliframe");
   const osint_frame = document.getElementById("osintiframe");
   var cfk_done = false;
@@ -32,7 +32,7 @@ let is_hint_view_displayed = false;
 
   let dialogue_idx = 0;
 
-  
+
   /* SCENE ATTRIBUTES */
   // the following grouped variables store and position the hint icon pic
   let hint_icon;
@@ -70,7 +70,7 @@ let is_hint_view_displayed = false;
   let fridge_complete_scene;
   let toaster_complete_scene;
   let coffee_maker_complete_scene;
-  
+
   let alma;
   let dialogue_box;
   let alma_icon;
@@ -256,14 +256,14 @@ let is_hint_view_displayed = false;
 
 
   /* PUZZLE ATTRIBUTES */
-  // phishing 
+  // phishing
   let email_solved = false;
   let login_solved = false;
-  
+
   // combinationn lock puzzle
   let allowed_combo_keys = [48, 49, 50, 51, 52, 53, 54, 55, 56, 57]  // e.which codes
   let lock_combo_string = " ";  // needs to have a space in between in order for backspace to work
-  let is_lock_combo_incorrect_message_visible = false;  // determines whether to display incorrect message                  
+  let is_lock_combo_incorrect_message_visible = false;  // determines whether to display incorrect message
   let is_lock_unlocked = false; // keeps track of whether the puzzle is complete
 
    // computer password puzzle
@@ -277,11 +277,11 @@ let is_hint_view_displayed = false;
   let current_directory = "~";  // start in root directory
   let directory_archive = ["~"];
   let subdirectories, executables_in_current;  // stores content of current directory
-  
+
   let currently_in_executable = false;
   let executing_ls_command = false;
   let curr_executable_name = "";
-  
+
   let terminal_archive = [""];  // for up and down functionality to see terminal command history
   let user_input = "";  // stores what the user types in the terminal
   let num_inputs = 0;  // used for creating dividers that store user input
@@ -314,9 +314,9 @@ let is_hint_view_displayed = false;
   // stores text for when network traffic is captured from the lineDolphin executable
   let display_coffee_text = false;
   const coffee_text = ["Pinging CYBA brewer using saved configuration...",
-                        "Request sent:", 
+                        "Request sent:",
                         "GET mycyba/brewer/status CYBA/1.5",
-                        "Host: mycyba:5000", 
+                        "Host: mycyba:5000",
                         "Connection: keep-alive",
                         "...",
                         "CYBA/1.5 response received:",
@@ -513,31 +513,32 @@ function openComputer() {
       ["Now, try dragging their files over to your interface on", "the right."],
       ["Great job! You now have collected evidence that Moonbucks", "may have committed tax fraud. We can now hand these", "files over to the cops in order to help them with", "their investigation!"]
     ],
-    "Teamote" : [
-      "Welcome to Teamote! Take a seat at the table top right.",
-      "Pull out your laptop and take a look", "I've pulled up the website for the packing company that delivers here on the left",
-      "and your email with a couple pre-filled drafts on the right",
-      "We've found suspicious transactions in this packing company",
-      "and I've gotten the email of one of the managers involved in these transactions!",
-      "George's email is gd13@packingcompany.com",
-      "So let's try to craft a link so it'll change George's packingcompany password",
-      "to something you know: pizza",
-      "Let's look at the login first!",
-      "Note the URL.",
-      "Try clicking around",
-      "Take a look at the hints or the CSRF guide",
-      "Think you got the right link? Press Esc and head on over to the email!",
-      "I've got 3 drafts pre-written for you, just fill in the blanks with",
-      "the words you think are best and don't forget to put in your link!",
-      "Did George click the link? Did the link work? Once you send the email,",
-      "go back to the login page",
-      "and try to login with username 'gd13@packingcompany.com' and password 'pizza'" 
+    "CoffeeEmoticon" : [
+      ["Welcome to Teamote! Please take a seat at the top", "right table!"],
+      ["We've found suspicious transactions in this packing",
+      "company and I've gotten the email of one of the",
+      "managers involved in these transactions!"],
+    ],
+    "CoffeeEmoticon-Laptop" : [
+      ["I've pulled up the website for the packing company that",
+      "delivers here on the left and your email with a couple",
+      "pre-filled drafts on the right"],
+      ["George's email is gd13@packingcompany.com"],
+      ["So let's try to craft a link so it'll change",
+      "George's packingcompany account password",
+      "to something you know: pizza"],
+      ["Let's look at the login first!"]
+    ],
+    "Phishing-Solved" : [
+      ["Well done! You've found evidence of suspicious", 
+       "transactions with the Packing Company's account!"]
     ]
-    
+      
+
   }
 
    /**
-   * Begins game by loading in all images that will be used (i.e. character, scenes, etc), 
+   * Begins game by loading in all images that will be used (i.e. character, scenes, etc),
    * initializing game scene and character images, and calling the function that updates the game.
    */
   function start() {
@@ -601,7 +602,7 @@ function openComputer() {
    * Initial loading of background (image takes up the entire canvas space).
    * Loads the image into the page. Must be called prior to drawing or will face the problem
    * of the image not always displaying when the page is opened/refreshed.
-   * 
+   *
    * @param img_url String representing the path to the image
    * @return Object representing the background image
    */
@@ -625,7 +626,7 @@ function openComputer() {
    * General function to initially load components that don't take up the entire canvas
    * (i.e. character). Similar to loadBackground(), this function loads the image into the
    * page and must be called prior to drawing.
-   * 
+   *
    * @param img_url String representing the path to the image
    * @param x Integer representing the x-coordinate of where the image should be positioned in the canvas
    * @param y Integer representing the y-coordinate of where the image should be positioned in the canvas
@@ -642,7 +643,7 @@ function openComputer() {
     // - Note: the following line is needed to fix the problem of the background img not always
     // displaying when the page is refreshed
     // - Source: https://stackoverflow.com/questions/22889641/simple-html5-canvas-image-not-displaying
-    img.addEventListener("load", drawCharacter, false); 
+    img.addEventListener("load", drawCharacter, false);
 
     function drawCharacter() {}
 
@@ -653,7 +654,7 @@ function openComputer() {
   /**
    * Draws the image in the specified location. Is needed for redrawing images in the
    * infinite loop that updates the game visuals.
-   * 
+   *
    * @param img Object representing the image
    * @param x Integer representing the x-coordinate of where the image should be positioned in the canvas
    * @param y Integer representing the y-coordinate of where the image shoudl be positioned in the canvas
@@ -779,7 +780,7 @@ function openComputer() {
     displayComboLockHint();
     displayIncorrectMessage();
     displayDialogue();
-    displayMoonbucksDialogue();
+
 
     // console.log("x:", char_x_pos)
     // console.log("y:", char_y_pos)
@@ -801,7 +802,7 @@ function openComputer() {
   /* FUNCTIONS FOR CHARACTER MOVEMENT */
   /**
    * Moves the character by updating its position and determining which pose the character takes.
-   * 
+   *
    * A character is only allowed to move when it is in a room, within the bounds of a room, and
    * hint view is not displayed.
    */
@@ -814,7 +815,7 @@ function openComputer() {
         changeSteps(false, false, false);
       }
 
-      // move right 
+      // move right
       if (is_key_right && (char_x_pos + char_speed >= 0) && (char_x_pos + char_speed <= 636)) {
         char_x_pos += char_speed;
 
@@ -867,7 +868,7 @@ function openComputer() {
 
   /**
    * Changes the steps of the character to create an animation of the character walking.
-   * 
+   *
    * @param is_moving_right Boolean representing if the user wants to move the character right
    * @param is_moving_left Boolean representing if the user wants to move the character left
    * @param is_changing Boolean that's true if the character is changing directions horizontally
@@ -880,7 +881,7 @@ function openComputer() {
         if (is_right1) {
           // change char pic
           char_pic = char_right2;
-          
+
           is_right2 = true;
           is_right1 = false;
         } else if (is_right2) {
@@ -906,7 +907,7 @@ function openComputer() {
         if (is_right1) {
           // change char pic
           char_pic = char_right2;
-          
+
           is_right2 = true;
           is_right1 = false;
         } else if (is_right2) {
@@ -927,7 +928,7 @@ function openComputer() {
         if (is_left1) {
           // change char pic
           char_pic = char_left2;
-          
+
           is_left2 = true;
           is_left1 = false;
         } else if (is_left2) {
@@ -950,10 +951,10 @@ function openComputer() {
 
 
   /* RECORD KEY DOWNS (specifically character movements) */
-  /** 
+  /**
    * Determines which keys are being pressed and updates the boolean variables that
    * store which direction the character moves in.
-   * 
+   *
    * source for recording key downs: https://stackoverflow.com/questions/39806858/how-to-use-arrow-keys-to-move-object-smoothly-in-canvas
    * source for stopping scrolling when using arrow keys: https://stackoverflow.com/questions/40905098/how-to-stop-scrolling-while-html5-game-is-playing
    */
@@ -1007,9 +1008,9 @@ function openComputer() {
           is_alma_icon = true;
           is_alma = true;
         }
-        console.log(room);
+        console.log("alma's office");
         displayDialogue(room);
-        
+
       }
       if (room == cfk_scene) {
         if (!is_dialogue_box && !is_alma_icon && !is_alma) {
@@ -1020,7 +1021,6 @@ function openComputer() {
         }
         displayDialogue(room);
       }
-
       if (room == teamote_scene) {
         if (!is_dialogue_box && !is_alma_icon && !is_alma) {
           dialogue_idx = 0;
@@ -1028,10 +1028,23 @@ function openComputer() {
           is_alma_icon = true;
           is_alma = true;
         }
+        // console.log("why");
+        
+        displayDialogue(room);
+      }
+      if (room == uh_scene) {
+        if (!is_dialogue_box && !is_alma_icon && !is_alma) {
+          dialogue_idx = 0;
+          is_dialogue_box = true;
+          is_alma_icon = true;
+          is_alma = true;
+        }
+        console.log(room);
         displayDialogue(room);
       }
       if (room == moonbucks_interior_scene) {
         is_dialogue_box = true;
+        displayMoonbucksDialogue();
       }
   }
 
@@ -1053,6 +1066,18 @@ function openComputer() {
     } else {
       is_alma = false;
     }
+    if (scene_pic == teamote_scene) {
+      // console.log("what");
+      dialogueBox(teamote_scene);
+    } else {
+      is_alma = false;
+    }
+
+    if (scene_pic == uh_scene) {
+      dialogueBox(teamote_scene);
+    } else {
+      is_alma = false;
+    }
     if (scene_pic == pizza_scene && char_x_pos >= checkers_laptop_left_bound && char_x_pos <= checkers_laptop_right_bound
       && char_y_pos <= checkers_laptop_bottom_bound) {
         is_pizza_scene = false;
@@ -1067,7 +1092,7 @@ function openComputer() {
       // update scene images
       is_cfk_laptop_scene = true;
       is_cfk_scene = false;
-      scene_pic = is_cfk_laptop_scene; 
+      scene_pic = is_cfk_laptop_scene;
       // cfkScreen();
       changeIFrameDisplay("block", "cfk");
 
@@ -1138,10 +1163,10 @@ function openComputer() {
       is_bedroom_scene = false;
     }
 
-    if (scene_pic == livingroom_scene && char_x_pos >= computer_left_bound && 
+    if (scene_pic == livingroom_scene && char_x_pos >= computer_left_bound &&
       char_x_pos <= computer_right_bound && char_y_pos <= computer_bottom_bound &&
       char_y_pos >= computer_top_bound) {
-      
+
       if (!is_computer_unlocked) {
         // zoom into computer lock screen - switch out of living room scene
         scene_pic = computer_scene;
@@ -1158,7 +1183,7 @@ function openComputer() {
     if (scene_pic == kitchen_scene && char_x_pos >= combo_lock_left_bound &&
       char_x_pos <= combo_lock_right_bound && char_y_pos <= combo_lock_bottom_bound &&
       char_y_pos >= combo_lock_top_bound) {
-        
+
       if (!is_lock_unlocked) {
         // zoom into combination lock scene
         scene_pic = combo_lock_scene
@@ -1187,7 +1212,7 @@ function openComputer() {
     if (scene_pic == kitchen_scene && char_x_pos >= toaster_left_bound &&
       char_x_pos <= toaster_right_bound && char_y_pos <= toaster_bottom_bound &&
       char_y_pos >= toaster_top_bound) {
-      
+
       if (!is_lock_unlocked) {
         // zoom into toaster
         scene_pic = toaster_scene;
@@ -1212,7 +1237,7 @@ function openComputer() {
         // zoom into coffee maker (with coffee brewed)
         scene_pic = coffee_maker_complete_scene;
       }
-      
+
       // update scene images
       is_coffee_maker_scene = true;
       is_kitchen_scene = false;
@@ -1268,7 +1293,7 @@ function openComputer() {
       is_cfk_street_scene = true;
     }
 
-    // if character is currently in kitchen and within bounds of bottom door, enter living room 
+    // if character is currently in kitchen and within bounds of bottom door, enter living room
     if (scene_pic == moonbucks_street_scene && (char_x_pos <= 25 )){
       scene_pic = pizza_street_scene;
       current_room = pizza_street_scene;
@@ -1287,7 +1312,7 @@ function openComputer() {
       is_teamote_street_scene = true;
     }
 
-    // if character is currently in living room and within bounds of right door, enter bedroom 
+    // if character is currently in living room and within bounds of right door, enter bedroom
     if (scene_pic == pizza_street_scene && (char_x_pos >= 600)){
       scene_pic = moonbucks_street_scene;
       current_room = moonbucks_street_scene;
@@ -1397,7 +1422,7 @@ function openComputer() {
       hint_options[puzzle_num].style.left = game_canvas.offsetLeft + "px";
       hint_options[puzzle_num].style.top = game_canvas.offsetTop + "px";
     }
-    
+
     // update position of every element in 'tab_content' class (contains hint list and button)
     // hint_description contains a list of the elements
     for (let puzzle_hints = 0; puzzle_hints < hint_description.length; ++puzzle_hints) {
@@ -1415,7 +1440,7 @@ function openComputer() {
 
   /**
    * Listens for a user mouse-click.
-   * 
+   *
    * If the user clicks within the bounds of the hint icon while on a game scene, the hint view is opened.
    */
   game_canvas.addEventListener("mousedown", e => {
@@ -1431,7 +1456,6 @@ function openComputer() {
       changeHintVisibility("visible");
       is_hint_view_displayed = true;
     }
-
     if (is_almaoffice_scene && is_dialogue_box && is_alma_icon) {
       dialogue_idx += 1;
     }
@@ -1440,10 +1464,20 @@ function openComputer() {
       dialogue_idx += 1;
     }
 
+    if (is_teamote_scene && is_dialogue_box && is_alma_icon) {
+      console.log("inc teamote_scene");
+      dialogue_idx += 1;
+    }
+
+    if (is_uh_scene && is_dialogue_box && is_alma_icon) {
+      console.log("inc uh_scene");
+      dialogue_idx += 1;
+    }
+
     if (is_uh_scene && !is_email_iframe_view_displayed && mouse_x >= 400 && mouse_x <= 650 &&
       mouse_y >= 50 && mouse_y <= 450) {
         is_email_iframe_view_displayed = true;
-        // 
+        //
         changeIFrameDisplay("block", "email");
         is_uh_scene = false;
     }
@@ -1453,8 +1487,8 @@ function openComputer() {
       mouse_y >= login_laptop_top_bound && mouse_y <= login_laptop_bottom_bound) {
         is_login_iframe_view_displayed = true;
         is_uh_scene = false;
-        
-        // 
+
+        //
         changeIFrameDisplay("block", "login");
     }
 
@@ -1520,10 +1554,10 @@ function openComputer() {
   /**
    * Changes the visibility of hint elements to "visible" or "hidden", depending on the
    * passed in argument.
-   * 
+   *
    * If the argument passed is "visible", all hint elements become visible to the user; else,
    * all hint elements are hidden to the user and are not displayed on the HTML page.
-   * 
+   *
    * @param visibility String that represents the visibility for the hint elements; can be either
    *     "visible" or "hidden"
    */
@@ -1533,7 +1567,7 @@ function openComputer() {
     for (let puzzle_num = 0; puzzle_num < hint_options.length; ++puzzle_num) {
       hint_options[puzzle_num].style.visibility = visibility;
     }
-    
+
     // make every element in 'tab_content' class visible
     // hint_description contains a list of the elements
     for (let puzzle_hints = 0; puzzle_hints < hint_description.length; ++puzzle_hints) {
@@ -1556,7 +1590,7 @@ function openComputer() {
     else if (frame == "cfk") {
       sql_frame.style.display = display;
     }
-    
+
     if(display == "none") {
       game_canvas.style.display = "block";
     }
@@ -1569,16 +1603,16 @@ function openComputer() {
   /**
    * Displays the hints for the passed in puzzle name. Is called when a user selects the
    * tab with the passed in puzzle's name.
-   * 
+   *
    * Source for this function: https://www.w3schools.com/howto/howto_js_vertical_tabs.asp
-   * 
+   *
    * @param evt The event variable for the onclick listener
    * @param puzzle_name String representing the name of the puzzle whose tab was
    *     selected by the user
    */
   function viewHints(evt, puzzle_name) {
     let i, tabcontent, tablinks;
-    
+
     // don't display any tab content for any tabs
     tabcontent = document.getElementsByClassName("tabcontent");
     for (i = 0; i < tabcontent.length; i++) {
@@ -1602,7 +1636,7 @@ function openComputer() {
   /**
    * Adds a hint to the hint list in the hint view. Is called when the user clicks
    * the "Add a Hint" button in the hint view.
-   * 
+   *
    * @param evt The event variable for the onclick listener
    * @param puzzle_name String representing the name of the puzzle to add a hint for
    */
@@ -1621,7 +1655,7 @@ function openComputer() {
 
       // get the element that lists the puzzle hints
       let puzzle_hint_listing = document.getElementById(puzzle_name + "_hint_listing");
-    
+
       // get the new hint and increment the counter
       let new_hint = hints[puzzle_name][current_hint_location];
       current_hint_for_puzzle[puzzle_name]++;
@@ -1650,10 +1684,10 @@ function openComputer() {
   /* RECORD KEY DOWNS (i.e. for closing windows, hints, etc) */
   /**
    * Listens for a user key down.
-   * 
+   *
    * If a user presses one of the special key downs, the functionality defined for that
    * key down is executed.
-   * 
+   *
    * ESCAPE - closes out of zoomed in windows (including hints)
    * ENTER - submits the user input; can be a lock combination, computer password, or terminal command
    * BACKSPACE - removes a character from the user input
@@ -1664,7 +1698,7 @@ function openComputer() {
   email_frame.contentWindow.addEventListener("keydown", logKey);
   login_frame.contentWindow.addEventListener("keydown", logKey);
   function logKey(key) {
-    
+
     if (key.code === "Escape") {
       key.preventDefault();
 
@@ -1676,7 +1710,7 @@ function openComputer() {
         if (is_whiteboard_scene) {
           // zoom out of whiteboard
           scene_pic = current_room;
-          
+
           // need the following to prevent the character from triggering the zoom in again
           moveOutOfDetectionZone(whiteboard_left_bound, whiteboard_right_bound, whiteboard_bottom_bound, whiteboard_top_bound);
 
@@ -1693,7 +1727,7 @@ function openComputer() {
           current_room = cfk_scene;
           scene_pic = cfk_scene;
           moveOutOfDetectionZone(cfk_laptop_left_bound, cfk_laptop_right_bound, cfk_laptop_bottom_bound, cfk_laptop_top_bound);
-          // closeSQL();  
+          // closeSQL();
           changeIFrameDisplay("none", "cfk");
         }
         
@@ -1708,20 +1742,20 @@ function openComputer() {
           is_email_iframe_view_displayed = false;
           is_uh_scene = true;
           // current_room = uh_scene;
-        } 
+        }
         else if (is_login_iframe_view_displayed) {
           changeIFrameDisplay("none", "login");
           is_login_iframe_view_displayed = false;
           is_uh_scene = true;
           // current_room = uh_scene;
-        } 
+        }
         else if (is_uh_scene) {
           // zoom out of terminal
           scene_pic = current_room;
           console.log("here");
           // move out of the zone that triggered zoom in
           moveOutOfDetectionZone(table_left_bound, table_right_bound, table_bottom_bound, table_top_bound);
-        
+
           // update values
           is_uh_scene = false;
           if (current_room == teamote_scene) {
@@ -1823,7 +1857,7 @@ function openComputer() {
         computer_sound.play();
       }  // closing computer scene conditional
 
-      if (is_terminal_scene) {        
+      if (is_terminal_scene) {
         // delete a character
         user_input = user_input.substring(0, user_input.length - 1);
       }
@@ -1886,7 +1920,7 @@ function openComputer() {
   /**
    * Moves the character out of the area that would trigger the zoom in again. Is called
    * when trying to zoom out of a zoomed in image.
-   * 
+   *
    * @param left_bound The left bound of the trigger area for the zoomed in item
    * @param right_bound The right bound of the trigger area for the zoomed in item
    * @param bottom_bound The bottom bound of the trigger area for the zoomed in item
@@ -1912,7 +1946,7 @@ function openComputer() {
     }
   }
 
-  
+
   /**
    * Resets the game terminal into its original state (empty in root directory) by
    * clearing the terminal history and text.
@@ -1932,7 +1966,7 @@ function openComputer() {
 
       let output_line = document.getElementById("output" + (num_inputs - 1));
       game_terminal.removeChild(output_line);
-      
+
       --num_inputs;
     }
     input_number = num_inputs;
@@ -1943,7 +1977,7 @@ function openComputer() {
   /**
    * Updates the user input for combo lock, computer password, and terminal puzzles. Is
    * only updated when the keys the user presses are part of the allowed keys for that puzzle.
-   * 
+   *
    * @param key The keyboard key the user presses.
    */
   function updateUserInput(key) {
@@ -1990,7 +2024,7 @@ function openComputer() {
     }  // closing computer password conditional
 
     if (is_terminal_scene) {
-      
+
       if (key.key === "Shift" ||
           key.key === "Alt" ||
           key.key === "Meta" ||
@@ -2057,7 +2091,7 @@ function openComputer() {
         // update status of puzzle
         is_lock_unlocked = true;
         document.getElementById("makeToast").innerHTML = " &#10004 Make Toast &#127838";
-        
+
         // play sound effects
         lock_open_sound.play();
         toaster_pop_sound.play();
@@ -2162,7 +2196,7 @@ function openComputer() {
     }
 
   }
-  
+
 
   /**
    * Displays the hint for the combo lock problem. Is only shown when the combo lock
@@ -2177,7 +2211,7 @@ function openComputer() {
   }
 
   function displayMoonbucksDialogue() {
-    console.log("printing dialogue: " + dialogue_idx);
+    console.log("printing moonbucks dialogue: " + dialogue_idx);
     
     if (is_dialogue_box) {
       if (current_room === moonbucks_interior_scene && (is_moonbucks_interior_scene || is_receipt_scene || is_computer_scene || is_terminal_scene || is_winscp_scene) && dialogue_idx < dialogue["Moonbucks"].length) {
@@ -2216,6 +2250,7 @@ function openComputer() {
 
   function displayDialogue(room) {  // room needs to be a string
     if (scene_pic == almaoffice_scene && is_dialogue_box && is_alma_icon && dialogue_idx < dialogue["Office"].length) {
+      console.log("alma dialogue idx ", dialogue_idx);
       game_context.font = "20px courier";
       game_context.fillStyle = "white";
 
@@ -2230,19 +2265,51 @@ function openComputer() {
 
       if (!finished_cfk) {
         let dialogue_text = dialogue["CFK"][0];
-  
+
         for (let i=0; i<dialogue_text.length; ++i) {
           game_context.fillText(dialogue_text[i], 10, 420 + 25*i);
         }
       } else {
         let dialogue_text = dialogue["CFK"][1];
-  
+
         for (let i=0; i<dialogue_text.length; ++i) {
           game_context.fillText(dialogue_text[i], 10, 420 + 25*i);
         }
       }
-      
+    }
+    else if (login_solved && (scene_pic == teamote_scene || scene_pic == is_uh_scene) && 
+             is_dialogue_box && is_alma_icon) {
+      if (login_solved) {
+        let dialogue_text = dialogue["Phishing-Solved"][0];
+        for (let i=0; i<dialogue_text.length; ++i) {
+          game_context.fillText(dialogue_text[i], 10, 420 + 25*i);
+        }
+      }
+    }
+    else if (scene_pic == teamote_scene && is_dialogue_box && is_alma_icon) {
+      game_context.font = "20px courier";
+      game_context.fillStyle = "white";
 
+      console.log("teamote dialogue idx ", dialogue_idx);
+
+      dialogue_idx = dialogue_idx % dialogue["CoffeeEmoticon"].length;
+
+      let dialogue_text = dialogue["CoffeeEmoticon"][dialogue_idx];
+
+      for (let i=0; i<dialogue_text.length; ++i) {
+        game_context.fillText(dialogue_text[i], 10, 420 + 25*i);
+      }
+    } else if (scene_pic == uh_scene && is_dialogue_box && is_alma_icon) {
+      game_context.font = "20px courier";
+      game_context.fillStyle = "white";
+      
+      dialogue_idx = dialogue_idx % dialogue["CoffeeEmoticon-Laptop"].length;
+
+      let dialogue_text = dialogue["CoffeeEmoticon-Laptop"][dialogue_idx];
+
+      for (let i=0; i<dialogue_text.length; ++i) {
+        game_context.fillText(dialogue_text[i], 10, 420 + 25*i);
+      }
     } else {
       is_dialogue_box = false;
       is_alma_icon = false;
@@ -2256,7 +2323,7 @@ function openComputer() {
    * Only available when changing directory (cd) to a valid subdirectory or running
    * an executable that exists in the directory. Also available when listing out
    * the contents of a valid subdirectory.
-   * 
+   *
    * For the 'cd' and 'ls' commmands, the user does not need to begin writing out the
    * subdirectory name if there's only one subdirectory. For running an executable, the
    * user needs to begin writing out the executable name.
@@ -2271,7 +2338,7 @@ function openComputer() {
     // retrieve directories and executables of current dir
     subdirectories = directory[current_directory]["directories"];
     executables_in_current = directory[current_directory]["executables"];
-    
+
     if (command_to_process.length === 2) {  // can be ls or cd a directory
       if (command_to_process[0] === "cd" || command_to_process[0] === "ls") {
         // get work-in-progress directory name (i.e. what the user has typed out in the place of a dir)
@@ -2320,7 +2387,7 @@ function openComputer() {
    * Executes the input the user submits in terminal and outputs corresponding messages based
    * on the input the user submits. Is called after the user submits their input by pressing
    * the ENTER key.
-   * 
+   *
    * @return String representing the output message for the submitted user input in terminal
    */
   function executeUserInput() {
@@ -2338,7 +2405,7 @@ function openComputer() {
 
     // check commands
     if (command_to_process.length != 0) {  // only check commands if command exists
-      
+
       if (currently_in_executable) {  // execute executable
         output_text = executeExecutable(command_to_process);
       } else if (command_to_process[0] === "cd") {
@@ -2412,7 +2479,7 @@ function openComputer() {
    * - "cd" -- move into home directory
    * - "cd ../" -- move into previous directory
    * - "cd" + valid_subdirectory -- move into a subdirectory
-   * 
+   *
    * @return String representing the output message for the submitted user input in terminal;
    *     if inputted 'cd' command is valid, outputs an empty string; else, outputs an error message
    */
@@ -2584,7 +2651,7 @@ function openComputer() {
   /**
    * Executes the executable based on the user input command; only occurs if within the lineDolphin
    * executable.
-   * 
+   *
    * @param command_to_process An array containing the user input while in the executable
    * @return String representing the output message for the submitted user input in lineDolphin executable;
    *     if user input is invalid, outputs an error message
@@ -2607,7 +2674,7 @@ function openComputer() {
   /**
    * Determines what instruction text to output to the terminal while in the coffeeSenderRequest executable and
    * stores the responses the user inputs for the coffeeSenderRequest.
-   * 
+   *
    * @param command_to_process An array containing the user input while in the executable
    * @return String representing the instruction text for the user to respond to
    */
@@ -2649,7 +2716,7 @@ function openComputer() {
   /**
    * Verifies if the user's request for the coffeeRequestSender executable is valid and outputs
    * the corresponding message status or error.
-   * 
+   *
    * @return String representing the corresponding message status or error to the user's input
    */
   function processCoffeeRequest() {
@@ -2686,7 +2753,7 @@ function openComputer() {
    * - "stock" -- displays the fridge contents
    * - "lock" -- locks the fridge
    * - "unlock" -- unlocks the fridge
-   * 
+   *
    * @param command_to_process An array containing the user input while in the executable
    * @return String describing whether the command was executed or, if invalid, an error message
    */
@@ -2696,7 +2763,7 @@ function openComputer() {
     if (command_to_process.length === 1 && command_to_process[0] === "stock") {
       // display fridge contents
       output_text = "Current fridge contents: 1x baking soda. 6x bell pepper. 3x Golden Harbor Soup Dumplings. 1x half and half. 34x chicken eggs. 10x quail eggs.";
-    
+
     } else if (command_to_process.length === 1 && command_to_process[0] === "lock") {
       // check if fridge is locked
       if (!is_fridge_unlocked) {
@@ -2736,7 +2803,7 @@ function openComputer() {
 
   /**
    * Checks if the passed in executable exists in the current directory.
-   * 
+   *
    * @param executable_name String representing the name of the executable to check
    *     existence for
    * @return Boolean representing whether the passed in executable exists
@@ -2871,4 +2938,14 @@ function openComputer() {
       }
     }
 
-    
+  window.addEventListener('message', (e) => {
+    console.log(e.data);
+    if (e.data == "phishing email solve") {
+      email_solved = true;
+      login_frame.contentWindow.postMessage("phishing email solve", "*");
+      console.log("haha");
+    }
+    else if (e.data == "phishing login solve") {
+      login_solved = true;
+    }
+  });
