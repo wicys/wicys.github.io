@@ -20,15 +20,15 @@ let is_hint_view_displayed = false;
 
   const sql_frame = document.getElementById("sqliframe");
   const osint_frame = document.getElementById("osintiframe");
-  var cfk_done = false;
-  var finished_osint = false;
-  var finished_phishing = false;
-  var finished_network = false;
+  let finished_cfk = false;
+  let finished_osint = false;
+  let finished_phishing = false;
+  let finished_network = false;
 
-  var cfk_checkbox = false;
-  var osint_checkbox = false;
-  var network_checkbox = false;
-  var phishing_checkbox = false;
+  let cfk_checkbox = false;
+  let osint_checkbox = false;
+  let network_checkbox = false;
+  let phishing_checkbox = false;
 
   let dialogue_idx = 0;
 
@@ -488,6 +488,10 @@ function openComputer() {
       ["Welcome to CFK! Things are looking real empty in here.", "There's a computer over there! Let's go take a look!"],
       ["Good job on discovering CFK's case of fraud!", "Let's check out the other restaurants on Green Street."]
     ],
+    "OSINT": [
+      ["For such a popular pizza chain, it's so strange", "that nobody is in here.", "Let's take a look at the computer behind the counter"],
+      ["Wow! Now it makes sense why I've never", "seen anyone get pizza here!", "Those emails are great evidence for criminal activity."]
+    ], 
     "Moonbucks" : [
       ["Hiya Detective! Thanks for popping into Moonbucks today.", "There's been some really suspicious activities going", "on at Moonbucks and we need your help. Why don't you", "go get a drink before I explain?"],
       ["Hi, can I get a coffee?"],
@@ -675,15 +679,15 @@ function openComputer() {
    * Updates game visuals and stats.
    */
   function update() {
-    if (cfk_done && !cfk_checkbox) {
+    if (finished_cfk && !cfk_checkbox) {
       console.log("done cfk!!");
       cfk_checkbox = true;
-      document.getElementById("makeCoffee").innerHTML = " &#10004 CFK &#9749";
+      document.getElementById("makeCoffee").innerHTML = " &#10004 CFK &#127831";
     }
 
     if (finished_osint && !osint_checkbox) {
       osint_checkbox = true;
-      document.getElementById("unlockComputer").innerHTML = " &#10004 Checkers &#128187";
+      document.getElementById("unlockComputer").innerHTML = " &#10004 Checkers &#127829";
     }
 
     if (finished_phishing && !phishing_checkbox) {
@@ -1021,6 +1025,15 @@ function openComputer() {
         }
         displayDialogue(room);
       }
+      if (room == pizza_scene) {
+        if (!is_dialogue_box && !is_alma_icon && !is_alma) {
+          dialogue_idx = 0;
+          is_dialogue_box = true;
+          is_alma_icon = true;
+          is_alma = true;
+        }
+        displayDialogue(room);
+      }
       if (room == teamote_scene) {
         if (!is_dialogue_box && !is_alma_icon && !is_alma) {
           dialogue_idx = 0;
@@ -1063,6 +1076,11 @@ function openComputer() {
     }
     if (scene_pic == cfk_scene) {
       dialogueBox(cfk_scene);
+    } else {
+      is_alma = false;
+    }
+    if (scene_pic == pizza_scene) {
+      dialogueBox(pizza_scene);
     } else {
       is_alma = false;
     }
@@ -1152,96 +1170,6 @@ function openComputer() {
         }
       }
     }
-    
-    if (scene_pic == bedroom_scene && char_x_pos >= whiteboard_left_bound &&
-      char_x_pos <= whiteboard_right_bound && char_y_pos <= whiteboard_bottom_bound) {
-
-      // zoom into whiteboard - switch out of bedroom scene
-      scene_pic = whiteboard_scene;
-      // update scene images
-      is_whiteboard_scene = true;
-      is_bedroom_scene = false;
-    }
-
-    if (scene_pic == livingroom_scene && char_x_pos >= computer_left_bound &&
-      char_x_pos <= computer_right_bound && char_y_pos <= computer_bottom_bound &&
-      char_y_pos >= computer_top_bound) {
-
-      if (!is_computer_unlocked) {
-        // zoom into computer lock screen - switch out of living room scene
-        scene_pic = computer_scene;
-        is_computer_scene = true;
-        is_livingroom_scene = false;
-      } else {
-        // zoom into terminal scene if computer is unlocked
-        scene_pic = terminal_scene;
-        is_terminal_scene = true;
-        is_livingroom_scene = false;
-      }
-    }
-
-    if (scene_pic == kitchen_scene && char_x_pos >= combo_lock_left_bound &&
-      char_x_pos <= combo_lock_right_bound && char_y_pos <= combo_lock_bottom_bound &&
-      char_y_pos >= combo_lock_top_bound) {
-
-      if (!is_lock_unlocked) {
-        // zoom into combination lock scene
-        scene_pic = combo_lock_scene
-        is_combo_lock_scene = true;
-        is_kitchen_scene = false;
-      }
-    }
-
-    if (scene_pic == kitchen_scene && char_x_pos >= fridge_left_bound &&
-      char_x_pos <= fridge_right_bound && char_y_pos <= fridge_bottom_bound &&
-      char_y_pos >= fridge_top_bound) {
-
-      if (!is_fridge_unlocked) {
-        // zoom into locked fridge scene
-        scene_pic = fridge_scene;
-      } else {
-        // zoom into interior of fridge scene if fridge is unlocked
-        scene_pic = fridge_complete_scene;
-      }
-
-      // update scene images
-      is_fridge_scene = true;
-      is_kitchen_scene = false;
-    }
-
-    if (scene_pic == kitchen_scene && char_x_pos >= toaster_left_bound &&
-      char_x_pos <= toaster_right_bound && char_y_pos <= toaster_bottom_bound &&
-      char_y_pos >= toaster_top_bound) {
-
-      if (!is_lock_unlocked) {
-        // zoom into toaster
-        scene_pic = toaster_scene;
-      } else {
-        // zoom into toaster with toast
-        scene_pic = toaster_complete_scene;
-      }
-
-      // update scene images
-      is_toaster_scene = true;
-      is_kitchen_scene = false;
-    }
-
-    if (scene_pic == kitchen_scene && char_x_pos >= coffee_maker_left_bound &&
-      char_x_pos <= coffee_maker_right_bound && char_y_pos <= coffee_maker_bottom_bound &&
-      char_y_pos >= coffee_maker_top_bound) {
-
-      if (!is_coffee_brewed) {
-        // zoom into coffee maker (ready to brew)
-        scene_pic = coffee_maker_scene;
-      } else {
-        // zoom into coffee maker (with coffee brewed)
-        scene_pic = coffee_maker_complete_scene;
-      }
-
-      // update scene images
-      is_coffee_maker_scene = true;
-      is_kitchen_scene = false;
-    }
   }
 
 
@@ -1330,6 +1258,9 @@ function openComputer() {
       is_pizza_street_scene = false;
       is_pizza_scene = true;
       // openComputer();
+
+      is_alma_icon = false;
+      is_dialogue_box = false;
     }
 
     if (scene_pic == pizza_scene && ((char_x_pos >= 85 && char_x_pos <= 130) && char_y_pos >= 385)){
@@ -1340,6 +1271,10 @@ function openComputer() {
       char_y_pos = 350;
       is_pizza_street_scene = true;
       is_pizza_scene = false;
+
+      is_alma_icon = false;
+      is_dialogue_box = false;
+      is_alma = false;
     }
 
     if (scene_pic == cfk_street_scene && ((char_x_pos >= 166 && char_x_pos <= 280) && char_y_pos <= 300)){
@@ -1540,16 +1475,6 @@ function openComputer() {
     console.log("mouse x: ", mouse_x)
     console.log("mouse y: ", mouse_y)
   });
-
-  // email_frame.contentWindow.addEventListener("mousedown", e => {
-  //   console.log("clicked email");
-  //   console.log(email_frame.contentWindow['solved']);
-  //   if (is_email_iframe_view_displayed && email_frame.contentWindow['solved']) {
-  //     email_solved = true;
-  //     console.log("email solved");
-  //   }
-  // });
-
 
   /**
    * Changes the visibility of hint elements to "visible" or "hidden", depending on the
@@ -2276,6 +2201,23 @@ function openComputer() {
           game_context.fillText(dialogue_text[i], 10, 420 + 25*i);
         }
       }
+    } else if (scene_pic == pizza_scene && is_dialogue_box && is_alma_icon && dialogue_idx <= dialogue["OSINT"].length) {
+      game_context.font = "20px courier";
+      game_context.fillStyle = "white";
+
+      if (!finished_osint) {
+        let dialogue_text = dialogue["OSINT"][0];
+
+        for (let i=0; i<dialogue_text.length; ++i) {
+          game_context.fillText(dialogue_text[i], 10, 420 + 25*i);
+        }
+      } else {
+        let dialogue_text = dialogue["OSINT"][1];
+
+        for (let i=0; i<dialogue_text.length; ++i) {
+          game_context.fillText(dialogue_text[i], 10, 420 + 25*i);
+        }
+      }
     }
     else if (login_solved && (scene_pic == teamote_scene || scene_pic == is_uh_scene) && 
              is_dialogue_box && is_alma_icon) {
@@ -2719,33 +2661,33 @@ function openComputer() {
    *
    * @return String representing the corresponding message status or error to the user's input
    */
-  function processCoffeeRequest() {
-    let output_text = "";
+  // function processCoffeeRequest() {
+  //   let output_text = "";
 
-    if (current_host_name != "mycyba") {
-      output_text = "Error: could not reach specified host.";
-    } else if (current_port_name != "5000") {
-      output_text = "Error: host is reachable, but port number is incorrect.";
-    } else if (current_request_type != "get") {
-      output_text = "Error: not the expected request type.";
-    } else if (current_request_url === "mycyba/brewer/brew") {
-      output_text = "STATUS: BREW REQUEST RECEIVED. WILL PROCEED TO FULFILL REQUEST.";
+  //   if (current_host_name != "mycyba") {
+  //     output_text = "Error: could not reach specified host.";
+  //   } else if (current_port_name != "5000") {
+  //     output_text = "Error: host is reachable, but port number is incorrect.";
+  //   } else if (current_request_type != "get") {
+  //     output_text = "Error: not the expected request type.";
+  //   } else if (current_request_url === "mycyba/brewer/brew") {
+  //     output_text = "STATUS: BREW REQUEST RECEIVED. WILL PROCEED TO FULFILL REQUEST.";
 
-      // update puzzle status
-      is_coffee_brewed = true;
-      document.getElementById("makeCoffee").innerHTML = " &#10004 CFK &#9749";
+  //     // update puzzle status
+  //     is_coffee_brewed = true;
+  //     document.getElementById("makeCoffee").innerHTML = " &#10004 CFK &#9749";
 
-      // play sound effect
-      coffee_pour_sound.play();
+  //     // play sound effect
+  //     coffee_pour_sound.play();
 
-    } else if (current_request_url === "mycyba/brewer/status") {
-      output_text = "STATUS: OK, READY TO BREW";
-    } else {
-      output_text = "Error: valid request, but invalid URL.";
-    }
+  //   } else if (current_request_url === "mycyba/brewer/status") {
+  //     output_text = "STATUS: OK, READY TO BREW";
+  //   } else {
+  //     output_text = "Error: valid request, but invalid URL.";
+  //   }
 
-    return output_text;
-  }
+  //   return output_text;
+  // }
 
 
   /**
@@ -2910,15 +2852,20 @@ function openComputer() {
      */
     function displayCompleteGameScene() {
       // check to see if all tasks are completed
-      if (is_computer_unlocked && is_lock_unlocked && is_coffee_brewed && is_fridge_unlocked) {
+      if (finished_cfk && finished_network && finished_osint && finished_phishing) {
         // change scene
         scene_pic = end_scene;
         current_room = end_scene;
         is_end_scene = true;
-        is_bedroom_scene = false;
-        is_kitchen_scene = false;
-        is_livingroom_scene = false;
+        is_cfk_scene = false;
+        is_cfk_street_scene = false;
+        is_pizza_scene = false;
+        is_pizza_street_scene = false;
+        is_teamote_scene = false;
+        is_teamote_street_scene = false;
         is_terminal_scene = false;
+        is_moonbucks_interior_scene = false;
+        is_moonbucks_street_scene = false;
   
         // update html text to hide elements that are only to be displayed while game is ongoing
         // and display elements that are only to be displayed when game is completed
@@ -2944,8 +2891,27 @@ function openComputer() {
       email_solved = true;
       login_frame.contentWindow.postMessage("phishing email solve", "*");
       console.log("haha");
+      if (login_solved && email_solved) {
+        finished_phishing = true;
+        document.getElementById("openFridge").innerHTML = " &#10004 Teamote &#129483";
+      }
     }
     else if (e.data == "phishing login solve") {
       login_solved = true;
+      if (login_solved && email_solved) {
+        finished_phishing = true;
+        document.getElementById("openFridge").innerHTML = " &#10004 Teamote &#129483";
+      }
+    } else if (e.data == "cfk_solve") {
+      console.log("solved cfk!");
+      finished_cfk = true;
+      console.log("changing CFK to checkmark");
+      lock_open_sound.play();
+      document.getElementById("makeCoffee").innerHTML = "&#10004 CFK &#127831";
+    } else if (e.data=="osint_solve") {
+      console.log("finished OSINT!");
+      finished_osint = true;
+      lock_open_sound.play();
+      document.getElementById("unlockComputer").innerHTML = " &#10004 Checkers &#127829";
     }
   });
