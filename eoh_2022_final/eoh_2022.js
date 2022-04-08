@@ -50,8 +50,6 @@ let is_hint_view_displayed = false;
   let pizza_scene;
   let teamote_scene;
   let moonbucks_interior_scene;
-  let receipt_scene;
-
   let cfk_street_scene;
   let teamote_street_scene;
   let moonbucks_street_scene;
@@ -66,6 +64,9 @@ let is_hint_view_displayed = false;
   let coffee_maker_scene;
   let terminal_scene;
 
+  let receipt_scene;
+  let winscp_scene;
+
   // the following grouped variables store pics of completed task images
   let fridge_complete_scene;
   let toaster_complete_scene;
@@ -74,6 +75,12 @@ let is_hint_view_displayed = false;
   let alma;
   let dialogue_box;
   let alma_icon;
+
+  // moonbucks
+  let char_icon;
+  let moonbucks_employee_icon;
+  let moonbucks_employee;
+  let receipt_icon;
 
   let phishing_laptop;
   let computer;
@@ -277,17 +284,16 @@ let is_hint_view_displayed = false;
   let current_directory = "~";  // start in root directory
   let directory_archive = ["~"];
   let subdirectories, executables_in_current;  // stores content of current directory
-
+  
   let currently_in_executable = false;
   let executing_ls_command = false;
   let curr_executable_name = "";
-
-  let terminal_archive = [""];  // for up and down functionality to see terminal command history
+  
+  let terminal_archive = [""];
   let user_input = "";  // stores what the user types in the terminal
   let num_inputs = 0;  // used for creating dividers that store user input
   let input_number = num_inputs;  // used for moving between commands
 
-  // the directory tree structure - to access subdirectories and executables as needed
   // the directory tree structure - to access subdirectories and executables as needed
   const directory = {
     "~" : {
@@ -314,37 +320,38 @@ let is_hint_view_displayed = false;
   // stores text for when network traffic is captured from the lineDolphin executable
   let display_coffee_text = false;
   const coffee_text = ["Pinging CYBA brewer using saved configuration...",
-                        "Request sent:",
+                        "Request sent:", 
                         "GET mycyba/brewer/status CYBA/1.5",
-                        "Host: mycyba:5000",
+                        "Host: mycyba:5000", 
                         "Connection: keep-alive",
                         "...",
                         "CYBA/1.5 response received:",
                         "Host: mycyba",
                         "Port: 5000"
                         ];
-   // stores scan_ports.py script
-   let display_port_scan_code = false;
-   const port_scan_code = ["# command to run script: python scan_ports.py",
-                           "",
-                           "# code reference: https://inc0x0.com/tcp-ip-packets-introduction/tcp-ip-packets-4-creating-a-syn-port-scanner/",
-                           "",
-                           "import socket",
-                           "",
-                           "def scan(host, port):",
-                           "    \xa0\xa0s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)",
-                           "    \xa0\xa0try:",
-                           "        \xa0\xa0\xa0\xa0s.connect((host, port))",
-                           "        \xa0\xa0\xa0\xa0print('Port open: ' + str(port))",
-                           "        \xa0\xa0\xa0\xa0s.close()",
-                           "    \xa0\xa0except:",
-                           "        \xa0\xa0\xa0\xa0print('Port closed: ' + str(port))",
-                           "",
-                           "host = '10.10.10.1'",
-                           "for port in [21, 22, 53, 80, 443]:",
-                           "    \xa0\xa0scan(host, port)"
-                         ]
- 
+
+  // stores scan_ports.py script
+  let display_port_scan_code = false;
+  const port_scan_code = ["# command to run script: python scan_ports.py",
+                          "",
+                          "# code reference: https://inc0x0.com/tcp-ip-packets-introduction/tcp-ip-packets-4-creating-a-syn-port-scanner/",
+                          "",
+                          "import socket",
+                          "",
+                          "def scan(host, port):",
+                          "    \xa0\xa0s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)",
+                          "    \xa0\xa0try:",
+                          "        \xa0\xa0\xa0\xa0s.connect((host, port))",
+                          "        \xa0\xa0\xa0\xa0print('Port open: ' + str(port))",
+                          "        \xa0\xa0\xa0\xa0s.close()",
+                          "    \xa0\xa0except:",
+                          "        \xa0\xa0\xa0\xa0print('Port closed: ' + str(port))",
+                          "",
+                          "host = '10.10.10.1'",
+                          "for port in [21, 22, 53, 80, 443]:",
+                          "    \xa0\xa0scan(host, port)"
+                        ]
+
   let display_port_scan_output = false;
   const port_scan_output = ["port\xa0\xa0proto\xa0\xa0name\xa0\xa0\xa0\xa0state  ",
                             "----\xa0\xa0-----\xa0\xa0----\xa0\xa0\xa0\xa0-----  ",
@@ -357,9 +364,11 @@ let is_hint_view_displayed = false;
   
   let display_ports = false;
   const ports = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15",
-                "16","17","18","19","20","21","22","23","24","25","26","27","28","29","30",
-                "31","32","33","34","35","36","37","83","39","40","41","42","43","44","45",
-                "46","47","48","49","50","...","65535"];
+                 "16","17","18","19","20","21","22","23","24","25","26","27","28","29","30",
+                 "31","32","33","34","35","36","37","83","39","40","41","42","43","44","45",
+                 "46","47","48","49","50","...","65535"];
+  
+  let ourSide = false;
   
 
   function cfkScreen() {
@@ -508,13 +517,14 @@ function openComputer() {
       ["First, let's look at all the ports. In order to see them,", "run the command 'python show_ports.py' in the terminal."],
       ["Oh my! There's so many ports...we need to check to see if", "any of these are open! We can do this by executing a", "port scan by running the python script found in the", "computer files. Let's take a look at the script!"],
       ["Now that we have the script, let's look at it to see how", "we might be able to run it in the command line.", "Here's a hint: comments in lines of code often give", "important information about the details of the code."],
-      ["It looks like port 21 is open! Now let's check it out by", "connecting to port 21. To do that, we need to get in.", "Let's try loggin in to WinSCP as an ANONYMOUS user."],
-      ["Great job! You made it into port 21! Wondering how this", "works on a technical level?"],
+      ["It looks like port 21 is open! Now let's check it out by", "connecting to port 21. To do that, we need to get in.", "Let's try logging in to WinSCP as an ANONYMOUS user."],
+      // ["Great job! You made it into port 21! Wondering how this", "works on a technical level?"],
+      ["Great job! You made it into port 21!"],
       ["Well, if the server is configured to allow users to input", "'anonymous' for the username and password to connect with", "the FTP (File Transfer Protocol), you can sign", "in. This is called a clear-text sign-in protocol."],
       ["This is basically when passwords are stored in a raw", "format, which means your password can be viewed by lots", "of peoples like IT staff and staff who are managing", "code."],
       ["This can be really dangerous since people tend to reuse", "passwords a lot for their online presence, so make sure", "you are staying safe!"],
       ["Many servers allow limited access to anonymous users,", "but this server gives you full access. that's why open", "ports and lax security can be dangerous!"],
-      ["Now, try dragging their files over to your interface on", "the right."],
+      ["Now, try dragging their files over to your interface on", "the left."],
       ["Great job! You now have collected evidence that Moonbucks", "may have committed tax fraud. We can now hand these", "files over to the cops in order to help them with", "their investigation!"]
     ],
     "CoffeeEmoticon" : [
@@ -556,6 +566,8 @@ function openComputer() {
     kitchen_scene = loadBackground("images/new_new_kitchen.png");
     livingroom_scene = loadBackground("images/big-out-living.png");
     end_scene = loadBackground("images_2022/office_exterior.png");
+
+    // 2022 scenes
     almaoffice_scene= loadBackground("images_2022/office_interior.png");
     pizza_scene = loadBackground("images_2022/checkers_interior.png");
     cfk_scene = loadBackground("images_2022/kfc-interior.png");
@@ -569,13 +581,14 @@ function openComputer() {
     pizza_street_scene = loadBackground("images_2022/checkers_street.png")
     // load zoomed in puzzle images
     whiteboard_scene = loadBackground("images/whiteboard_w_lock_clue.png");
-    computer_scene = loadBackground("images/locked_computer.png");
+    computer_scene = loadBackground("images_2022/locked_computer.png");
     combo_lock_scene = loadBackground("images/combination_lock_with_numbers_on_cabinet_w_box1.png");
     fridge_scene = loadBackground("images/fridge_display_w_text.png");
     toaster_scene = loadBackground("images/zoomed_in_toaster_with_background.png");
     coffee_maker_scene = loadBackground("images/coffee.png");
-    terminal_scene = loadBackground("images/computer_screen.png");
+    terminal_scene = loadBackground("images_2022/computer_screen.png");
     receipt_scene = loadBackground("images_2022/receipt_zoomed_in.png");
+    winscp_scene = loadBackground("images_2022/computer_w_winscp.png");
 
     // load completed puzzle images
     fridge_complete_scene = loadBackground("images/fridge_completed.png");
@@ -592,10 +605,27 @@ function openComputer() {
     dialogue_box = loadCharacter("images_2022/dialogue.png");
     phishing_laptop = loadCharacter("images_2022/alaptop.png", 538, 259, 16, 16);
     computer = loadCharacter("images_2022/blank_computer_monitor.png");
+    char_icon = loadCharacter("images_2022/cat_icon.png")
+    moonbucks_employee_icon = loadCharacter("images_2022/employee.png")
+    moonbucks_employee = loadCharacter("images_2022/employee_50x50.png")
+    receipt_icon = loadCharacter("images_2022/receipt_icon.png")
     // initialize values for starting game scene
     scene_pic = start_scene;
     current_room = start_scene;
     char_pic = char_left1;
+
+    // winscp variables
+    file_pic = new Image();
+    file_pic.src = "images_2022/file3.png";
+    file2_pic = new Image();
+    file2_pic.src = "images_2022/file2.png";
+    currDrag=0;
+    dragX=-1;
+    dragY=-1;
+    fileX = 355;
+    file2X = 355;
+    fileY = 205;
+    file2Y = 235;
 
     setInterval(update, 20)  // infinite loop, runs every 2 ms
 
@@ -698,6 +728,7 @@ function openComputer() {
     if (finished_network && !network_checkbox) {
       network_checkbox = true;
       document.getElementById("makeToast").innerHTML = " &#10004 Moonbucks &#9749";
+
     }
     // step 1 - clear the canvas
     clearCanvas();
@@ -731,6 +762,12 @@ function openComputer() {
     // only display scrolling text box when terminal is open
     // source: https://stackoverflow.com/questions/21070101/show-hide-div-using-javascript
     if (is_terminal_scene) {
+      if (is_dialogue_box) {
+        game_terminal.style.height = 347 + "px";
+      } else {
+        game_terminal.style.height = 377 + "px";
+      }
+
       game_terminal.style.visibility = "visible";
     } else {
       game_terminal.style.visibility = "hidden";
@@ -746,10 +783,35 @@ function openComputer() {
         // redraw character only if it is in a room (i.e. not a puzzle scene)
     if (scene_pic == moonbucks_interior_scene) {
       draw(computer, 218, 280, 30, 30);
+      draw(moonbucks_employee, 310, 63, 50, 50);
+    } else if (scene_pic == computer_scene && has_ordered_drink) {
+      draw(receipt_icon, 545, 14, 150, 201);
     }
     
     if (scene_pic == moonbucks_interior_scene || scene_pic == moonbucks_street_scene) {
       draw(char_pic, char_x_pos, char_y_pos, 64, 64);
+    }
+
+    if (is_winscp_scene) {
+      console.log("WINSCP");
+      // draw(winscp_scene, 50, 60, 600, 377);
+      
+      if(currDrag==0){
+      draw(file_pic, fileX, fileY, 120, 30);
+      draw(file2_pic, file2X, file2Y, 120, 30);
+      }
+      else if(currDrag==1){
+        // game_canvas.globalAlpha = 0.5;
+        draw(file_pic, dragX, dragY, 120, 30);
+        // game_canvas.globalAlpha = 1.0;
+        draw(file2_pic, file2X, file2Y, 120, 30);
+      }
+      else{
+        draw(file_pic, fileX, fileY, 120, 30);
+        // game_canvas.globalAlpha = 0.5;
+        draw(file2_pic, dragX, dragY, 120, 30);
+        // game_canvas.globalAlpha = 1.0;
+      }
     }
 
     if (scene_pic == almaoffice_scene) {
@@ -762,21 +824,25 @@ function openComputer() {
     }
 
     // redraw hint only if not on starting or ending scene
-    if (!is_start_scene && !is_end_scene) {
-      draw(hint_icon, hint_x_pos, hint_y_pos, 32, 32);
-    }
+    // if (!is_start_scene && !is_end_scene) {
+    //   draw(hint_icon, hint_x_pos, hint_y_pos, 32, 32);
+    // }
 
     if (is_teamote_scene) {
       draw(phishing_laptop, 538, 259, 16, 16);
     }
 
-  if (is_dialogue_box) {
-    draw(dialogue_box, 0, 400, 700, 100);
+    if (is_dialogue_box) {
+      draw(dialogue_box, 0, 400, 700, 100);
 
-    if (is_alma_icon) {
-      draw(alma_icon, 650, 450, 50, 50);
+      if (is_alma_icon) {
+        draw(alma_icon, 650, 450, 50, 50);
+      } else if (is_char_icon) {
+        draw(char_icon, 650, 450, 50, 50);
+      } else if (is_moonbucks_employee_icon) {
+        draw(moonbucks_employee_icon, 650, 450, 50, 50);
+      }
     }
-  }
     
     // display text (needs to be after scene pics are drawn in order to be seen)
     displayUserInput();
@@ -846,6 +912,7 @@ function openComputer() {
 
         changeSteps(false, false, false);
       }
+
       // move right 
       if (is_key_right && (char_x_pos + char_speed >= 205) && (char_x_pos + char_speed <= 430)) {
         char_x_pos += char_speed;
@@ -1057,7 +1124,7 @@ function openComputer() {
       }
       if (room == moonbucks_interior_scene) {
         is_dialogue_box = true;
-        // displayMoonbucksDialogue();
+        console.log("set to true!")
       }
   }
 
@@ -1128,6 +1195,10 @@ function openComputer() {
     if (scene_pic == moonbucks_interior_scene && char_x_pos >= cashier_left_bound &&
       char_x_pos <= cashier_right_bound && char_y_pos <= cashier_bottom_bound && char_y_pos >= cashier_top_bound) {
 
+      if (dialogue_idx === 0) {
+        dialogue_idx += 1;
+      }
+
       // begin character dialogue
       if (dialogue_idx === 1) {
         dialogueBox(moonbucks_interior_scene);
@@ -1153,18 +1224,17 @@ function openComputer() {
           is_terminal_scene = true;
           is_computer_scene = false;
           is_moonbucks_interior_scene = false;
-        } else if (!has_logged_into_winscp) {  // TODO: change accordingly
+        // } else if (!has_logged_into_winscp) {
+        //   // zoom into terminal scene if computer is unlocked
+        //   console.log("ALWAYS NOT LOGGED IN")
+        //   scene_pic = winscp_scene;
+        //   is_winscp_scene = true;
+        //   is_terminal_scene = false;
+        //   is_computer_scene = false;
+        //   is_moonbucks_interior_scene = false;
+        } else if (!has_dragged_files) {
           // zoom into terminal scene if computer is unlocked
-          console.log("ALWAYS NOT LOGGED IN")
-          scene_pic = terminal_scene;
-          is_winscp_scene = true;
-          is_terminal_scene = false;
-          is_computer_scene = false;
-          is_moonbucks_interior_scene = false;
-        } else if (!has_dragged_files) {  // TODO: change accordingly
-          // zoom into terminal scene if computer is unlocked
-          console.log("ALMWAYS NOT DRAGGED")
-          scene_pic = terminal_scene;
+          scene_pic = winscp_scene;
           is_winscp_scene = true;
           is_moonbucks_interior_scene = false;
         }
@@ -1327,6 +1397,8 @@ function openComputer() {
       char_y_pos = 332;
       is_moonbucks_interior_scene = false;
       is_moonbucks_street_scene = true;
+
+      dialogue_idx = 0;
     }
 
     // if character is currently in moonbucks street view and within bounds of top door, enter moonbucks
@@ -1337,6 +1409,8 @@ function openComputer() {
       char_y_pos = 345;
       is_moonbucks_interior_scene = true;
       is_moonbucks_street_scene = false;
+
+      console.log("Entering moonbucks");
 
       // immediately begin dialogue upon entering Moonbucks
       dialogueBox(moonbucks_interior_scene);
@@ -1384,13 +1458,14 @@ function openComputer() {
     let mouse_x = e.pageX - game_canvas.offsetLeft;
     let mouse_y = e.pageY - game_canvas.offsetTop;
 
-    // if user clicks on hint icon while in a game scene, open up hint view
-    if (!is_start_scene && !is_end_scene && !is_hint_view_displayed && mouse_x >= hint_left_bound && mouse_x <= hint_right_bound &&
-        mouse_y >= hint_top_bound && mouse_y <= hint_bottom_bound) {
+    // // if user clicks on hint icon while in a game scene, open up hint view
+    // if (!is_start_scene && !is_end_scene && !is_hint_view_displayed && mouse_x >= hint_left_bound && mouse_x <= hint_right_bound &&
+    //     mouse_y >= hint_top_bound && mouse_y <= hint_bottom_bound) {
 
-      changeHintVisibility("visible");
-      is_hint_view_displayed = true;
-    }
+    //   changeHintVisibility("visible");
+    //   is_hint_view_displayed = true;
+    // }
+
     if (is_almaoffice_scene && is_dialogue_box && is_alma_icon) {
       dialogue_idx += 1;
     }
@@ -1429,6 +1504,7 @@ function openComputer() {
 
     // network puzzle 
     if ((is_moonbucks_interior_scene || is_receipt_scene || is_computer_scene || is_terminal_scene || is_winscp_scene)) {
+
       if (is_dialogue_box) {
         // manually syncing the dialogue - decide when dialogue box disappears (i.e. waiting for user to perform the task)
         // key mapping what we're waiting for the user to do after each index:
@@ -1440,7 +1516,7 @@ function openComputer() {
         // - 15: log into WinSCP
         // - 21: drag the files over in WinSCP
         if (dialogue_idx === 0 || dialogue_idx === 6 || dialogue_idx === 12
-            || dialogue_idx === 13 || dialogue_idx === 14 || dialogue_idx === 15
+            || dialogue_idx === 13 || dialogue_idx === 14 /*|| dialogue_idx === 15*/
             || dialogue_idx === 21) {
           is_dialogue_box = false;
           is_alma_icon = false;
@@ -1459,15 +1535,41 @@ function openComputer() {
           scene_pic = moonbucks_interior_scene;
           is_moonbucks_interior_scene = true;
           is_receipt_scene = false;
+          has_ordered_drink = true;
 
           // manually move the cat to the table with computer
           char_x_pos = 236;
           char_y_pos = 261;
+        } else if (dialogue_idx === 15) {
+          dialogue_idx = 16;
         } else if (dialogue_idx === 16) {
-          scene_pic = terminal_scene;
+          scene_pic = winscp_scene;
           is_winscp_scene = true;
           is_terminal_scene = false;
+          is_computer_scene = false;
+        } else if (dialogue_idx === 17) {
+          dialogue_idx = 21;
+        } else if (dialogue_idx === 23) {
+          scene_pic = moonbucks_interior_scene;
+          is_moonbucks_interior_scene = true;
+
+          is_winscp_scene = false;
+          is_terminal_scene = false;
+          is_computer_scene = false;
         }
+      }
+    }
+
+    if(is_winscp_scene){
+      if(mouse_x >= fileX && mouse_x <= fileX+120 && mouse_y>=fileY && mouse_y <= fileY + 30){
+        currDrag=1;
+        dragX=fileX;
+        dragY=fileY;
+      }
+      if(mouse_x >= file2X && mouse_x <= file2X+120 && mouse_y>=file2Y && mouse_y <= file2Y + 30){
+        currDrag=2;
+        dragX=file2X;
+        dragY=file2Y;
       }
     }
 
@@ -1475,6 +1577,202 @@ function openComputer() {
     console.log("mouse x: ", mouse_x)
     console.log("mouse y: ", mouse_y)
   });
+
+  game_canvas.addEventListener("mouseup", e => {
+    if (current_room === moonbucks_interior_scene) {
+      if(currDrag==1){
+        currDrag=0;
+        if(dragX<360 & fileX>320){
+          fileX = 50;
+          if(file2X<320){
+            fileY = 370;
+            ourSide=true;
+            has_dragged_files = true;
+            finished_network = true;
+            dialogue_idx = 22;  // hardcode to this dialogue
+            dialogueBox(moonbucks_interior_scene);
+            console.log("DONE!!!!")
+          }
+          else{
+            file2Y = 205;
+            fileY = 340;
+          }
+          clearCanvas();
+          draw(winscp_scene, 0, 0, 700, 500);
+          draw(file_pic, fileX, fileY, 120, 30); 
+          draw(file2_pic, file2X, file2Y, 120, 30); 
+        }
+        else if(dragX>=360 & fileX<320){
+          if(file2X>320){
+            fileY=235;
+          }
+          else{
+            file2Y=340;
+            fileY=205;
+          }
+          fileX=355;
+          clearCanvas();
+          draw(winscp_scene, 0, 0, 700, 500);
+          draw(file_pic, fileX, fileY, 120, 30); 
+          draw(file2_pic, file2X, file2Y, 120, 30); 
+        }
+        else{
+        }
+      }
+      if(currDrag==2){
+        currDrag=0;
+        if(dragX<360 & file2X>320){
+          file2X = 50;
+          if(fileX<320){
+            file2Y = 370;
+            ourSide=true;
+            has_dragged_files = true;
+            finished_network = true;
+            dialogue_idx = 22;  // hardcode to this dialogue
+            dialogueBox(moonbucks_interior_scene);
+            console.log("DONE!!!")
+          }
+          else{
+            fileY = 205;
+            file2Y = 340;
+          }
+          clearCanvas();
+          draw(winscp_scene, 0, 0, 700, 500);
+          draw(file_pic, fileX, fileY, 120, 30); 
+          draw(file2_pic, file2X, file2Y, 120, 30); 
+        }
+        else if(dragX>=360 & file2X<320){
+          if(fileX>320){
+            file2Y=235;
+          }
+          else{
+            fileY=340;
+            file2Y=205;
+          }
+          file2X=355;
+          clearCanvas();
+          draw(winscp_scene, 0, 0, 700, 500);
+          draw(file_pic, fileX, fileY, 120, 30); 
+          draw(file2_pic, file2X, file2Y, 120, 30); 
+        }
+        else{
+        }
+      }
+    }
+})
+
+game_canvas.addEventListener("mouseout", e => {
+  if (current_room === moonbucks_interior_scene) {
+    if(currDrag==1){
+        currDrag=0;
+        if(dragX<360 & fileX>320){
+          fileX = 50;
+          if(file2X<320){
+            fileY = 370;
+            ourSide=true;
+            has_dragged_files = true;
+            finished_network = true;
+            dialogue_idx = 22;  // hardcode to this dialogue
+            dialogueBox(moonbucks_interior_scene);
+            console.log("DONE!!!!")
+          }
+          else{
+            file2Y = 205;
+            fileY = 340;
+          }
+          clearCanvas();
+          draw(winscp_scene, 0, 0, 700, 500);
+          draw(file_pic, fileX, fileY, 120, 30); 
+          draw(file2_pic, file2X, file2Y, 120, 30); 
+        }
+        else if(dragX>=360 & fileX<320){
+          if(file2X>320){
+            fileY=235;
+          }
+          else{
+            file2Y=340;
+            fileY=205;
+          }
+          fileX=355;
+          clearCanvas();
+          draw(winscp_scene, 0, 0, 700, 500);
+          draw(file_pic, fileX, fileY, 120, 30); 
+          draw(file2_pic, file2X, file2Y, 120, 30); 
+        }
+        else{
+        }
+      }
+      if(currDrag==2){
+        currDrag=0;
+        if(dragX<360 & file2X>320){
+          file2X = 50;
+          if(fileX<320){
+            file2Y = 370;
+            ourSide=true;
+            has_dragged_files = true;
+            finished_network = true;
+            dialogue_idx = 22;  // hardcode to this dialogue
+            dialogueBox(moonbucks_interior_scene);
+            console.log("DONE!!!")
+          }
+          else{
+            fileY = 205;
+            file2Y = 340;
+          }
+          clearCanvas();
+          draw(winscp_scene, 0, 0, 700, 500);
+          draw(file_pic, fileX, fileY, 120, 30); 
+          draw(file2_pic, file2X, file2Y, 120, 30); 
+        }
+        else if(dragX>=360 & file2X<320){
+          if(fileX>320){
+            file2Y=235;
+          }
+          else{
+            fileY=340;
+            file2Y=205;
+          }
+          file2X=355;
+          clearCanvas();
+          draw(winscp_scene, 0, 0, 700, 500);
+          draw(file_pic, fileX, fileY, 120, 30); 
+          draw(file2_pic, file2X, file2Y, 120, 30); 
+        }
+        else{
+        }
+      }
+    }
+  })
+
+game_canvas.addEventListener("mousemove", e => {
+  if (current_room === moonbucks_interior_scene) {
+      // if the drag flag is set, clear the canvas and draw the image
+      if(currDrag==1){
+        let mouse_x = e.pageX - game_canvas.offsetLeft;
+        let mouse_y = e.pageY - game_canvas.offsetTop;
+          clearCanvas();
+          draw(winscp_scene, 0, 0, 700, 500);
+          dragX=mouse_x-50;
+          dragY=mouse_y-50;
+          // game_canvas.globalAlpha = 0.5;
+          draw(file_pic, fileX, fileY,120,30); 
+          // game_canvas.globalAlpha = 1.0;
+          draw(file2_pic, file2X, file2Y,120,30); 
+      }
+      if(currDrag==2){
+        let mouse_x = e.pageX - game_canvas.offsetLeft;
+        let mouse_y = e.pageY - game_canvas.offsetTop;
+          clearCanvas();
+          draw(winscp_scene, 0, 0, 700, 500);
+          dragX=mouse_x-50;
+          dragY=mouse_y-50;
+          draw(file_pic, fileX, fileY,120,30); 
+          // game_canvas.globalAlpha = 0.5;
+          draw(file2_pic, file2X, file2Y,120,30); 
+          // game_canvas.globalAlpha = 1.0;
+      }
+    }
+})
 
   /**
    * Changes the visibility of hint elements to "visible" or "hidden", depending on the
@@ -1687,6 +1985,7 @@ function openComputer() {
             is_teamote_scene = true;
           }
         }
+        
         if (is_computer_scene) {  
           // zoom out of computer
           scene_pic = current_room;
@@ -1782,7 +2081,7 @@ function openComputer() {
         computer_sound.play();
       }  // closing computer scene conditional
 
-      if (is_terminal_scene) {
+      if (is_terminal_scene) {        
         // delete a character
         user_input = user_input.substring(0, user_input.length - 1);
       }
@@ -1799,41 +2098,40 @@ function openComputer() {
 
         // play bgm
         bgm.play();
+      } else if (is_terminal_scene) {
+
+        // execute user input and display the output into terminal
+        let terminal_output = executeUserInput();
+        displayTerminalOutput(terminal_output);
+
+        // remove cursor from current line, so it'll only be displayed on the next line
+        // source: https://developer.mozilla.org/en-US/docs/Web/API/Node/lastChild
+        let current_divider = document.getElementById("input" + num_inputs);
+        current_divider.removeChild(current_divider.lastChild);
+
+        // create new divider to hold next line of user input
+        // source1: https://www.encodedna.com/javascript/append-or-add-text-to-div-using-javascript.htm
+        // source2: https://developer.mozilla.org/en-US/docs/Web/API/Element/append
+        let new_divider = document.createElement("div");
+        ++num_inputs;
+        new_divider.id = "input" + num_inputs;
+
+        // display current directory for new line
+        let directory_display = getFullDirectory()
+        let text = document.createTextNode(directory_display);
+        new_divider.appendChild(text);
+        
+        game_terminal.append(new_divider);
+        game_terminal.scrollTop = game_terminal.scrollHeight;  // scroll down to show the newly added element/line
+
+        // reset user input text
+        user_input = "";
+        terminal_archive.push(user_input);
+        input_number = num_inputs;
+
+      } else {
+        checkPasswordCorrectness();
       }
-    }
-    else if (is_terminal_scene) {
-
-      // execute user input and display the output into terminal
-      let terminal_output = executeUserInput();
-      displayTerminalOutput(terminal_output);
-
-      // remove cursor from current line, so it'll only be displayed on the next line
-      // source: https://developer.mozilla.org/en-US/docs/Web/API/Node/lastChild
-      let current_divider = document.getElementById("input" + num_inputs);
-      current_divider.removeChild(current_divider.lastChild);
-
-      // create new divider to hold next line of user input
-      // source1: https://www.encodedna.com/javascript/append-or-add-text-to-div-using-javascript.htm
-      // source2: https://developer.mozilla.org/en-US/docs/Web/API/Element/append
-      let new_divider = document.createElement("div");
-      ++num_inputs;
-      new_divider.id = "input" + num_inputs;
-
-      // display current directory for new line
-      let directory_display = getFullDirectory()
-      let text = document.createTextNode(directory_display);
-      new_divider.appendChild(text);
-      
-      game_terminal.append(new_divider);
-      game_terminal.scrollTop = game_terminal.scrollHeight;  // scroll down to show the newly added element/line
-
-      // reset user input text
-      user_input = "";
-      terminal_archive.push(user_input);
-      input_number = num_inputs;
-
-    } else {
-      checkPasswordCorrectness();
     }
 
     // check for key downs for alphanumeric characters
@@ -1891,7 +2189,7 @@ function openComputer() {
 
       let output_line = document.getElementById("output" + (num_inputs - 1));
       game_terminal.removeChild(output_line);
-
+      
       --num_inputs;
     }
     input_number = num_inputs;
@@ -1949,7 +2247,7 @@ function openComputer() {
     }  // closing computer password conditional
 
     if (is_terminal_scene) {
-
+      
       if (key.key === "Shift" ||
           key.key === "Alt" ||
           key.key === "Meta" ||
@@ -2040,7 +2338,7 @@ function openComputer() {
 
         // update status of computer => unlocked
         has_logged_into_wifi = true;
-        document.getElementById("unlockComputer").innerHTML = " &#10004 Unlock the Computer &#128187";
+        dialogue_idx = 7;  // hardcode to this dialogue
 
         // display dialogue box
         dialogueBox(moonbucks_interior_scene);
@@ -2136,39 +2434,42 @@ function openComputer() {
   }
 
   function displayMoonbucksDialogue() {
-    console.log("printing moonbucks dialogue: " + dialogue_idx);
     
     if (is_dialogue_box) {
-      if (current_room == moonbucks_interior_scene && (is_moonbucks_interior_scene || is_receipt_scene || is_computer_scene || is_terminal_scene || is_winscp_scene) && dialogue_idx < dialogue["Moonbucks"].length) {
-        // display icons - changing the icons of who is speaking
-        if (dialogue_idx === 1 ) {
-          is_alma_icon = false;
-          is_char_icon = true;
-          is_moonbucks_employee_icon = false;
-        } else if (dialogue_idx === 2 || dialogue_idx === 5) {
-          is_alma_icon = false;
-          is_char_icon = false;
-          is_moonbucks_employee_icon = true;
+      if (current_room === moonbucks_interior_scene) {
+        if ((is_moonbucks_interior_scene || is_receipt_scene || is_computer_scene || is_terminal_scene || is_winscp_scene) && dialogue_idx < dialogue["Moonbucks"].length) {
+          console.log("printing dialogue: " + dialogue_idx);
+          
+          // display icons - changing the icons of who is speaking
+          if (dialogue_idx === 1 ) {
+            is_alma_icon = false;
+            is_char_icon = true;
+            is_moonbucks_employee_icon = false;
+          } else if (dialogue_idx === 2 || dialogue_idx === 5) {
+            is_alma_icon = false;
+            is_char_icon = false;
+            is_moonbucks_employee_icon = true;
+          } else {
+            is_alma_icon = true;
+            is_char_icon = false;
+            is_moonbucks_employee_icon = false;
+          }
+
+          // display text
+          game_context.font = "20px courier";
+          game_context.fillStyle = "white";
+
+          let dialogue_text = dialogue["Moonbucks"][dialogue_idx];
+
+          for (let i=0; i<dialogue_text.length; ++i) {
+            game_context.fillText(dialogue_text[i], 10, 420 + 25*i);
+          }
         } else {
-          is_alma_icon = true;
+          is_dialogue_box = false;
+          is_alma_icon = false;
           is_char_icon = false;
           is_moonbucks_employee_icon = false;
         }
-
-        // display text
-        game_context.font = "20px courier";
-        game_context.fillStyle = "white";
-
-        let dialogue_text = dialogue["Moonbucks"][dialogue_idx];
-
-        for (let i=0; i<dialogue_text.length; ++i) {
-          game_context.fillText(dialogue_text[i], 10, 420 + 25*i);
-        }
-      } else {
-        is_dialogue_box = false;
-        is_alma_icon = false;
-        is_char_icon = false;
-        is_moonbucks_employee_icon = false;
       }
     }
   }
@@ -2252,7 +2553,7 @@ function openComputer() {
       for (let i=0; i<dialogue_text.length; ++i) {
         game_context.fillText(dialogue_text[i], 10, 420 + 25*i);
       }
-    } else {
+    } else if (current_room != moonbucks_interior_scene) {
       is_dialogue_box = false;
       is_alma_icon = false;
     }
@@ -2265,7 +2566,7 @@ function openComputer() {
    * Only available when changing directory (cd) to a valid subdirectory or running
    * an executable that exists in the directory. Also available when listing out
    * the contents of a valid subdirectory.
-   *
+   * 
    * For the 'cd' and 'ls' commmands, the user does not need to begin writing out the
    * subdirectory name if there's only one subdirectory. For running an executable, the
    * user needs to begin writing out the executable name.
@@ -2280,7 +2581,7 @@ function openComputer() {
     // retrieve directories and executables of current dir
     subdirectories = directory[current_directory]["directories"];
     executables_in_current = directory[current_directory]["executables"];
-
+    
     if (command_to_process.length === 2) {  // can be ls or cd a directory
       if (command_to_process[0] === "cd" || command_to_process[0] === "ls") {
         // get work-in-progress directory name (i.e. what the user has typed out in the place of a dir)
@@ -2325,11 +2626,11 @@ function openComputer() {
   }
 
 
- /**
+  /**
    * Executes the input the user submits in terminal and outputs corresponding messages based
    * on the input the user submits. Is called after the user submits their input by pressing
    * the ENTER key.
-   *
+   * 
    * @return String representing the output message for the submitted user input in terminal
    */
   function executeUserInput() {
@@ -2347,7 +2648,7 @@ function openComputer() {
 
     // check commands
     if (command_to_process.length != 0) {  // only check commands if command exists
-
+      
       if (currently_in_executable) {  // execute executable
         output_text = executeExecutable(command_to_process);
       } else if (command_to_process[0] === "cd") {
@@ -2385,9 +2686,6 @@ function openComputer() {
           has_ran_show_ports = true;
           has_viewed_port_scan = true;
           has_ran_port_scan = true;
-
-          // temporarily end of puzzle
-          finished_network = true;
           dialogue_idx = 15;  // hardcode to this dialogue
           dialogueBox(moonbucks_interior_scene);
         } else {
@@ -2418,185 +2716,185 @@ function openComputer() {
   }
 
 
-    /**
+  /**
    * Executes the terminal change directory ('cd') command. Is able to execute the following
    * 'cd' commands:
    * - "cd" -- move into home directory
    * - "cd ../" -- move into previous directory
    * - "cd" + valid_subdirectory -- move into a subdirectory
-   *
+   * 
    * @return String representing the output message for the submitted user input in terminal;
    *     if inputted 'cd' command is valid, outputs an empty string; else, outputs an error message
    */
-     function executeCdCommand(command_to_process) {
-      let output_text = "";
-  
-      if (command_to_process.length === 1) {  // "cd"
-  
-        // move to home directory if not already in it
-        if (current_directory != "~") {
-          current_directory = "~";
-          directory_archive = ["~"];
-        }
-  
-      } else if (command_to_process.length === 2) {  // "cd" + other command
-  
-        if (command_to_process[1] == "../") {  // "cd ../"
-          if (current_directory != "~" && directory_archive.length != 1) {
-            // move to parent/previous directory
-            directory_archive.pop();
-            current_directory = directory_archive[directory_archive.length - 1];
-          }
-        } else {  // check if it's a valid directory (i.e. if the user wants to move into a directory)
-          let valid_directory = false;
-  
-          for (let s = 0; s < subdirectories.length; ++s) {
-            if (subdirectories[s] === command_to_process[1]) {
-              // change directory and save into archive
-              current_directory = subdirectories[s];
-              directory_archive.push(current_directory);
-              valid_directory = true;
-              break;
-            }
-          }
-  
-          if (!valid_directory) {
-            output_text = "Error: specified directory not found.";
-          }
-        }
-  
-      } else {
-        output_text = "Error: Invalid Command";
+  function executeCdCommand(command_to_process) {
+    let output_text = "";
+
+    if (command_to_process.length === 1) {  // "cd"
+
+      // move to home directory if not already in it
+      if (current_directory != "~") {
+        current_directory = "~";
+        directory_archive = ["~"];
       }
-  
-      return output_text;
-    }
-  
-  
-    /**
-     * Executes the terminal list directory command ('ls'). Is able to execute the following
-     * 'ls' commands:
-     * - "ls" -- lists the contents of the current directory
-     * - "ls" + valid_subdirectory -- lists the contents of the specified directory
-     * 
-     * @return String representing the output message for the submitted user input in terminal;
-     *     if inputted 'ls' command is valid, outputs a list of the directory's contents
-     */
-    function executeLsCommand(command_to_process) {
-      executing_ls_command = true;
-      
-      let output_text = "";
-  
-      if (command_to_process.length === 1) {  // "ls"
-        // display subdirectories and executables in current directory
-        for (let i = 0; i < subdirectories.length; ++i) {
-          output_text += subdirectories[i] + " ";
+
+    } else if (command_to_process.length === 2) {  // "cd" + other command
+
+      if (command_to_process[1] == "../") {  // "cd ../"
+        if (current_directory != "~" && directory_archive.length != 1) {
+          // move to parent/previous directory
+          directory_archive.pop();
+          current_directory = directory_archive[directory_archive.length - 1];
         }
-  
-        for (let j = 0; j < executables_in_current.length; ++j) {
-          output_text += executables_in_current[j] + " ";
-        }
-      } else {  // "ls" + valid_subdir_name
-        let dir = command_to_process[1];
-  
-        // check if the given directory is a valid subdirectory
-        let is_subdirectory = false;
-        for (let d = 0; d < subdirectories.length; ++d) {
-          if (dir === subdirectories[d]) {
-            is_subdirectory = true;
+      } else {  // check if it's a valid directory (i.e. if the user wants to move into a directory)
+        let valid_directory = false;
+
+        for (let s = 0; s < subdirectories.length; ++s) {
+          if (subdirectories[s] === command_to_process[1]) {
+            // change directory and save into archive
+            current_directory = subdirectories[s];
+            directory_archive.push(current_directory);
+            valid_directory = true;
+            break;
           }
         }
-  
-        // list out contents in the specified directory
-        if (is_subdirectory) {
-          let dir_contents = directory[dir];
-  
-          for (let i = 0; i < dir_contents["directories"].length; ++i) {
-            output_text += dir_contents["directories"][i] + " ";
-          }
-  
-          for (let j = 0; j < dir_contents["executables"].length; ++j) {
-            output_text += dir_contents["executables"][j] + " ";
-          }
-        } else {
+
+        if (!valid_directory) {
           output_text = "Error: specified directory not found.";
         }
       }
-  
-      return output_text;
+
+    } else {
+      output_text = "Error: Invalid Command";
     }
-  
-  
-    /**
-     * Colors the content names (i.e. subdirectories, executables) in a directory; is used for
-     * the ls command.
-     * 
-     * @param output_text String containing the contents of a directory (output of the ls command)
-     * @param output_divider HTML div that will hold the output of the ls command (i.e. the list
-     *     of contents in the directory)
-     */
-     function colorDirectoryExecutable(output_text, output_divider) {
-      let directory_contents = [];
-  
-      // split the output of contents of the directory - after ls command is executed
-      output_text = output_text.trim();
-      if (output_text != "") {
-        directory_contents = output_text.split(" ");
+
+    return output_text;
+  }
+
+
+  /**
+   * Executes the terminal list directory command ('ls'). Is able to execute the following
+   * 'ls' commands:
+   * - "ls" -- lists the contents of the current directory
+   * - "ls" + valid_subdirectory -- lists the contents of the specified directory
+   * 
+   * @return String representing the output message for the submitted user input in terminal;
+   *     if inputted 'ls' command is valid, outputs a list of the directory's contents
+   */
+  function executeLsCommand(command_to_process) {
+    executing_ls_command = true;
+    
+    let output_text = "";
+
+    if (command_to_process.length === 1) {  // "ls"
+      // display subdirectories and executables in current directory
+      for (let i = 0; i < subdirectories.length; ++i) {
+        output_text += subdirectories[i] + " ";
       }
-  
-      // create span for coloring text and append to the output divider based on class
-      for (let index = 0; index < directory_contents.length; ++index) {
-  
-        // source to create the span element: https://stackoverflow.com/questions/5802663/create-a-span-element-inside-another-element-using-javascript
-        let ls_span = document.createElement("span");
-        let check_exe_file = directory_contents[index].slice(-4);
-  
-        // color the text based on class - directory and executable
-        if (check_exe_file === ".exe") {
-          ls_span.className = "executable_file";
-        } else {
-          ls_span.className = "subdirectory";
+
+      for (let j = 0; j < executables_in_current.length; ++j) {
+        output_text += executables_in_current[j] + " ";
+      }
+    } else {  // "ls" + valid_subdir_name
+      let dir = command_to_process[1];
+
+      // check if the given directory is a valid subdirectory
+      let is_subdirectory = false;
+      for (let d = 0; d < subdirectories.length; ++d) {
+        if (dir === subdirectories[d]) {
+          is_subdirectory = true;
         }
-  
-        // append to the divider after setting the colors
-        ls_span.innerHTML = directory_contents[index] + " ";
-        output_divider.appendChild(ls_span);
       }
-    }
-  
-  
-    /**
-     * Executes the executable based on the user input command; only occurs when within an executable.
-     * 
-     * @param command_to_process An array containing the user input while in the executable
-     * @return String representing the output message for the submitted user input in executable
-     */
-    function executeExecutable(command_to_process) {
-      let output_text = "";
-  
-      if (command_to_process.length === 1 && command_to_process[0] === "exit") {
-        currently_in_executable = false;
-        current_coffee_state = "";
-        output_text = "Exiting current executable.";
+
+      // list out contents in the specified directory
+      if (is_subdirectory) {
+        let dir_contents = directory[dir];
+
+        for (let i = 0; i < dir_contents["directories"].length; ++i) {
+          output_text += dir_contents["directories"][i] + " ";
+        }
+
+        for (let j = 0; j < dir_contents["executables"].length; ++j) {
+          output_text += dir_contents["executables"][j] + " ";
+        }
       } else {
-        // redirect to the specific executable
-        if (curr_executable_name === "lineDolphin.exe") {
-          output_text = executeLineDolphinExecutable(command_to_process);
-        } else if (curr_executable_name === "coffeeRequestSender.exe") {
-          output_text = executeCoffeeRequestExecutable(command_to_process);
-        } else if (curr_executable_name === "fridgeLoginPortal.exe") {
-          output_text = executeFridgeLoginExecutable(command_to_process);
-        }
+        output_text = "Error: specified directory not found.";
       }
-  
-      return output_text;
     }
+
+    return output_text;
+  }
+
+
+  /**
+   * Colors the content names (i.e. subdirectories, executables) in a directory; is used for
+   * the ls command.
+   * 
+   * @param output_text String containing the contents of a directory (output of the ls command)
+   * @param output_divider HTML div that will hold the output of the ls command (i.e. the list
+   *     of contents in the directory)
+   */
+   function colorDirectoryExecutable(output_text, output_divider) {
+    let directory_contents = [];
+
+    // split the output of contents of the directory - after ls command is executed
+    output_text = output_text.trim();
+    if (output_text != "") {
+      directory_contents = output_text.split(" ");
+    }
+
+    // create span for coloring text and append to the output divider based on class
+    for (let index = 0; index < directory_contents.length; ++index) {
+
+      // source to create the span element: https://stackoverflow.com/questions/5802663/create-a-span-element-inside-another-element-using-javascript
+      let ls_span = document.createElement("span");
+      let check_exe_file = directory_contents[index].slice(-4);
+
+      // color the text based on class - directory and executable
+      if (check_exe_file === ".exe") {
+        ls_span.className = "executable_file";
+      } else {
+        ls_span.className = "subdirectory";
+      }
+
+      // append to the divider after setting the colors
+      ls_span.innerHTML = directory_contents[index] + " ";
+      output_divider.appendChild(ls_span);
+    }
+  }
+
+
+  /**
+   * Executes the executable based on the user input command; only occurs when within an executable.
+   * 
+   * @param command_to_process An array containing the user input while in the executable
+   * @return String representing the output message for the submitted user input in executable
+   */
+  function executeExecutable(command_to_process) {
+    let output_text = "";
+
+    if (command_to_process.length === 1 && command_to_process[0] === "exit") {
+      currently_in_executable = false;
+      current_coffee_state = "";
+      output_text = "Exiting current executable.";
+    } else {
+      // redirect to the specific executable
+      if (curr_executable_name === "lineDolphin.exe") {
+        output_text = executeLineDolphinExecutable(command_to_process);
+      } else if (curr_executable_name === "coffeeRequestSender.exe") {
+        output_text = executeCoffeeRequestExecutable(command_to_process);
+      } else if (curr_executable_name === "fridgeLoginPortal.exe") {
+        output_text = executeFridgeLoginExecutable(command_to_process);
+      }
+    }
+
+    return output_text;
+  }
 
 
   /**
    * Executes the executable based on the user input command; only occurs if within the lineDolphin
    * executable.
-   *
+   * 
    * @param command_to_process An array containing the user input while in the executable
    * @return String representing the output message for the submitted user input in lineDolphin executable;
    *     if user input is invalid, outputs an error message
@@ -2619,7 +2917,7 @@ function openComputer() {
   /**
    * Determines what instruction text to output to the terminal while in the coffeeSenderRequest executable and
    * stores the responses the user inputs for the coffeeSenderRequest.
-   *
+   * 
    * @param command_to_process An array containing the user input while in the executable
    * @return String representing the instruction text for the user to respond to
    */
@@ -2661,36 +2959,36 @@ function openComputer() {
   /**
    * Verifies if the user's request for the coffeeRequestSender executable is valid and outputs
    * the corresponding message status or error.
-   *
+   * 
    * @return String representing the corresponding message status or error to the user's input
    */
-  // function processCoffeeRequest() {
-  //   let output_text = "";
+  function processCoffeeRequest() {
+    let output_text = "";
 
-  //   if (current_host_name != "mycyba") {
-  //     output_text = "Error: could not reach specified host.";
-  //   } else if (current_port_name != "5000") {
-  //     output_text = "Error: host is reachable, but port number is incorrect.";
-  //   } else if (current_request_type != "get") {
-  //     output_text = "Error: not the expected request type.";
-  //   } else if (current_request_url === "mycyba/brewer/brew") {
-  //     output_text = "STATUS: BREW REQUEST RECEIVED. WILL PROCEED TO FULFILL REQUEST.";
+    if (current_host_name != "mycyba") {
+      output_text = "Error: could not reach specified host.";
+    } else if (current_port_name != "5000") {
+      output_text = "Error: host is reachable, but port number is incorrect.";
+    } else if (current_request_type != "get") {
+      output_text = "Error: not the expected request type.";
+    } else if (current_request_url === "mycyba/brewer/brew") {
+      output_text = "STATUS: BREW REQUEST RECEIVED. WILL PROCEED TO FULFILL REQUEST.";
 
-  //     // update puzzle status
-  //     is_coffee_brewed = true;
-  //     document.getElementById("makeCoffee").innerHTML = " &#10004 CFK &#9749";
+      // update puzzle status
+      is_coffee_brewed = true;
+      document.getElementById("makeCoffee").innerHTML = " &#10004 Make Coffee &#9749";
 
-  //     // play sound effect
-  //     coffee_pour_sound.play();
+      // play sound effect
+      coffee_pour_sound.play();
 
-  //   } else if (current_request_url === "mycyba/brewer/status") {
-  //     output_text = "STATUS: OK, READY TO BREW";
-  //   } else {
-  //     output_text = "Error: valid request, but invalid URL.";
-  //   }
+    } else if (current_request_url === "mycyba/brewer/status") {
+      output_text = "STATUS: OK, READY TO BREW";
+    } else {
+      output_text = "Error: valid request, but invalid URL.";
+    }
 
-  //   return output_text;
-  // }
+    return output_text;
+  }
 
 
   /**
@@ -2698,7 +2996,7 @@ function openComputer() {
    * - "stock" -- displays the fridge contents
    * - "lock" -- locks the fridge
    * - "unlock" -- unlocks the fridge
-   *
+   * 
    * @param command_to_process An array containing the user input while in the executable
    * @return String describing whether the command was executed or, if invalid, an error message
    */
@@ -2708,7 +3006,7 @@ function openComputer() {
     if (command_to_process.length === 1 && command_to_process[0] === "stock") {
       // display fridge contents
       output_text = "Current fridge contents: 1x baking soda. 6x bell pepper. 3x Golden Harbor Soup Dumplings. 1x half and half. 34x chicken eggs. 10x quail eggs.";
-
+    
     } else if (command_to_process.length === 1 && command_to_process[0] === "lock") {
       // check if fridge is locked
       if (!is_fridge_unlocked) {
@@ -2748,7 +3046,7 @@ function openComputer() {
 
   /**
    * Checks if the passed in executable exists in the current directory.
-   *
+   * 
    * @param executable_name String representing the name of the executable to check
    *     existence for
    * @return Boolean representing whether the passed in executable exists
@@ -2793,14 +3091,14 @@ function openComputer() {
     }
   }
 
-   /**
-   * Displays output message for a terminal command in the game scene view.
-   */
+    /**
+     * Displays output message for a terminal command in the game scene view.
+     */
     function displayTerminalOutput(output_text) {
       // create divider to store output
       let output_divider = document.createElement("div");
       output_divider.id = "output" + num_inputs;
-  
+
       displayTextOutput(output_divider, display_coffee_text, coffee_text);
       display_coffee_text = false;
       displayTextOutput(output_divider, display_ports, ports);
@@ -2809,7 +3107,7 @@ function openComputer() {
       display_port_scan_code = false;
       displayTextOutput(output_divider, display_port_scan_output, port_scan_output);
       display_port_scan_output = false;
-  
+
       // if currently executing a ls command, then display directories
       // and executables in respective colors and append to output_divider
       if (executing_ls_command) {
@@ -2819,12 +3117,12 @@ function openComputer() {
         let text = document.createTextNode(output_text);
         output_divider.appendChild(text);
       }
-  
+
       // add divider containing output text to terminal
       game_terminal.append(output_divider);
     }
-  
-  
+
+
     /**
      * Returns a string of the full directory to display in a new line in the terminal.
      * 
@@ -2832,7 +3130,7 @@ function openComputer() {
      */
     function getFullDirectory() {
       let directory_string = directory_archive[0];  // "~" directory
-  
+
       if (currently_in_executable) {
         directory_string = curr_executable_name + "> ";
       } else {
@@ -2844,7 +3142,7 @@ function openComputer() {
         // signal the end of the current working directory path
         directory_string += "$ ";
       }
-  
+
       return directory_string;
     }
   
