@@ -1,7 +1,6 @@
 var sqlusername = "SELECT username FROM users WHERE privilege = 'admin'";
 var sqlpassword = "SELECT password FROM users WHERE username = (SELECT username FROM users WHERE privilege = 'admin')";
 
-var finished_cfk = false;
 var sqldialogueBox = document.getElementById("sqldialogue");
 var sqldialogueDiv = document.getElementById("sqldialogueBox");
 var databasedialogueBox = document.getElementById("databasedialogue");
@@ -34,7 +33,6 @@ function sqllogin() {
         database.style.display = "block";
         sqldialogueShown = false;
         sqldialogueDiv.style.display = "none";
-        finished_cfk = true;
         // document.getElementById("makeCoffee").innerHTML = " &#10004 CFK &#127831";
     }
 }
@@ -64,14 +62,6 @@ function sqltoggleDialogue() {
     dbdiv.style.visibility = "visible";
     dbdiv.style.display="block";
     is_cfk_laptop_scene = true;
-    finished_cfk = true;
+    let game = window.parent;
+    game.postMessage("cfk_solve", "*");
   }
-
-  // document.addEventListener('keydown', logKey);
-  // function logKey(key) {
-  //   if (key.code === "Escape") {
-  //     console.log("try to escape!!!!");
-  //     key.preventDefault();
-  //     closeSQL();
-  //   }
-  // }
