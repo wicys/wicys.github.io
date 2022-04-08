@@ -698,7 +698,6 @@ function openComputer() {
     if (finished_network && !network_checkbox) {
       network_checkbox = true;
       document.getElementById("makeToast").innerHTML = " &#10004 Moonbucks &#9749";
-
     }
     // step 1 - clear the canvas
     clearCanvas();
@@ -784,6 +783,7 @@ function openComputer() {
     displayComboLockHint();
     displayIncorrectMessage();
     displayDialogue();
+    displayMoonbucksDialogue();
 
 
     // console.log("x:", char_x_pos)
@@ -1057,7 +1057,7 @@ function openComputer() {
       }
       if (room == moonbucks_interior_scene) {
         is_dialogue_box = true;
-        displayMoonbucksDialogue();
+        // displayMoonbucksDialogue();
       }
   }
 
@@ -2139,7 +2139,7 @@ function openComputer() {
     console.log("printing moonbucks dialogue: " + dialogue_idx);
     
     if (is_dialogue_box) {
-      if (current_room === moonbucks_interior_scene && (is_moonbucks_interior_scene || is_receipt_scene || is_computer_scene || is_terminal_scene || is_winscp_scene) && dialogue_idx < dialogue["Moonbucks"].length) {
+      if (current_room == moonbucks_interior_scene && (is_moonbucks_interior_scene || is_receipt_scene || is_computer_scene || is_terminal_scene || is_winscp_scene) && dialogue_idx < dialogue["Moonbucks"].length) {
         // display icons - changing the icons of who is speaking
         if (dialogue_idx === 1 ) {
           is_alma_icon = false;
@@ -2385,6 +2385,9 @@ function openComputer() {
           has_ran_show_ports = true;
           has_viewed_port_scan = true;
           has_ran_port_scan = true;
+
+          // temporarily end of puzzle
+          finished_network = true;
           dialogue_idx = 15;  // hardcode to this dialogue
           dialogueBox(moonbucks_interior_scene);
         } else {
