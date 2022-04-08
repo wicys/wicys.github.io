@@ -113,6 +113,8 @@ function emailLogin() {
     // document.getElementById("unlockComputer").innerHTML = " &#10004 Checkers &#127829";
     console.log("got into the email!");
     window.location.replace("./osintemail.html");
+    let game = window.parent;
+    game.postMessage("osint_solve", "*");
   }
 }
 
@@ -187,14 +189,5 @@ function closeForm() {
   document.getElementById("myForm").style.display = "none";
 }
 
-
-// document.addEventListener('keydown', logKey);
-//   function logKey(key) {
-//     if (key.code === "Escape") {
-//       console.log("try to escape!!!!");
-//       key.preventDefault();
-//       closeComputer();
-//     }
-//   }
 
 var images = ["images_2022/dog.jpg", "images_2022/school.jpg", "images_2022/car.jpg", "images_2022/genericprofile.jpg"];
