@@ -22,7 +22,7 @@ var sqldialogue = [
 
 function sqllogin() {
     var psw = document.getElementById("passwordInput").value;
-    var strip_psw = psw.replaceAll(" ", "");
+    var strip_psw = psw.replace(/\s+/g, '');
     var uname = document.getElementById("usernameInput").value;
     if (strip_psw != sqlpassword || uname != sqlusername) {
         sqltoggleDialogue();
