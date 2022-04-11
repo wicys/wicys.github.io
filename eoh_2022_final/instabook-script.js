@@ -100,6 +100,7 @@ var emailPassword = "3FJj2093j3";
 var suspiciousEmail = "johnatcheckers@email.com";
 var carColor = "red";
 var schoolName = "urbana";
+var schoolName2 = "urbana high school";
 var petName = "buddy";
 
 function emailLogin() {
@@ -146,7 +147,7 @@ function resetPassword() {
   var petInput = document.getElementById("petInput").value;
   var schoolInput = document.getElementById("schoolInput").value;
   var carInput = document.getElementById("carInput").value;
-  if (petInput.toLowerCase() === petName && schoolInput.toLowerCase() === schoolName && carInput.toLowerCase() == carColor) {
+  if (petInput.toLowerCase() === petName && ((schoolInput.toLowerCase() === schoolName) || (schoolInput.toLowerCase() === schoolName2)) && carInput.toLowerCase() == carColor) {
     securityQuestions.style.display = "none";
     resetPassword.style.display = "block";
     console.log("correct inputs");
