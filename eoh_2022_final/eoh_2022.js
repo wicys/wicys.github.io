@@ -1251,12 +1251,12 @@ function openComputer() {
    function changeRooms() {
     // if character is currently in bedroom and within bounds of left door, enter living room
     if (scene_pic == almaoffice_scene && (char_y_pos <= 75 && (char_x_pos <= 110 && char_x_pos >= 65))){
-      scene_pic = cfk_street_scene;
-      current_room = cfk_street_scene;
-      char_x_pos = 625;
-      char_y_pos = 400
+      scene_pic = pizza_street_scene;
+      current_room = pizza_street_scene;
+      char_x_pos = 100;
+      char_y_pos = 350;
       is_almaoffice_scene = false;
-      is_cfk_street_scene = true;
+      is_pizza_street_scene = true;
 
       is_alma_icon = false;
       is_dialogue_box = false;
