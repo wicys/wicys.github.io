@@ -1,5 +1,5 @@
 var sqlusername = "SELECT username FROM users WHERE privilege = 'admin'";
-var sqlpassword = "SELECT password FROM users WHERE username = (SELECT username FROM users WHERE privilege = 'admin')";
+var sqlpassword = "SELECTpasswordFROMusersWHEREusername=(SELECTusernameFROMusersWHEREprivilege='admin')";
 
 var sqldialogueBox = document.getElementById("sqldialogue");
 var sqldialogueDiv = document.getElementById("sqldialogueBox");
@@ -22,8 +22,9 @@ var sqldialogue = [
 
 function sqllogin() {
     var psw = document.getElementById("passwordInput").value;
+    var strip_psw = psw.replaceAll(" ", "");
     var uname = document.getElementById("usernameInput").value;
-    if (psw != sqlpassword || uname != sqlusername) {
+    if (strip_psw != sqlpassword || uname != sqlusername) {
         sqltoggleDialogue();
     } else {
         loginButton = document.getElementById("loginButton");
