@@ -1333,7 +1333,7 @@ function openComputer() {
       is_dialogue_box = false;
     }
 
-    if (scene_pic == pizza_scene && ((char_x_pos >= 85 && char_x_pos <= 130) && char_y_pos >= 385)){
+    if (scene_pic == pizza_scene && (char_y_pos >= 385)){
       // console.log("go back out!");
       scene_pic = pizza_street_scene;
       current_room = pizza_street_scene;
