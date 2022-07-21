@@ -1,10 +1,92 @@
 <!DOCTYPE HTML>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Times new roman;
+}
+
+.header {
+  text-align: center;
+  padding: 32px;
+}
+
+.row {
+  display: -ms-flexbox; /* IE 10 */
+  display: flex;
+  -ms-flex-wrap: wrap; /* IE 10 */
+  flex-wrap: wrap;
+  padding: 0 4px;
+}
+
+/* Create two equal columns that sits next to each other */
+.column {
+  -ms-flex: 25%; /* IE 10 */
+  flex: 25%;
+  padding: 0 4px;
+}
+
+.column img {
+  margin-top: 8px;
+  vertical-align: middle;
+}
+
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header" id="myHeader">
+  <h1>Photo Gallery</h1>
+</div>
+
+<!-- Photo Grid -->
+<div class="row"> 
+  <div class="column">
+    <img src="MS1.png" style="width:100%">
+    <img src="MS2.png" style="width:100%">
+    <img src="MS3.png" style="width:100%">
+    <img src="MS4.png" style="width:100%">
+    <img src="MS5.png" style="width:100%">
+    
+  </div>
+  <div class="column">
+    <img src="MS6.png" style="width:100%">
+    <img src="MS7.png" style="width:100%">
+    <img src="MS8.png" style="width:100%">
+    <img src="MS9.png" style="width:100%">
+    <img src="MS10.png" style="width:100%">
+  </div>  
+  <div class="column">
+    <img src="pumpkin1.png" style="width:100%">
+    <img src="pumpkin2.png" style="width:100%">
+    <img src="pumpkin3.png" style="width:100%">
+    <img src="KakaoTalk_Photo_2021-01-08-17-21-28.jpeg" style="width:100%">
+    <img src="KakaoTalk_Photo_2021-01-08-17-22-03.jpeg" style="width:100%">
+  </div>
+  <div class="column">
+    <img src="KakaoTalk_Photo_2021-01-08-17-10-30.png" style="width:100%">
+    <img src="KakaoTalk_Photo_2021-01-08-17-20-55.jpeg" style="width:100%">
+    <img src="/w3images/wedding.jpg" style="width:100%">
+  </div>
+</div>
+
+</body>
+
+</html>
+
 <!--
 	Forty by HTML5 UP
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
-<html>
+<!--<html>
 	<head>
 		<title>WiCyS - Gallery</title>
 		<meta charset="utf-8" />
@@ -15,11 +97,11 @@
 	<body class="is-preload">
 
 		<!-- Wrapper -->
-			<div id="wrapper">
+			<!--<div id="wrapper">
 
 				<!-- Header -->
 				<!-- Note: The "styleN" class below should match that of the banner element. -->
-					<header id="header" class="alt style2">
+					<!--<header id="header" class="alt style2">
 						<img src="output-onlinepngtools.png" href="index.html" width="200" height="75">
 						<nav>
 							<a href="#menu">Menu</a>
@@ -27,7 +109,7 @@
 					</header>
 
 				<!-- Menu -->
-					<nav id="menu">
+					<!--<nav id="menu">
 						<ul class="links">
 							<li><a href="index.html">Home</a></li>
 							<li><a href="landing.html">Our Board</a></li>
@@ -41,9 +123,9 @@
 					</nav>
 
 				<!-- Main -->
-					<div id="main" class="alt">
+					<!--<div id="main" class="alt">
 
-						<!-- One -->
+						<!-- One 
 							<section id="one">
 								<div class="inner">
 									<header class="major">
